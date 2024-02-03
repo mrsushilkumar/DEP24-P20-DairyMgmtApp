@@ -1,1 +1,0 @@
-# Farm-Expense-Management-App
