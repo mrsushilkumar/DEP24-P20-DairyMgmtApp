@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Card for the each Cattle
 class CattleCard extends StatefulWidget {
   const CattleCard({super.key, required this.cattle});
 
@@ -96,6 +97,49 @@ class _CattleViewState extends State<CattleView> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {},
+      ),
+    );
+  }
+}
+
+class AnimalDetails extends StatefulWidget {
+  const AnimalDetails({super.key});
+
+  @override
+  State<AnimalDetails> createState() => _AnimalDetailsState();
+}
+
+class _AnimalDetailsState extends State<AnimalDetails> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: (){
+
+            },
+            icon:const Icon(Icons.arrow_back)
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+
+              },
+              icon: const Icon(Icons.delete)
+          ),
+          IconButton(
+              onPressed: () {
+
+              },
+              icon: const Icon(Icons.edit)
+          ),
+          IconButton(
+              onPressed: () {
+
+              },
+              icon: const Icon(Icons.more_vert)
+          )
+        ],
       ),
     );
   }
