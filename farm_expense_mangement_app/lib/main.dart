@@ -1,5 +1,4 @@
 
-import 'package:farm_expense_mangement_app/backend/cattle.dart';
 import 'package:farm_expense_mangement_app/firebase_options.dart';
 import 'package:farm_expense_mangement_app/frontend/authentication.dart';
 import 'package:farm_expense_mangement_app/frontend/homepage.dart';
