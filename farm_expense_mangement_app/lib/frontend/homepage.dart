@@ -4,8 +4,9 @@ import 'package:farm_expense_mangement_app/frontend/profilepage.dart';
 import 'package:flutter/material.dart';
 
 import '../backend/cattle.dart';
+import 'animalDetail/animaldetails.dart';
 
-final cattle = Cattle("5515154", "female", 10,"cow" , 2, 120);
+final listCattle = [Cattle("5515154", "female", 10,"cow" , 2, 120)];
 
 class HomePage extends StatelessWidget {
   // Variables to store data
@@ -29,7 +30,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.blueGrey[800],
         appBar: AppBar(
           title: const Text('Dairy Management App'),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Colors.white,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.notifications),
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AnimalDetails(cattle: cattle)),
+                    MaterialPageRoute(builder: (context) => CattleView(listCattle: listCattle),)
                   );
                 },
                 child: Row(
@@ -176,7 +177,7 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AnimalDetails(cattle: cattle)),
+                    MaterialPageRoute(builder: (context) => CattleView(listCattle: listCattle,)),
                   );
                 },
                 child: Row(
