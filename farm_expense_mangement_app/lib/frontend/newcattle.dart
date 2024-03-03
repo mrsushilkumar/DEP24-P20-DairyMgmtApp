@@ -1,0 +1,258 @@
+
+import 'package:flutter/material.dart';
+
+class FormPage extends StatefulWidget {
+
+  const FormPage({super.key});
+
+  @override
+  State<FormPage> createState() => _FormPageState();
+}
+
+class _FormPageState extends State<FormPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _tagNumberController = TextEditingController();
+  final TextEditingController _tagNumberController1 = TextEditingController();
+  final TextEditingController _tagNumberController2 = TextEditingController();
+  final TextEditingController _tagNumberController3 = TextEditingController();
+
+
+  String? _selectedGender; // Variable to store selected gender
+  final TextEditingController _birthDateController = TextEditingController();
+  String? _selectedSource;
+  String? _selectedStage;
+
+  // Variable to store selected gender
+
+  final List<String> genderOptions = ['Male','Female'];
+  final List<String> sourceOptions = ['Born on Farm','Purchased'];// List of gender options
+  final List<String> stageOptions = ['Lactating','Non-Lactating'];
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked.day.toString() != _birthDateController.text) {
+      setState(() {
+        _birthDateController.text = picked.toString().split(' ')[0];
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('New Cattle',style: TextStyle(
+          color: Colors.white,
+              fontWeight: FontWeight.bold
+        ),),
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey[800],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                  child: TextFormField(
+                  controller: _tagNumberController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter The RFID*',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter tag number';
+                    }
+                    return null;
+                  },
+                                ),
+                ),
+
+              // SizedBox(height: 0.00008),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                child: DropdownButtonFormField<String>(
+                  value: _selectedGender,
+                  decoration: InputDecoration(
+                    labelText: 'Gender*',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                  ),
+                  items: genderOptions.map((String gender) {
+                    return DropdownMenuItem<String>(
+                      value: gender,
+                      child: Text(gender),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGender = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select gender';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                child: TextFormField(
+                  controller: _birthDateController,
+                  decoration: InputDecoration(
+                    labelText: 'Birth Date',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: () => _selectDate(context),
+                    ),
+                  ),
+                ),
+              ),
+              // SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                child: TextFormField(
+                  controller: _tagNumberController1,
+                  decoration: InputDecoration(
+                    labelText: 'Enter The Weight',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                  ),
+
+                ),
+              ),
+              // SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                child: DropdownButtonFormField<String>(
+                  value: _selectedSource,
+                  decoration: InputDecoration(
+                    labelText: 'Source of Cattle*',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                  ),
+                  items: sourceOptions.map((String gender) {
+                    return DropdownMenuItem<String>(
+                      value: gender,
+                      child: Text(gender),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedSource = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select Source';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                child: TextFormField(
+                  controller: _tagNumberController2,
+                  decoration: InputDecoration(
+                    labelText: 'Enter The Breed',
+                    border: const OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                  ),
+
+                ),
+              ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                  child: DropdownButtonFormField<String>(
+                    value: _selectedGender,
+                    decoration: InputDecoration(
+                      labelText: 'Status',
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    items: genderOptions.map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedStage = value;
+                      });
+                    },
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Process the data
+                        // For example, save it to a database or send it to an API
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('New Cattle Added Successfully!!')),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                    ),
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 16
+                      ),
+                    ),
+                  ),
+                ),
+              ),]
+            ),
+
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tagNumberController.dispose();
+    _birthDateController.dispose();
+    super.dispose();
+  }
+}
