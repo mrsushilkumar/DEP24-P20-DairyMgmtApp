@@ -17,7 +17,7 @@ void main() async{
   );
 
 
-  // FirebaseAuth.instance.signInWithEmailAndPassword(email: "2021csb1136@iitrpr.ac.in", password: "iit@123#");
+  FirebaseAuth.instance.signInWithEmailAndPassword(email: "2021csb1136@iitrpr.ac.in", password: "iit@123#");
   runApp(const MyApp());
 }
 
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context,snapshot){
