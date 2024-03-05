@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimalList extends StatelessWidget {
+  
   const AnimalList({super.key});
 
   @override
