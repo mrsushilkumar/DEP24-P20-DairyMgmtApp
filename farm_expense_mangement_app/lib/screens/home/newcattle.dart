@@ -1,20 +1,24 @@
 
+import 'package:farm_expense_mangement_app/models/cattle.dart';
+import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
+import 'package:farm_expense_mangement_app/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FormPage extends StatefulWidget {
+class AddNewCattle extends StatefulWidget {
 
-  const FormPage({super.key});
+  const AddNewCattle({super.key});
 
   @override
-  State<FormPage> createState() => _FormPageState();
+  State<AddNewCattle> createState() => _AddNewCattleState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _AddNewCattleState extends State<AddNewCattle> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _tagNumberController = TextEditingController();
   final TextEditingController _tagNumberController1 = TextEditingController();
   final TextEditingController _tagNumberController2 = TextEditingController();
-  final TextEditingController _tagNumberController3 = TextEditingController();
+  // final TextEditingController _tagNumberController3 = TextEditingController();
 
 
   String? _selectedGender; // Variable to store selected gender
@@ -42,6 +46,33 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
+  final user = FirebaseAuth.instance.currentUser;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  late final DatabaseServicesForCattle cattleDb;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    cattleDb = DatabaseServicesForCattle(uid);
+
+  }
+
+  void addNewCattleButton(BuildContext context)
+  {
+    final cattle = Cattle(rfid: _tagNumberController.text,age: 4,lactationCycle: 2, breed: _tagNumberController2.text,sex: _selectedGender.toString(),weight: int.parse(_tagNumberController1.text));
+
+    cattleDb.infoToServerSingleCattle(cattle);
+
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AnimalList()));
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,16 +83,24 @@ class _FormPageState extends State<FormPage> {
         ),),
         centerTitle: true,
         backgroundColor: Colors.blueGrey[800],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
       ),
+
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Form(
             key: _formKey,
             child: ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                   child: TextFormField(
                   controller: _tagNumberController,
                   decoration: InputDecoration(
@@ -132,6 +171,7 @@ class _FormPageState extends State<FormPage> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
 
                 child: TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: _tagNumberController1,
                   decoration: InputDecoration(
                     labelText: 'Enter The Weight',
@@ -222,6 +262,8 @@ class _FormPageState extends State<FormPage> {
                       if (_formKey.currentState!.validate()) {
                         // Process the data
                         // For example, save it to a database or send it to an API
+                        addNewCattleButton(context);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('New Cattle Added Successfully!!')),
                         );

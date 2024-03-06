@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../backend/cattle.dart';
+import '../../models/cattle.dart';
 
 class AnimalDetails extends StatefulWidget {
 
@@ -17,10 +17,16 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+            widget.cattle.rfid,
+          style: const TextStyle(
+            color: Colors.white
+          ),
+        ),
         backgroundColor: Colors.blueGrey,
         leading: IconButton(
             onPressed: (){
-
+              Navigator.pop(context);
             },
             icon:const Icon(
               Icons.arrow_back,
@@ -191,7 +197,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                   ),
                 ),
                 const Text(
-                  "Lactation Cycle",
+                  "Lactation\nCycle",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16

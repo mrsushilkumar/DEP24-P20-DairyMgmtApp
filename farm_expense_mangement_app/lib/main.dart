@@ -1,12 +1,16 @@
 
 import 'package:farm_expense_mangement_app/firebase_options.dart';
-import 'package:farm_expense_mangement_app/frontend/authentication.dart';
-import 'package:farm_expense_mangement_app/frontend/homepage.dart';
+import 'package:farm_expense_mangement_app/screens/wrappers/wrapperhome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-final List<String> listCattle = List.of({"Cattle 1","Cattle 2","Cattle 3"});
+import 'screens/authenticate/login.dart';
+
+// final List<String> listCattle = List.of({"Cattle 1","Cattle 2","Cattle 3"});
+// final cattle = Cattle(rfid:"5515154",sex:  "male",age:  10,breed: "goat" ,lactationCycle:  3,weight:  120/*,dateOfBirth: DateTime.parse('2020-12-01')*/);
+
+// final farmUser = FarmUser(ownerName: "sushil",farmName:  "sushil dairy",address:  "chandigarh");
 
 void main() async{
 
@@ -16,12 +20,12 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-
-  // FirebaseAuth.instance.signInWithEmailAndPassword(email: "2021csb1136@iitrpr.ac.in", password: "iit@123#");
+  // FirebaseAuth.instance.createUserWithEmailAndPassword(email: '2021csb1136@iitrpr.ac.in', password: 'iit@123#');
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -37,7 +41,11 @@ class MyApp extends StatelessWidget {
             }
           else
             {
-              return const HomePage(totalCows: 2, avgMilkPerCow: 6, dryCows: 1, milkingCows: 1);
+
+              // final cattleDb = DatabaseServicesForCattle(user.uid);
+
+              // cattleDb.infoToServerSingleCattle(cattle);
+              return const WrapperHomePage();
             }
         },
       )
