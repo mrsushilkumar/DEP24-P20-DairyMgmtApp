@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:farm_expense_mangement_app/screens/home/homepage.dart';
@@ -8,15 +7,24 @@ import 'package:flutter/material.dart';
 import '../../models/cattle.dart';
 import '../../models/user.dart';
 
-final listCattle = [Cattle(rfid: "5515154",sex: "female",age: 10,breed: "cow" ,lactationCycle: 2,weight: 120,/*dateOfBirth: DateTime.parse('2020-12-01')*/)];
+final listCattle = [
+  Cattle(
+    rfid: "5515154",
+    sex: "female",
+    age: 10,
+    breed: "cow",
+    lactationCycle: 2,
+    weight: 120, /*dateOfBirth: DateTime.parse('2020-12-01')*/
+  )
+];
 
-final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",location:  "chandigarh",phoneNo: 8053004565);
-
-
-
+final farmUser = FarmUser(
+    ownerName: "sushil",
+    farmName: "sushil dairy",
+    location: "chandigarh",
+    phoneNo: 8053004565);
 
 class WrapperHomePage extends StatefulWidget {
-
   const WrapperHomePage({super.key});
 
   @override
@@ -24,13 +32,11 @@ class WrapperHomePage extends StatefulWidget {
 }
 
 class _WrapperHomePageState extends State<WrapperHomePage> {
-
-
   late StreamController<int> _streamControllerScreen;
   final int _screenFromNumber = 0;
 
-  late  PreferredSizeWidget _appBar;
-  late  PreferredSizeWidget _bodyScreen;
+  late PreferredSizeWidget _appBar;
+  late PreferredSizeWidget _bodyScreen;
 
   @override
   void initState() {
@@ -42,24 +48,20 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
     _bodyScreen = const HomePage() as PreferredSizeWidget;
   }
 
-  void home(BuildContext context)
-  {
+  void home(BuildContext context) {
     setState(() {
       _appBar = const HomeAppBar();
       _bodyScreen = const HomePage() as PreferredSizeWidget;
     });
   }
 
-
-  void profile(BuildContext context){//TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
+  void profile(BuildContext context) {
+    //TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
     setState(() {
       _appBar = const ProfileAppBar();
       _bodyScreen = const ProfilePage() as PreferredSizeWidget;
     });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,8 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
             ),
             IconButton(
               icon: const Icon(Icons.account_circle),
-              onPressed: () {  ///BOTTOM BOTTOM TODO:[PROFILE]
+              onPressed: () {
+                ///BOTTOM BOTTOM TODO:[PROFILE]
                 profile(context);
               },
               iconSize: 32,
@@ -107,8 +110,8 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
     required String value,
     required String imageUrl,
     required Color containerColor,
-    required Function() onTap,}
-      ) {
+    required Function() onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -150,7 +153,8 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
                   children: [
                     Text(
                       value,
-                      style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 21, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -168,9 +172,6 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
   }
 }
 
-
-
-
 class ArcClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -186,7 +187,6 @@ class ArcClipper extends CustomClipper<Path> {
     return false;
   }
 }
-
 
 class DryCowsPage extends StatelessWidget {
   const DryCowsPage({super.key});

@@ -1,7 +1,5 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,23 +13,13 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _tagNumberController1 = TextEditingController();
   final TextEditingController _tagNumberController2 = TextEditingController();
 
-  void _onLoginError()
-  {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Wrong Password or Email')
-        )
-    );
+  void _onLoginError() {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Wrong Password or Email')));
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -90,21 +78,22 @@ class _LoginPageState extends State<LoginPage> {
                         // Process the data
                         // For example, save it to a database or send it to an API
                         try {
-                          await FirebaseAuth.instance.signInWithEmailAndPassword(email: _tagNumberController1.text, password: _tagNumberController2.text);
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: _tagNumberController1.text,
+                                  password: _tagNumberController2.text);
                         } on FirebaseAuthException {
                           _onLoginError();
                         }
-
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Enter valid Details')),
+                          const SnackBar(content: Text('Enter valid Details')),
                         );
                       }
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Colors.grey[200]),
+                          MaterialStateProperty.all(Colors.grey[200]),
                     ),
                     child: const Text(
                       'Submit',

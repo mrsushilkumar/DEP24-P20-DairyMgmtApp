@@ -1,4 +1,3 @@
-
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
@@ -7,42 +6,58 @@ import '../../models/cattle.dart';
 import '../../models/user.dart';
 
 final listCattle = [
-  Cattle(rfid: "5515154",sex: "female",age: 10,breed: "cow" ,lactationCycle: 2,weight: 120,/*dateOfBirth: DateTime.parse('2020-12-01')*/),
-  Cattle(rfid: '12345', breed: 'cow',/* dateOfBirth: DateTime.parse('2020-05-05')*/)
+  Cattle(
+    rfid: "5515154",
+    sex: "female",
+    age: 10,
+    breed: "cow",
+    lactationCycle: 2,
+    weight: 120, /*dateOfBirth: DateTime.parse('2020-12-01')*/
+  ),
+  Cattle(
+    rfid: '12345',
+    breed: 'cow', /* dateOfBirth: DateTime.parse('2020-05-05')*/
+  )
 ];
 
-final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",location:  "chandigarh",phoneNo: 8053004565);
+final farmUser = FarmUser(
+    ownerName: "sushil",
+    farmName: "sushil dairy",
+    location: "chandigarh",
+    phoneNo: 8053004565);
 
-
-void milkRecords(BuildContext context)//TODO: [FUNCTION FOR AVG. MILK COW CARD]
+void milkRecords(BuildContext context) //TODO: [FUNCTION FOR AVG. MILK COW CARD]
 {
-  Navigator.push(context,MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
 }
 
-
-void cattle(BuildContext context)//TODO: [FUNCTION FOR COW CARD]
+void cattle(BuildContext context) //TODO: [FUNCTION FOR COW CARD]
 {
-  Navigator.push(context,MaterialPageRoute(builder: (context) => const AnimalList()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const AnimalList()));
 }
 
-void feed(BuildContext context)//TODO: [FUNCTION FOR TRANSACTIONS CARD]
+void feed(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
 {
-  Navigator.push(context,MaterialPageRoute(builder: (context) => const DryCowsPage()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const DryCowsPage()));
 }
 
-void transactions(BuildContext context)//TODO: [FUNCTION FOR TRANSACTIONS CARD]
+void transactions(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
 {
-  Navigator.push(context,MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
 }
 
-void profile(BuildContext context){//TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
+void profile(BuildContext context) {
+  //TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
 
-
-  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const ProfilePage()));
 }
 
-
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
   final Color myColor = const Color(0xFF39445A);
@@ -52,10 +67,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
       title: const Text(
         'Dairy Management App',
-        style: TextStyle(
-            color: Colors.white
-        ),
-
+        style: TextStyle(color: Colors.white),
       ),
       backgroundColor: myColor,
       // Setting color for the app bar
@@ -66,7 +78,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
           onPressed: () {},
         ),
         const SizedBox(width: 16),
-
       ],
     );
   }
@@ -76,9 +87,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget{
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-
 class HomePage extends StatefulWidget implements PreferredSizeWidget {
-
   const HomePage({super.key});
 
   @override
@@ -92,11 +101,14 @@ class HomePage extends StatefulWidget implements PreferredSizeWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    Color totalCowsColor = const Color.fromRGBO(224, 191, 184, 1.0); // Green color
-    Color milkingCowsColor = const Color.fromRGBO(252, 222, 172, 1.0); // Red color
+    Color totalCowsColor =
+        const Color.fromRGBO(224, 191, 184, 1.0); // Green color
+    Color milkingCowsColor =
+        const Color.fromRGBO(252, 222, 172, 1.0); // Red color
     Color dryCowsColor = const Color.fromRGBO(88, 148, 120, 1.0); // Blue color
-    Color avgMilkPerCowColor = const Color.fromRGBO(202,217,173, 1.0); // Yellow color
-    return  SingleChildScrollView(
+    Color avgMilkPerCowColor =
+        const Color.fromRGBO(202, 217, 173, 1.0); // Yellow color
+    return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -110,7 +122,8 @@ class _HomePageState extends State<HomePage> {
                     value: 'Cattle',
                     imageUrl: 'asset/cattles.jpg',
                     // 'https://static.vecteezy.com/system/resources/previews/014/568/676/original/milk-cow-icon-simple-style-vector.jpg',
-                    containerColor: totalCowsColor, // Setting color for this container
+                    containerColor:
+                        totalCowsColor, // Setting color for this container
                     onTap: () {
                       cattle(context);
                     },
@@ -123,11 +136,11 @@ class _HomePageState extends State<HomePage> {
                       value: 'Feed',
                       imageUrl: 'asset/feed.jpg',
                       // 'https://thumbs.dreamstime.com/b/feeding-cow-stylized-vector-feeding-cow-stylized-vector-silhouette-103872165.jpg',
-                      containerColor: milkingCowsColor, // Setting color for this container
+                      containerColor:
+                          milkingCowsColor, // Setting color for this container
                       onTap: () {
                         feed(context);
-                      }
-                  ),
+                      }),
                 ),
               ],
             ),
@@ -141,24 +154,24 @@ class _HomePageState extends State<HomePage> {
                       value: 'Transactions',
                       imageUrl: 'asset/transactions.webp',
                       // 'https://thumbs.dreamstime.com/b/finance-management-linear-icons-data-analysis-symbol-template-graphic-web-design-collection-logo-icon-263711792.jpg',
-                      containerColor: dryCowsColor, // Setting color for this container
+                      containerColor:
+                          dryCowsColor, // Setting color for this container
                       onTap: () {
                         transactions(context);
-                      }
-                  ),
+                      }),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: buildClickableContainer(
-                      context:context,
+                      context: context,
                       value: 'Milk Record',
                       imageUrl: 'asset/avg.jpg',
                       // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1NYO1taWsdYChV36YpskudbNaYMbzIf3Jw&usqp=CAU',
-                      containerColor: avgMilkPerCowColor, // Setting color for this container
+                      containerColor:
+                          avgMilkPerCowColor, // Setting color for this container
                       onTap: () {
                         milkRecords(context);
-                      }
-                  ),
+                      }),
                 ),
               ],
             ),
@@ -169,12 +182,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   GestureDetector buildClickableContainer({
-      required BuildContext context,
-      required String value,
-      required String imageUrl,
-      required Color containerColor,
-      required Function() onTap,}
-      ) {
+    required BuildContext context,
+    required String value,
+    required String imageUrl,
+    required Color containerColor,
+    required Function() onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -216,7 +229,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       value,
-                      style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 21, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -234,9 +248,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-
-
 class ArcClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -252,7 +263,6 @@ class ArcClipper extends CustomClipper<Path> {
     return false;
   }
 }
-
 
 class DryCowsPage extends StatelessWidget {
   const DryCowsPage({super.key});

@@ -1,6 +1,4 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 // final cattle = Cattle(rfid:"5515154", sex: "male",age:  10,breed: "cow" ,lactationCycle:  2,weight:  120,/*dateOfBirth: DateTime.parse('2020-12-01')*/);
 
@@ -10,28 +8,34 @@ class Cattle {
   final int age;
   final String breed;
   final int weight;
-  final int  lactationCycle;
+  final int lactationCycle;
   // final DateTime dateOfBirth;
 
-  Cattle({required this.rfid,this.sex = 'female',this.age = 0,required this.breed,this.lactationCycle = 0,this.weight = 0,/*required this.dateOfBirth*/});
+  Cattle({
+    required this.rfid,
+    this.sex = 'female',
+    this.age = 0,
+    required this.breed,
+    this.lactationCycle = 0,
+    this.weight = 0,
+    /*required this.dateOfBirth*/
+  });
 
-  factory Cattle.fromFireStore(
-      DocumentSnapshot<Map<String,dynamic>> snapshot,
-      SnapshotOptions? options
-    ){
+  factory Cattle.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options) {
     final data = snapshot.data();
     return Cattle(
-        rfid:data?['rfid'],
-        sex:data?['sex'],
-        age:data?['age'],
-        breed:data?['breed'],
-        lactationCycle:data?['lactationCycle'],
-        weight:data?['weight'],
-        // dateOfBirth: data?['dateOfBirth']
+      rfid: data?['rfid'],
+      sex: data?['sex'],
+      age: data?['age'],
+      breed: data?['breed'],
+      lactationCycle: data?['lactationCycle'],
+      weight: data?['weight'],
+      // dateOfBirth: data?['dateOfBirth']
     );
   }
 
-  Map<String,dynamic> toFireStore() {
+  Map<String, dynamic> toFireStore() {
     return {
       'rfid': rfid,
       'sex': sex,
@@ -42,5 +46,4 @@ class Cattle {
       // 'dateOfBirth':dateOfBirth
     };
   }
-
 }
