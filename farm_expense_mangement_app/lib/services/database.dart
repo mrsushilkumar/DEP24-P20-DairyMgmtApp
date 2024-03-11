@@ -39,18 +39,35 @@ class DatabaseServicesForCattle{
   }
 
 
-  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllCattle(String uid) async{
-    FirebaseFirestore db = FirebaseFirestore.instance;
 
-    return await db.collection('User').doc(uid).collection('Cattle').get();
-  }
-
-
-  Future<DocumentSnapshot<Map<String,dynamic>>> infoFromServer(String uid,String rfid) async{
+  Future<DocumentSnapshot<Map<String,dynamic>>> infoFromServer(String rfid) async{
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db.collection('User').doc(uid).collection('Cattle').doc(rfid).get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllCattle(String uid) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db.collection('User').doc(uid).collection('Cattle').orderBy('rfid').get();
+  }
+
+  Future<void> deleteCattle(String rfid) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db.collection('User').doc(uid).collection('Cattle').doc(rfid).delete();
+  }
+
+
+  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerWithSearch(String rfid) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return db.collection('User').doc(uid).collection('Cattle')
+        .where('rfid',isGreaterThanOrEqualTo: rfid)
+        .orderBy('rfid').get();
+  }
+
+
 
 
 

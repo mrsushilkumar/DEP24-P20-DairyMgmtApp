@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/models/cattle.dart';
 import 'package:farm_expense_mangement_app/screens/home/animaldetails.dart';
@@ -23,30 +25,57 @@ class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
+  late bool _searchBar;
+  late final TextEditingController _controllerSearchBar = TextEditingController();
+  late  Stream<QuerySnapshot<Map<String,dynamic>>> _streamController;
+
   late DatabaseServicesForCattle cattleDb;
   late Cattle cattle;
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     cattleDb = DatabaseServicesForCattle(uid);
+    _searchBar = false;
+    _streamController = _fetchCattle();
   }
 
-  void viewCattleDetail(Cattle cattle)
-  {
+  void viewCattleDetail(Cattle cattle) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AnimalDetails(cattle: cattle)));
   }
 
-  void addCattle(BuildContext context)
-  {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AddNewCattle()));
+  void addCattle(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AddNewCattle()));
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> _fetchCattle()
+  Stream<QuerySnapshot<Map<String, dynamic>>> _fetchCattle()
   {
-    return cattleDb.infoFromServerAllCattle(uid);
+    return cattleDb.infoFromServerAllCattle(uid).asStream();
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> _fetchCattleWithRfid(String queryData)
+  {
+    return cattleDb.infoFromServerWithSearch(queryData).asStream();
+  }
+
+
+  void _searchInCattle(String queryData){
+    if(queryData.isEmpty)
+      {
+        setState(() {
+          _streamController = _fetchCattle();
+        });
+      }
+    else
+      {
+        setState(() {
+          _streamController = _fetchCattleWithRfid(queryData);
+        });
+      }
+  }
+
 
 
   @override
@@ -54,21 +83,45 @@ class _AnimalListState extends State<AnimalList> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
+        title: (!_searchBar) ? const Text(
           'Animals',
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
           textAlign: TextAlign.center,
+        ) : TextField(
+          controller: _controllerSearchBar,
+          style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+
+          ),
+          onChanged: (value){
+            setState(() {
+              _controllerSearchBar.text = value;
+              _searchInCattle(_controllerSearchBar.text);
+            });
+          },
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF39445A),
         leading: IconButton(
           color: Colors.white,
             onPressed: (){
-              Navigator.pop(context);
+            setState(() {
+              if(_searchBar)
+              {
+                _searchBar = false;
+                _controllerSearchBar.text = '';
+                _streamController = _fetchCattle();
+              }
+              else {
+                Navigator.pop(context);
+              }
+            });
             },
-            icon: const Icon(Icons.arrow_back)),
-        actions: [
-          IconButton(
+            icon: const Icon(Icons.arrow_back)
+        ),
+        actions: (!_searchBar) ? [
+           IconButton(
             color: Colors.white,
             icon: const Icon(
               Icons.search,
@@ -76,6 +129,9 @@ class _AnimalListState extends State<AnimalList> {
             ),
             onPressed: () {
               // Implement search button functionality here
+              setState(() {
+                _searchBar =! _searchBar;
+              });
             },
           ),
           IconButton(
@@ -85,11 +141,18 @@ class _AnimalListState extends State<AnimalList> {
               _showFilterOptions(context);
             },
           ),
-        ],
+        ] : [
+          IconButton(
+            color: Colors.white,
+            icon: const Icon(Icons.filter_alt),
+            onPressed: () {
+              _showFilterOptions(context);
+            },
+          ),],
       ),
 
-      body:FutureBuilder(
-            future: _fetchCattle(),
+      body:StreamBuilder(
+            stream: _streamController,
             builder: (context, snapshot) {
               if(snapshot.connectionState == ConnectionState.waiting)
                 {
@@ -182,7 +245,7 @@ class _AnimalListState extends State<AnimalList> {
                 }
               else
                 {
-                  return const Text('Error in Fetch');
+                  return const Center(child: Text('Error in Fetch'));
                 }
             }
           ),

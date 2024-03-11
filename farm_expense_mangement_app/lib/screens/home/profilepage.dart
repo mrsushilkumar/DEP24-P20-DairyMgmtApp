@@ -143,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Email: ' ?? "",
+                                'Email: ',
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
@@ -156,11 +156,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Phone Number: ' ?? "",
+                                'Phone Number: ',
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                user!.phoneNumber ?? "",
+                                '${farmUser.phoneNo}',
                                 style: const TextStyle(fontSize: 16),
                               ),],
                           ),
@@ -173,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                farmUser.address,
+                                farmUser.location,
                                 style: const TextStyle(fontSize: 16),
                               ),],
                           ),

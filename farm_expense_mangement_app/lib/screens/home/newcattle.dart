@@ -15,9 +15,9 @@ class AddNewCattle extends StatefulWidget {
 
 class _AddNewCattleState extends State<AddNewCattle> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _tagNumberController = TextEditingController();
-  final TextEditingController _tagNumberController1 = TextEditingController();
-  final TextEditingController _tagNumberController2 = TextEditingController();
+  final TextEditingController _rfidTextController = TextEditingController();
+  final TextEditingController _weightTextController = TextEditingController();
+  final TextEditingController _breedTextController = TextEditingController();
   // final TextEditingController _tagNumberController3 = TextEditingController();
 
 
@@ -63,12 +63,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
   void addNewCattleButton(BuildContext context)
   {
-    final cattle = Cattle(rfid: _tagNumberController.text,age: 4,lactationCycle: 2, breed: _tagNumberController2.text,sex: _selectedGender.toString(),weight: int.parse(_tagNumberController1.text));
+    final cattle = Cattle(rfid: _rfidTextController.text,age: 4,lactationCycle: 2, breed: _breedTextController.text,sex: _selectedGender.toString(),weight: int.parse(_weightTextController.text));
 
     cattleDb.infoToServerSingleCattle(cattle);
 
     Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AnimalList()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AnimalList()));
 
 
   }
@@ -88,6 +88,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
           color: Colors.white,
           onPressed: (){
             Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AnimalList()));
           },
         ),
       ),
@@ -102,7 +103,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                   child: TextFormField(
-                  controller: _tagNumberController,
+                  controller: _rfidTextController,
                   decoration: InputDecoration(
                     labelText: 'Enter The RFID*',
                     border: const OutlineInputBorder(),
@@ -172,7 +173,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  controller: _tagNumberController1,
+                  controller: _weightTextController,
                   decoration: InputDecoration(
                     labelText: 'Enter The Weight',
                     border: const OutlineInputBorder(),
@@ -218,7 +219,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
 
                 child: TextFormField(
-                  controller: _tagNumberController2,
+                  controller: _breedTextController,
                   decoration: InputDecoration(
                     labelText: 'Enter The Breed',
                     border: const OutlineInputBorder(),
@@ -293,7 +294,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
   @override
   void dispose() {
-    _tagNumberController.dispose();
+    _rfidTextController.dispose();
     _birthDateController.dispose();
     super.dispose();
   }

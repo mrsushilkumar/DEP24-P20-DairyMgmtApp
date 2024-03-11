@@ -10,7 +10,7 @@ import '../../models/user.dart';
 
 final listCattle = [Cattle(rfid: "5515154",sex: "female",age: 10,breed: "cow" ,lactationCycle: 2,weight: 120,/*dateOfBirth: DateTime.parse('2020-12-01')*/)];
 
-final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",address:  "chandigarh");
+final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",location:  "chandigarh",phoneNo: 8053004565);
 
 
 
@@ -68,6 +68,7 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
       appBar: _appBar,
       body: _bodyScreen,
       bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

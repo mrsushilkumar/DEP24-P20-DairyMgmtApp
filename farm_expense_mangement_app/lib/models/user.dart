@@ -9,9 +9,10 @@ class FarmUser{
 
   final String ownerName;
   final String farmName;
-  final String address;
+  final String location;
+  final int phoneNo;
 
-  FarmUser({required this.ownerName,required this.farmName,required this.address});
+  FarmUser({required this.ownerName,required this.farmName,required this.location,required this.phoneNo});
 
   factory FarmUser.fromFireStore(
       DocumentSnapshot<Map<String,dynamic>> snapshot,
@@ -22,7 +23,8 @@ class FarmUser{
     return FarmUser(
         ownerName:data?['ownerName'],
         farmName:data?['farmName'],
-        address:data?['address'],
+        location:data?['location'],
+        phoneNo:data?['phoneNo']
     );
   }
 
@@ -30,7 +32,8 @@ class FarmUser{
     return {
       'ownerName': ownerName,
       'farmName': farmName,
-      'address': address,
+      'location': location,
+      'phoneNo': phoneNo
     };
   }
 }

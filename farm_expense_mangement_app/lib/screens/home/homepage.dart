@@ -11,7 +11,7 @@ final listCattle = [
   Cattle(rfid: '12345', breed: 'cow',/* dateOfBirth: DateTime.parse('2020-05-05')*/)
 ];
 
-final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",address:  "chandigarh");
+final farmUser = FarmUser(ownerName: "sushil",farmName: "sushil dairy",location:  "chandigarh",phoneNo: 8053004565);
 
 
 void milkRecords(BuildContext context)//TODO: [FUNCTION FOR AVG. MILK COW CARD]
