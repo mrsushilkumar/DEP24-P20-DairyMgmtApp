@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:farm_expense_mangement_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,29 +7,45 @@ import 'package:flutter/material.dart';
 import '../../models/cattle.dart';
 
 class AnimalDetails extends StatefulWidget {
-  final Cattle cattle;
-  const AnimalDetails({super.key, required this.cattle});
+  final String rfid;
+  const AnimalDetails({super.key, required this.rfid});
 
   @override
   State<AnimalDetails> createState() => _AnimalDetailsState();
 }
 
 class _AnimalDetailsState extends State<AnimalDetails> {
+
+
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  late Stream<DocumentSnapshot<Map<String,dynamic>>> _streamController;
 
   // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForCattle cattleDb;
+  late Cattle cattle;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     cattleDb = DatabaseServicesForCattle(uid);
+
+    _streamController = _fetchCattleDetail();
+  }
+
+  Stream<DocumentSnapshot<Map<String,dynamic>>> _fetchCattleDetail()
+  {
+    return cattleDb.infoFromServer(widget.rfid).asStream();
+  }
+
+  void editCattleDetail()
+  {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditAnimalDetail(cattle: cattle)));
   }
 
   void deleteCattle() {
-    cattleDb.deleteCattle(widget.cattle.rfid).then((value) =>
+    cattleDb.deleteCattle(widget.rfid).then((value) =>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Deleted'),
@@ -43,10 +60,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.cattle.rfid,
+          widget.rfid,
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blueGrey,
@@ -68,7 +87,9 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                 color: Colors.white,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                editCattleDetail();
+              },
               icon: const Icon(
                 Icons.edit,
                 color: Colors.white,
@@ -81,141 +102,164 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               ))
         ],
       ),
-      body: GridView(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        children: [
-          Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                  color: Colors.grey.shade500,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    child: Text(
-                      "${widget.cattle.age}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+      body: StreamBuilder(
+        stream: _streamController,
+        builder: (context, snapshot)  {
+
+          if(snapshot.connectionState == ConnectionState.waiting)
+            {
+              return const Center(
+                child: Text('Please Wait ..'),
+              );
+            }
+          else if(snapshot.hasData)
+            {
+              cattle = Cattle.fromFireStore(snapshot.requireData, null);
+              return GridView(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                children: [
+                  Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))),
+                          color: Colors.grey.shade500,
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Text(
+                              "${cattle.age}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Age",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                const Text(
-                  "Age",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                  color: Colors.grey.shade500,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    child: Text(
-                      widget.cattle.sex,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                  Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))),
+                          color: Colors.grey.shade500,
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Text(
+                              cattle.sex,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Gender",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                const Text(
-                  "Gender",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                  color: Colors.grey.shade500,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    child: Text(
-                      "${widget.cattle.weight}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                  Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))),
+                          color: Colors.grey.shade500,
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Text(
+                              "${cattle.weight}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Weight",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                const Text(
-                  "Weight",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                  color: Colors.grey.shade500,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    child: Text(
-                      widget.cattle.breed,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                  Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))),
+                          color: Colors.grey.shade500,
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Text(
+                              cattle.breed,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Breed",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                const Text(
-                  "Breed",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                  color: Colors.grey.shade500,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                    child: Text(
-                      "${widget.cattle.lactationCycle}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                  Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))),
+                          color: Colors.grey.shade500,
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Text(
+                              "${cattle.lactationCycle}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          "Lactation\nCycle",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
                     ),
-                  ),
-                ),
-                const Text(
-                  "Lactation\nCycle",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )
-              ],
-            ),
-          )
-        ],
+                  )
+                ],
+              );
+            }
+          else
+            {
+              return const Center(
+                child: Text('Error in fetch'),
+              );
+            }
+
+        }
       ),
     );
   }
@@ -223,9 +267,13 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
 
 
+
+
 class EditAnimalDetail extends StatefulWidget {
-  final String rfid;
-  const EditAnimalDetail({super.key,required this.rfid});
+  
+  final Cattle cattle;
+  
+  const EditAnimalDetail({super.key,required this.cattle});
 
   @override
   State<EditAnimalDetail> createState() => _EditAnimalDetailState();
@@ -233,9 +281,9 @@ class EditAnimalDetail extends StatefulWidget {
 
 class _EditAnimalDetailState extends State<EditAnimalDetail> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _tagNumberController = TextEditingController();
-  final TextEditingController _tagNumberController1 = TextEditingController();
-  final TextEditingController _tagNumberController2 = TextEditingController();
+  // final TextEditingController _rfidTextController = TextEditingController();
+  final TextEditingController _weightTextController = TextEditingController();
+  final TextEditingController _breedTextController = TextEditingController();
   // final TextEditingController _tagNumberController3 = TextEditingController();
 
 
@@ -276,17 +324,18 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     super.initState();
 
     cattleDb = DatabaseServicesForCattle(uid);
+    _breedTextController.text = widget.cattle.breed;
+    _weightTextController.text = widget.cattle.weight.toString();
 
   }
 
-  void addNewCattleButton(BuildContext context)
-  {
-    final cattle = Cattle(rfid: _tagNumberController.text,age: 4,lactationCycle: 2, breed: _tagNumberController2.text,sex: _selectedGender.toString(),weight: int.parse(_tagNumberController1.text));
+  void updateCattleButton(BuildContext context) {
+    final cattle = Cattle(rfid: widget.cattle.rfid,age: 4,lactationCycle: 2, breed: _breedTextController.text,sex: _selectedGender.toString(),weight: int.parse(_weightTextController.text));
 
     cattleDb.infoToServerSingleCattle(cattle);
 
     Navigator.pop(context);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AnimalList()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AnimalDetails(rfid: widget.cattle.rfid,)));
 
 
   }
@@ -295,7 +344,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Cattle',style: TextStyle(
+        title: Text('Edit Cattle ${widget.cattle.rfid}',style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold
         ),),
@@ -306,7 +355,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
           color: Colors.white,
           onPressed: (){
             Navigator.pop(context);
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AnimalList()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AnimalDetails(rfid: widget.cattle.rfid)));
           },
         ),
       ),
@@ -318,28 +367,28 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
             key: _formKey,
             child: ListView(
                 children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
+                  //   child: TextFormField(
+                  //     controller: _rfidTextController,
+                  //     decoration: InputDecoration(
+                  //       labelText: 'Enter The RFID*',
+                  //       border: const OutlineInputBorder(),
+                  //       filled: true,
+                  //       fillColor: Colors.grey[200],
+                  //     ),
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return 'Please enter tag number';
+                  //       }
+                  //       return null;
+                  //     },
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 0.00008),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
-                    child: TextFormField(
-                      controller: _tagNumberController,
-                      decoration: InputDecoration(
-                        labelText: 'Enter The RFID*',
-                        border: const OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter tag number';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-
-                  // SizedBox(height: 0.00008),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
 
                     child: DropdownButtonFormField<String>(
                       value: _selectedGender,
@@ -391,7 +440,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
 
                     child: TextFormField(
                       keyboardType: TextInputType.number,
-                      controller: _tagNumberController1,
+                      controller: _weightTextController,
                       decoration: InputDecoration(
                         labelText: 'Enter The Weight',
                         border: const OutlineInputBorder(),
@@ -437,7 +486,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
 
                     child: TextFormField(
-                      controller: _tagNumberController2,
+                      controller: _breedTextController,
                       decoration: InputDecoration(
                         labelText: 'Enter The Breed',
                         border: const OutlineInputBorder(),
@@ -481,10 +530,10 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                           if (_formKey.currentState!.validate()) {
                             // Process the data
                             // For example, save it to a database or send it to an API
-                            addNewCattleButton(context);
+                            updateCattleButton(context);
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('New Cattle Added Successfully!!')),
+                              const SnackBar(content: Text('Cattle Details updated Successfully!!')),
                             );
                           }
                         },
@@ -512,7 +561,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
 
   @override
   void dispose() {
-    _tagNumberController.dispose();
+    // _rfidTextController.dispose();
     _birthDateController.dispose();
     super.dispose();
   }

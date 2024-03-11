@@ -10,7 +10,7 @@ import 'package:farm_expense_mangement_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final cattleDemo = Cattle(rfid: '12345', breed: 'cow',/* dateOfBirth: DateTime.parse('2020-05-05')*/);
+// final cattleDemo = Cattle(rfid: '12345', breed: 'cow',/* dateOfBirth: DateTime.parse('2020-05-05')*/);
 
 class AnimalList extends StatefulWidget {
 
@@ -43,7 +43,7 @@ class _AnimalListState extends State<AnimalList> {
   }
 
   void viewCattleDetail(Cattle cattle) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AnimalDetails(cattle: cattle)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => AnimalDetails(rfid: cattle.rfid,)));
   }
 
   void addCattle(BuildContext context) {
@@ -154,6 +154,7 @@ class _AnimalListState extends State<AnimalList> {
       body:StreamBuilder(
             stream: _streamController,
             builder: (context, snapshot) {
+
               if(snapshot.connectionState == ConnectionState.waiting)
                 {
                   return ListView.builder(
