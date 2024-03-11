@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/cattle.dart';
-import '../../services/database/cattleDatabase.dart';
+import '../../services/database/cattledatabase.dart';
 
 class AnimalDetails extends StatefulWidget {
   final String rfid;

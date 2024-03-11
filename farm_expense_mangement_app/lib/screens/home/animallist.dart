@@ -7,7 +7,7 @@ import 'package:farm_expense_mangement_app/screens/home/newcattle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/database/cattleDatabase.dart';
+import '../../services/database/cattledatabase.dart';
 
 // final cattleDemo = Cattle(rfid: '12345', breed: 'cow',/* dateOfBirth: DateTime.parse('2020-05-05')*/);
 

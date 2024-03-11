@@ -3,7 +3,7 @@ import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/database/cattleDatabase.dart';
+import '../../services/database/cattledatabase.dart';
 
 class AddNewCattle extends StatefulWidget {
   const AddNewCattle({super.key});
