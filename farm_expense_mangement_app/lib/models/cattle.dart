@@ -8,7 +8,7 @@ class Cattle {
   final int age;
   final String breed;
   final int weight;
-  final int lactationCycle;
+  final String state;
   // final DateTime dateOfBirth;
 
   Cattle({
@@ -16,8 +16,8 @@ class Cattle {
     this.sex = 'female',
     this.age = 0,
     required this.breed,
-    this.lactationCycle = 0,
     this.weight = 0,
+    this.state  = 'Dry'
     /*required this.dateOfBirth*/
   });
 
@@ -29,8 +29,8 @@ class Cattle {
       sex: data?['sex'],
       age: data?['age'],
       breed: data?['breed'],
-      lactationCycle: data?['lactationCycle'],
       weight: data?['weight'],
+      state: data?['state']
       // dateOfBirth: data?['dateOfBirth']
     );
   }
@@ -42,7 +42,7 @@ class Cattle {
       'age': age,
       'breed': breed,
       'weight': weight,
-      'lactationCycle': lactationCycle,
+      'state':state
       // 'dateOfBirth':dateOfBirth
     };
   }

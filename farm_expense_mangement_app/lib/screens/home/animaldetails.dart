@@ -73,7 +73,9 @@ class _AnimalDetailsState extends State<AnimalDetails> {
             icon: const Icon(
               Icons.arrow_back,
               color: Colors.white,
-            )),
+            )
+        ),
+
         actions: [
           IconButton(
               onPressed: () {
@@ -82,7 +84,9 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
-              )),
+              )
+          ),
+
           IconButton(
               onPressed: () {
                 editCattleDetail();
@@ -90,13 +94,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               icon: const Icon(
                 Icons.edit,
                 color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ))
+              )
+          ),
         ],
       ),
       body: StreamBuilder(
@@ -224,34 +223,6 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                       ],
                     ),
                   ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          color: Colors.grey.shade500,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Text(
-                              "${cattle.lactationCycle}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Lactation\nCycle",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
-                    ),
-                  )
                 ],
               );
             } else {
@@ -292,7 +263,14 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     'Born on Farm',
     'Purchased'
   ]; // List of gender options
-  final List<String> stageOptions = ['Lactating', 'Non-Lactating'];
+  final List<String> stageOptions = [
+    'Milked',
+    'Heifer',
+    'Insemination',
+    'Abortion',
+    'Dry',
+    'Calved'
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -327,10 +305,11 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     final cattle = Cattle(
         rfid: widget.cattle.rfid,
         age: 4,
-        lactationCycle: 2,
         breed: _breedTextController.text,
         sex: _selectedGender.toString(),
-        weight: int.parse(_weightTextController.text));
+        weight: int.parse(_weightTextController.text),
+        state: _selectedStage.toString()
+    );
 
     cattleDb.infoToServerSingleCattle(cattle);
 

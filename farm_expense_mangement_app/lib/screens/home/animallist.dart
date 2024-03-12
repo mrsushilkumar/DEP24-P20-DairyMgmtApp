@@ -115,8 +115,7 @@ class _AnimalListState extends State<AnimalList> {
               });
             },
             icon: const Icon(Icons.arrow_back)),
-        actions: (!_searchBar)
-            ? [
+        actions: (!_searchBar) ? [
                 IconButton(
                   color: Colors.white,
                   icon: const Icon(

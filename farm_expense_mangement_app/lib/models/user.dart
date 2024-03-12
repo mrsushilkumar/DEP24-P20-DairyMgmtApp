@@ -2,13 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'cattle.dart';
 
-final cattle = Cattle(
-    rfid: "5515154",
-    sex: "female",
-    age: 10,
-    breed: "cow",
-    lactationCycle: 2,
-    weight: 120 /*,dateOfBirth: DateTime.parse('2020-12-01')*/);
 
 class FarmUser {
   final String ownerName;

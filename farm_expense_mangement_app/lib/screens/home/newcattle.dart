@@ -22,7 +22,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
   String? _selectedGender; // Variable to store selected gender
   final TextEditingController _birthDateController = TextEditingController();
   String? _selectedSource;
-  String? _selectedStage;
+  String? _selectedState;
 
   // Variable to store selected gender
 
@@ -31,7 +31,14 @@ class _AddNewCattleState extends State<AddNewCattle> {
     'Born on Farm',
     'Purchased'
   ]; // List of gender options
-  final List<String> stageOptions = ['Lactating', 'Non-Lactating'];
+  final List<String> stageOptions = [
+    'Milked',
+    'Heifer',
+    'Insemination',
+    'Abortion',
+    'Dry',
+    'Calved'
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -60,14 +67,16 @@ class _AddNewCattleState extends State<AddNewCattle> {
     cattleDb = DatabaseServicesForCattle(uid);
   }
 
+
   void addNewCattleButton(BuildContext context) {
     final cattle = Cattle(
         rfid: _rfidTextController.text,
         age: 4,
-        lactationCycle: 2,
         breed: _breedTextController.text,
-        sex: _selectedGender.toString(),
-        weight: int.parse(_weightTextController.text));
+        sex: _selectedGender != null? _selectedGender! : '',
+        weight: int.parse(_weightTextController.text),
+        state: _selectedState != null? _selectedState! : ''
+    );
 
     cattleDb.infoToServerSingleCattle(cattle);
 
@@ -229,22 +238,22 @@ class _AddNewCattleState extends State<AddNewCattle> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedGender,
+                  value: _selectedState,
                   decoration: InputDecoration(
                     labelText: 'Status',
                     border: const OutlineInputBorder(),
                     filled: true,
                     fillColor: Colors.grey[200],
                   ),
-                  items: genderOptions.map((String gender) {
+                  items: stageOptions.map((String stage) {
                     return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
+                      value: stage,
+                      child: Text(stage),
                     );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _selectedStage = value;
+                      _selectedState = value;
                     });
                   },
                 ),
@@ -293,3 +302,5 @@ class _AddNewCattleState extends State<AddNewCattle> {
     super.dispose();
   }
 }
+
+

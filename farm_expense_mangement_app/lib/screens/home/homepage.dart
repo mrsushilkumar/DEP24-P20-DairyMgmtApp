@@ -11,12 +11,13 @@ final listCattle = [
     sex: "female",
     age: 10,
     breed: "cow",
-    lactationCycle: 2,
-    weight: 120, /*dateOfBirth: DateTime.parse('2020-12-01')*/
+    weight: 120,
+    state: 'Dry'/*dateOfBirth: DateTime.parse('2020-12-01')*/
   ),
   Cattle(
     rfid: '12345',
-    breed: 'cow', /* dateOfBirth: DateTime.parse('2020-05-05')*/
+    breed: 'cow',
+    state: 'Dry'/* dateOfBirth: DateTime.parse('2020-05-05')*/
   )
 ];
 

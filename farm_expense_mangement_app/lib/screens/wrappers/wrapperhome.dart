@@ -13,8 +13,8 @@ final listCattle = [
     sex: "female",
     age: 10,
     breed: "cow",
-    lactationCycle: 2,
     weight: 120, /*dateOfBirth: DateTime.parse('2020-12-01')*/
+    state: 'Dry'
   )
 ];
 
