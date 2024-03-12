@@ -3,6 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cattle.dart';
 
 
+class User {
+
+  final String uid;
+
+  User({  required this.uid });
+
+}
 class FarmUser {
   final String ownerName;
   final String farmName;

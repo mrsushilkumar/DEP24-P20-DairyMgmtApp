@@ -1,8 +1,10 @@
 import 'package:farm_expense_mangement_app/firebase_options.dart';
+import 'package:farm_expense_mangement_app/screens/authenticate/authentication.dart';
 import 'package:farm_expense_mangement_app/screens/wrappers/wrapperhome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:farm_expense_mangement_app/screens/authenticate/login.dart';
 
 import 'screens/authenticate/login.dart';
 
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         final user = snapshot.data;
         if (user == null) {
-          return const LoginPage();
+          return const Authenticate();
         } else {
           // final cattleDb = DatabaseServicesForCattle(user.uid);
 
