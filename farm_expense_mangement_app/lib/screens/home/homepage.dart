@@ -1,5 +1,4 @@
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
-import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/cattle.dart';
@@ -51,12 +50,6 @@ void transactions(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
       context, MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
 }
 
-void profile(BuildContext context) {
-  //TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
-
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ProfilePage()));
-}
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -65,27 +58,66 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: const Text(
-        'Dairy Management App',
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: myColor,
-      // Setting color for the app bar
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.notifications),
-          color: Colors.white,
-          onPressed: () {},
+    return  PreferredSize(
+      preferredSize: const Size.fromHeight(240),
+      child: Container(
+        color: Colors.grey[300],
+        child: AppBar(
+          centerTitle: true,
+          flexibleSpace: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(36),
+              bottomRight: Radius.circular(36),
+            ),
+            child: Stack(
+              children: [
+                Image.asset(
+                  'asset/bgscreen.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.8,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        myColor.withOpacity(0.3),
+                        myColor.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 40,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 80,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          title: const Text(
+            '',
+            style: TextStyle(
+              color: Colors.white70,
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        const SizedBox(width: 16),
-      ],
+      ),
     );
   }
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(240);
 }
 
 class HomePage extends StatefulWidget implements PreferredSizeWidget {
@@ -111,37 +143,40 @@ class _HomePageState extends State<HomePage> {
         const Color.fromRGBO(202, 217, 173, 1.0); // Yellow color
     return SingleChildScrollView(
       child: Container(
+        height: 600,
+        color: Colors.grey[300],
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
+
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: buildClickableContainer(
-                    context: context,
-                    value: 'Cattle',
-                    imageUrl: 'asset/cattles.jpg',
-                    // 'https://static.vecteezy.com/system/resources/previews/014/568/676/original/milk-cow-icon-simple-style-vector.jpg',
-                    containerColor:
-                        totalCowsColor, // Setting color for this container
-                    onTap: () {
-                      cattle(context);
-                    },
+                    context,
+                    'Cattles',
+                    'asset/cattles.jpg',
+                    totalCowsColor,
+                        () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AnimalList()),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: buildClickableContainer(
-                      context: context,
-                      value: 'Feed',
-                      imageUrl: 'asset/feed.jpg',
-                      // 'https://thumbs.dreamstime.com/b/feeding-cow-stylized-vector-feeding-cow-stylized-vector-silhouette-103872165.jpg',
-                      containerColor:
-                          milkingCowsColor, // Setting color for this container
-                      onTap: () {
-                        feed(context);
-                      }),
+                    context,
+                    'Feed',
+                    'asset/feed.jpg',
+                    milkingCowsColor,
+                        () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AvgMilkCowPage()),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -151,28 +186,28 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: buildClickableContainer(
-                      context: context,
-                      value: 'Transactions',
-                      imageUrl: 'asset/transactions.webp',
-                      // 'https://thumbs.dreamstime.com/b/finance-management-linear-icons-data-analysis-symbol-template-graphic-web-design-collection-logo-icon-263711792.jpg',
-                      containerColor:
-                          dryCowsColor, // Setting color for this container
-                      onTap: () {
-                        transactions(context);
-                      }),
+                    context,
+                    'Transactions',
+                    'asset/transactions.webp',
+                    dryCowsColor,
+                        () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DryCowsPage()),
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: buildClickableContainer(
-                      context: context,
-                      value: 'Milk Record',
-                      imageUrl: 'asset/avg.jpg',
-                      // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1NYO1taWsdYChV36YpskudbNaYMbzIf3Jw&usqp=CAU',
-                      containerColor:
-                          avgMilkPerCowColor, // Setting color for this container
-                      onTap: () {
-                        milkRecords(context);
-                      }),
+                    context,
+                    'Avg Milk/Cow',
+                    'asset/avg.jpg',
+                    avgMilkPerCowColor,
+                        () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AvgMilkCowPage()),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -182,27 +217,44 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  GestureDetector buildClickableContainer({
-    required BuildContext context,
-    required String value,
-    required String imageUrl,
-    required Color containerColor,
-    required Function() onTap,
-  }) {
+  GestureDetector buildClickableContainer(
+      BuildContext context,
+      String value,
+      String imageUrl,
+      Color containerColor,
+      Function() onTap,
+      ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.3,
+        height: MediaQuery.of(context).size.height * 0.23,
         decoration: BoxDecoration(
-          color: containerColor, // Using the color passed from the parent
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.blue[200],
+          border: Border.all(
+            color: Colors.indigo.shade300,
+            width: 3,
+          ),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(16),
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(32),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: containerColor.withOpacity(0.5),
+              spreadRadius: 4,
+              blurRadius: 4,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Stack(
           children: [
             ClipPath(
               clipper: ArcClipper(),
               child: Container(
-                color: Colors.white,
+                color: containerColor,
                 width: double.infinity,
                 height: double.infinity,
                 padding: const EdgeInsets.only(bottom: 40, right: 20),
@@ -221,24 +273,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Positioned(
-              top: 25,
-              left: 20,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      value,
-                      style: const TextStyle(
-                          fontSize: 21, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.orange[300],
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                  ),
+                ),
+                child: Text(
+                  value,
+                  style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white),
+                  textAlign: TextAlign.end,
                 ),
               ),
             ),

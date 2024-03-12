@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:farm_expense_mangement_app/models/cattle.dart';
 import 'package:farm_expense_mangement_app/screens/home/animaldetails.dart';
-import 'package:farm_expense_mangement_app/screens/home/homepage.dart';
 import 'package:farm_expense_mangement_app/screens/home/newcattle.dart';
 import 'package:farm_expense_mangement_app/services/database/cattledatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/material.dart';
 final cattleDemo = Cattle(rfid: '12345', breed: '');
 
 class AnimalList extends StatefulWidget {
-  const AnimalList({Key? key}) : super(key: key);
+  const AnimalList({super.key});
 
   @override
   State<AnimalList> createState() => _AnimalListState();
@@ -19,6 +18,9 @@ class AnimalList extends StatefulWidget {
 class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  List<String> selectedStates = [];
+  List<String> selectedGenders = [];
 
   late DatabaseServicesForCattle cattleDb;
   late Cattle cattle;
@@ -55,7 +57,7 @@ class _AnimalListState extends State<AnimalList> {
   }
 
   void addCattle(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AddNewCattle()),
     );
@@ -63,9 +65,35 @@ class _AnimalListState extends State<AnimalList> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Cattle> filteredCattle = allCattle;
+
+    if (selectedStates.isNotEmpty) {
+      filteredCattle = filteredCattle.where((cattle) {
+        for (var state in selectedStates) {
+          if (cattle.state.contains(state)) {
+            return true;
+          }
+        }
+        return false;
+      }).toList();
+    }
+
+    if (selectedGenders.isNotEmpty) {
+      filteredCattle = filteredCattle.where((cattle) {
+        for (var gender in selectedGenders) {
+          if (cattle.sex.contains(gender)) {
+            return true;
+          }
+        }
+        return false;
+      }).toList();
+    }
+
+
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Animals',
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
@@ -101,20 +129,21 @@ class _AnimalListState extends State<AnimalList> {
           ),
 
         ],
-        // leading: IconButton(
-        //   color:Colors.white,
-        //   icon:const Icon(
-        //     Icons.arrow_back,
-        //   ),
-        //     onPressed:() {
-        //       // _HomePageState();
-        // },
-        // ),
+        leading: IconButton(
+          color:Colors.white,
+          icon:const Icon(
+            Icons.arrow_back,
+          ),
+            onPressed:() {
+              // _HomePageState();
+              Navigator.pop(context);
+        },
+        ),
       ),
       body: ListView.builder(
-        itemCount: allCattle.length,
+        itemCount: filteredCattle.length,
         itemBuilder: (context, index) {
-          final cattleInfo = allCattle[index];
+          final cattleInfo = filteredCattle[index];
           return CattleListItem(
             cattle: cattleInfo,
             onTap: () {
@@ -133,92 +162,130 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 
-
   void _showFilterOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Filter Options',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              _buildFilterOption('State:', ['Milked', 'Heifer', 'Insemination', 'Abortion', 'Dry', 'Calved']),
-              SizedBox(height: 20),
-              _buildFilterOption('Gender:', ['Male', 'Female']),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Implement confirm filters functionality here
-                    },
-                    child: Text('Confirm Filters'),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    'Filter Options',
+                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Implement clear filters functionality here
+                  const SizedBox(height: 16),
+                  _buildFilterOption(
+                    'State:',
+                    ['Milked', 'Heifer', 'Insemination', 'Abortion', 'Dry', 'Calved'],
+                        (List<String> selectedOptions) {
+                      setState(() {
+                        selectedStates = selectedOptions;
+                      });
                     },
-                    child: Text('Clear Filters'),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildFilterOption(
+                    'Gender:',
+                    ['Male', 'Female'],
+                        (List<String> selectedOptions) {
+                      setState(() {
+                        selectedGenders = selectedOptions;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Confirm Filters'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedStates.clear();
+                            selectedGenders.clear();
+                          });
+                          _fetchCattle(); // Refetch original list
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Clear Filters'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
 
+  Widget _buildFilterOption(String title, List<String> options, Function(List<String>) onSelect) {
+    List<String> selectedOptions = [];
 
-
-  Widget _buildFilterOption(String title, List<String> options) {
     return Container(
       decoration: BoxDecoration(
-        // border: Border.all(color: Colors.grey[300]), // Adding border
-        borderRadius: BorderRadius.circular(8.0), // Adding border radius
+        borderRadius: BorderRadius.circular(8.0),
       ),
-      padding: EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
-              color: Colors.blue, // Changing text color
+              color: Colors.blue,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: options.map((option) {
+              final isSelected = selectedOptions.contains(option);
               return FilterChip(
                 label: Text(option),
                 onSelected: (isSelected) {
-                  // Handle chip selection
+                  setState(() {
+                    if (isSelected) {
+                      selectedOptions.add(option);
+                    } else {
+                      selectedOptions.remove(option);
+                    }
+                  });
+                  onSelect(selectedOptions);
                 },
-                selectedColor: Colors.blue, // Changing chip color
-                selected: false, // Setting initial selection state
+                selected: isSelected,
+                selectedColor: isSelected ? Colors.blue.withOpacity(0.5) : null, // Highlight selected option with blue color
+                checkmarkColor: Colors.white,
+                deleteIcon: isSelected ? const Icon(Icons.cancel, size: 18, color: Colors.white) : null,
+                onDeleted: isSelected
+                    ? () {
+                  setState(() {
+                    selectedOptions.remove(option);
+                  });
+                  onSelect(selectedOptions);
+                }
+                    : null, // Disable delete icon if option is not selected
               );
             }).toList(),
           ),
         ],
       ),
     );
-
-
-}
-
+  }
 
 
 
@@ -274,24 +341,74 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         .where((cattle) => cattle.rfid.contains(query))
         .toList();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue, // Customize background color
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back
-        //   ,color: Colors.black,),
-        //   onPressed: () {
-        //     close(context, query.isEmpty ? Cattle(rfid: '', breed: '') : Cattle(rfid: '', breed: ''));
-        //   },
-        // ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.clear
-              ,color: Colors.black,),
-            onPressed: () {
-              query = '';
-            },
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0),
+            ),
+            color: Colors.blue[200],
           ),
-        ],
+          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 16.0),
+          child: Row(
+            children: [
+
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  // shape: BoxShape.circle,
+                  color: Colors.blue[200],
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, size: 35, color: Colors.white),
+                  onPressed: () {
+                    // Implement filter functionality
+                  },
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search Cattle',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    onChanged: (value) {
+                      // Implement search functionality
+
+                    },
+
+
+
+                  ),
+                ),
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  // shape: BoxShape.circle,
+                  color: Colors.blue[200],
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.clear, size: 35, color: Colors.white),
+                  onPressed: () {
+                    // Implement filter functionality
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: ListView.builder(
         itemCount: searchResults.length,
@@ -312,21 +429,18 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
   @override
   Widget buildSuggestions(BuildContext context) {
     final searchResults = query.isEmpty
-        ? []
+        ? allCattle
         : allCattle
         .where((cattle) => cattle.rfid.contains(query))
         .toList();
-    return ListView.builder(
+    return  ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
         final cattleInfo = searchResults[index];
         return CattleListItem(
           cattle: cattleInfo,
           onTap: () {
-            query = cattleInfo.rfid;
-            close(context, cattleInfo);
             viewCattleDetail1(context, cattleInfo);
-            // Navigate to next page
           },
         );
       },
@@ -344,15 +458,15 @@ class CattleListItem extends StatelessWidget {
   const CattleListItem({
     required this.cattle,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Colors.brown[100],
+        color: Colors.lightBlue[100],
         child: ListTile(
           leading: Padding(
             padding: const EdgeInsets.all(2),
@@ -389,6 +503,3 @@ class CattleListItem extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(MaterialApp(home: AnimalList()));
-}

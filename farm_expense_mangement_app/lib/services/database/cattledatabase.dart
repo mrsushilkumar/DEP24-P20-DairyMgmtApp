@@ -52,16 +52,4 @@ class DatabaseServicesForCattle {
         .delete();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerWithSearch(
-      String rfid) async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    return db
-        .collection('User')
-        .doc(uid)
-        .collection('Cattle')
-        .where('rfid', isGreaterThanOrEqualTo: rfid)
-        .orderBy('rfid')
-        .get();
-  }
 }

@@ -1,7 +1,7 @@
 
 import 'package:farm_expense_mangement_app/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farm_expense_mangement_app/shared/Constants.dart';
+import 'package:farm_expense_mangement_app/shared/constants.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -15,7 +15,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
-  final TextEditingController TextController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
 
 
   // Text field state
@@ -120,7 +120,7 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: 'Phone_no'),
                     keyboardType: TextInputType.number,
-                  controller: TextController
+                  controller: _textController
 
                   // validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                   // onChanged: (val) {
@@ -134,11 +134,11 @@ class _RegisterState extends State<Register> {
                     backgroundColor: Colors.pink[400],
                   ),
                   onPressed: () async {
-                    print(email);
-                    print(password);
+                    // print(email);
+                    // print(password);
                     if (_formKey.currentState!.validate()) {
                       dynamic result = await _auth.registerWithEmailAndPassword(email, password,ownerName,farmName,location,phoneNo);
-                      print(result);
+                      // print(result);
                       if (result == null) {
                         setState(() {
                           error = 'Please supply a valid email';

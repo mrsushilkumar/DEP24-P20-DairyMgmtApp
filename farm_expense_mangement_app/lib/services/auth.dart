@@ -1,7 +1,6 @@
 import 'package:farm_expense_mangement_app/models/user.dart' as MyAppUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farm_expense_mangement_app/Services/database/userdatabase.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

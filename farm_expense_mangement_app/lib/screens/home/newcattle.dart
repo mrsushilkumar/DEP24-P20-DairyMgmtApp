@@ -31,7 +31,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
     'Born on Farm',
     'Purchased'
   ]; // List of gender options
-  final List<String> stageOptions = [
+  final List<String> stateOptions = [
     'Milked',
     'Heifer',
     'Insemination',
@@ -100,8 +100,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
           color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const AnimalList()));
+            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const AnimalList()));
           },
         ),
       ),
@@ -245,7 +244,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     filled: true,
                     fillColor: Colors.grey[200],
                   ),
-                  items: stageOptions.map((String stage) {
+                  items: stateOptions.map((String stage) {
                     return DropdownMenuItem<String>(
                       value: stage,
                       child: Text(stage),

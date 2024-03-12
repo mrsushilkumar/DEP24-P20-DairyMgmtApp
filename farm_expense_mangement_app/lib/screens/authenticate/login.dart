@@ -1,13 +1,13 @@
 import 'package:farm_expense_mangement_app/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farm_expense_mangement_app/shared/Constants.dart';
+import 'package:farm_expense_mangement_app/shared/constants.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
 
   const SignIn({super.key, required this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
@@ -79,12 +79,12 @@ class _SignInState extends State<SignIn> {
                     backgroundColor: Colors.pink[400], // Set the button's background color
                   ),
                   onPressed: () async {
-                    print(email);
-                    print(password);
+                    // print(email);
+                    // print(password);
                     if(_formKey.currentState!.validate()){
                       // setState(() => loading = true);
                       dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-                      print(result);
+                      // print(result);
                       if(result == null) {
                         setState(() {
                           // loading = false;

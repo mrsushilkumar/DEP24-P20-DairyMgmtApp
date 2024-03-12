@@ -9,9 +9,9 @@ class CattleHistory {
       DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options) {
     final data = snapshot.data();
-    return CattleHistory(name: data?['name'], date: data?['name']
+    return CattleHistory(name: data?['name'], date: data?['name']);
         // dateOfBirth: data?['dateOfBirth']
-        );
+
   }
 
   Map<String, dynamic> toFireStore() {
