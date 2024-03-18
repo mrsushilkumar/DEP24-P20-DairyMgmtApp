@@ -479,14 +479,14 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedGender,
+                  value: _selectedStage,
                   decoration: InputDecoration(
                     labelText: 'Status',
                     border: const OutlineInputBorder(),
                     filled: true,
                     fillColor: Colors.grey[200],
                   ),
-                  items: genderOptions.map((String gender) {
+                  items: stageOptions.map((String gender) {
                     return DropdownMenuItem<String>(
                       value: gender,
                       child: Text(gender),
