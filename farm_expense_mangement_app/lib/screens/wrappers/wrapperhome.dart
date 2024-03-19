@@ -77,6 +77,7 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
       appBar: _appBar,
       body: _bodyScreen,
       bottomNavigationBar:ClipRRect(
+        clipBehavior: Clip.hardEdge,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(36),
           topRight: Radius.circular(36),

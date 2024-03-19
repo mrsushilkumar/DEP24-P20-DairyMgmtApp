@@ -467,7 +467,7 @@ class CattleListItem extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         surfaceTintColor: Colors.lightBlue[100],
         shadowColor: Colors.lightBlue[100],
-        elevation: 16,
+        elevation: 4,
 
         child: ListTile(
           leading: Padding(
