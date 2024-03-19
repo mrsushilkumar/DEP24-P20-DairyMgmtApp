@@ -37,6 +37,13 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
   late PreferredSizeWidget _bodyScreen;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _streamControllerScreen.close();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -64,58 +71,57 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
+      // extendBody: true,
       backgroundColor: Colors.grey.shade300,
       appBar: _appBar,
       body: _bodyScreen,
-      bottomNavigationBar:Container(
-        color: Colors.grey[300],
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(36),
-            topRight: Radius.circular(36),
-          ),
-          child: BottomAppBar(
-            color: Colors.blue[200],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.message),
-                  onPressed: () {},
-                  iconSize: 32,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.account_circle),
+      bottomNavigationBar:ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(36),
+          topRight: Radius.circular(36),
+        ),
+        child: BottomAppBar(
+          color: Colors.blue[200],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.message),
+                onPressed: () {},
+                iconSize: 32,
+              ),
+              IconButton(
+                icon: const Icon(Icons.account_circle),
+                onPressed: () {
+                  profile(context);
+                },
+                iconSize: 32,
+              ),
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: FloatingActionButton(
                   onPressed: () {
-                    profile(context);
+                    home(context);
                   },
-                  iconSize: 32,
+                  backgroundColor: Colors.black,
+                  elevation: 0,
+                  child: const Icon(Icons.home, color: Colors.white70,),
                 ),
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      home(context);
-                    },
-                    backgroundColor: Colors.black,
-                    elevation: 0,
-                    child: const Icon(Icons.home, color: Colors.white70,),
-                  ),
-                  // margin: EdgeInsets.only(top: 8), // Adjust the top margin as needed
-                ),
-                IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () {},
-                  iconSize: 32,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {},
-                  iconSize: 32,
-                ),
-              ],
-            ),
+                // margin: EdgeInsets.only(top: 8), // Adjust the top margin as needed
+              ),
+              IconButton(
+                icon: const Icon(Icons.notifications),
+                onPressed: () {},
+                iconSize: 32,
+              ),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {},
+                iconSize: 32,
+              ),
+            ],
           ),
         ),
       ),

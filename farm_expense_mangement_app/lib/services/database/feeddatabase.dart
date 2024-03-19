@@ -3,18 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/feed.dart';
 
-class DatabaseServicesForCattle {
+class DatabaseServicesForFeed {
   final String uid;
-  DatabaseServicesForCattle(this.uid);
+  DatabaseServicesForFeed(this.uid);
 
-  Future<void> infoToServerFeed(Feed cattle) async {
+  Future<void> infoToServerFeed(Feed feed) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     return await db
         .collection('User')
         .doc(uid)
         .collection('Feed')
-        .doc(cattle.itemName)
-        .set(cattle.toFireStore());
+        .doc(feed.itemName)
+        .set(feed.toFireStore());
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> infoFromServer(
@@ -29,7 +29,7 @@ class DatabaseServicesForCattle {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllCattle(
+  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllFeed(
       String uid) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -41,7 +41,7 @@ class DatabaseServicesForCattle {
         .get();
   }
 
-  Future<void> deleteCattle(String itemName) async {
+  Future<void> deleteFeed(String itemName) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db
@@ -51,5 +51,6 @@ class DatabaseServicesForCattle {
         .doc(itemName)
         .delete();
   }
+
 
 }

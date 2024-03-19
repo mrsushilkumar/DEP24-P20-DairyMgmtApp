@@ -59,14 +59,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
   late final DatabaseServicesForCattle cattleDb;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    cattleDb = DatabaseServicesForCattle(uid);
-  }
-
 
   void addNewCattleButton(BuildContext context) {
     final cattle = Cattle(
@@ -83,6 +75,25 @@ class _AddNewCattleState extends State<AddNewCattle> {
     Navigator.pop(context);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const AnimalList()));
+  }
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    cattleDb = DatabaseServicesForCattle(uid);
+  }
+
+  @override
+  void dispose() {
+    _rfidTextController.dispose();
+    _birthDateController.dispose();
+    _weightTextController.dispose();
+    _breedTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -294,12 +305,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
     );
   }
 
-  @override
-  void dispose() {
-    _rfidTextController.dispose();
-    _birthDateController.dispose();
-    super.dispose();
-  }
 }
 
 

@@ -39,7 +39,7 @@ class DatabaseServiceForCattleHistory{
   }
 
 
-  Future<void> deleteHistoryOfCattle(String rfid) async {
+  Future<void> deleteHistoryOfCattle(String rfid,String historyId) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db
@@ -48,7 +48,7 @@ class DatabaseServiceForCattleHistory{
         .collection('Cattle')
         .doc(rfid)
         .collection('History')
-        .doc()
+        .doc(historyId)
         .delete();
   }
 

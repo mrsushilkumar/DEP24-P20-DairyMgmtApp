@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AnimalList extends StatefulWidget {
-  const AnimalList({Key? key}) : super(key: key);
+  const AnimalList({super.key});
 
   @override
   State<AnimalList> createState() => _AnimalListState();
@@ -21,7 +21,6 @@ class _AnimalListState extends State<AnimalList> {
   List<String> selectedGenders = [];
 
   late DatabaseServicesForCattle cattleDb;
-  late Cattle cattle;
   late List<Cattle> allCattle = [];
 
   @override
@@ -33,7 +32,9 @@ class _AnimalListState extends State<AnimalList> {
 
   @override
   void dispose() {
+
     super.dispose();
+
   }
 
   Future<void> _fetchCattle() async {
@@ -454,8 +455,8 @@ class CattleListItem extends StatelessWidget {
   const CattleListItem({
     required this.cattle,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -463,20 +464,45 @@ class CattleListItem extends StatelessWidget {
       onTap: onTap,
       child: Card(
         color: Colors.orange[100],
+        margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+        surfaceTintColor: Colors.lightBlue[100],
+        shadowColor: Colors.lightBlue[100],
+        elevation: 16,
+
         child: ListTile(
           leading: Padding(
-            padding: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(8),
             child: cattle.sex == 'Female'
-                ? Image.asset(
-              'asset/cow.jpg', // Replace with your image asset for male
-              width: 50,
-              height: 50,
-            )
-                : Image.asset(
-              'asset/bull.jpg', // Replace with your image asset for female
-              width: 50,
-              height: 50,
-            ),
+                ? Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                  foregroundDecoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50)
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                                'asset/cow.jpg',
+                                fit: BoxFit.cover,// Replace with your image asset for male
+                                // width: 50,
+                                // height: 50,
+                              ),
+                )
+                : Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                  foregroundDecoration: const BoxDecoration(
+                    shape: BoxShape.circle
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50)
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                                'asset/bull.jpg', // Replace with your image asset for female
+                                fit: BoxFit.cover,
+                              ),
+                ),
           ),
           title: Row(
             children: [
