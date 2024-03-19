@@ -73,9 +73,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
             icon: const Icon(
               Icons.arrow_back,
               color: Colors.white,
-            )
-        ),
-
+            )),
         actions: [
           IconButton(
               onPressed: () {
@@ -84,9 +82,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
-              )
-          ),
-
+              )),
           IconButton(
               onPressed: () {
                 editCattleDetail();
@@ -94,8 +90,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               icon: const Icon(
                 Icons.edit,
                 color: Colors.white,
-              )
-          ),
+              )),
         ],
       ),
       body: StreamBuilder(
@@ -308,8 +303,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
         breed: _breedTextController.text,
         sex: _selectedGender.toString(),
         weight: int.parse(_weightTextController.text),
-        state: _selectedStage.toString()
-    );
+        state: _selectedStage.toString());
 
     cattleDb.infoToServerSingleCattle(cattle);
 
@@ -352,26 +346,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
           child: Form(
             key: _formKey,
             child: ListView(children: [
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
-              //   child: TextFormField(
-              //     controller: _rfidTextController,
-              //     decoration: InputDecoration(
-              //       labelText: 'Enter The RFID*',
-              //       border: const OutlineInputBorder(),
-              //       filled: true,
-              //       fillColor: Colors.grey[200],
-              //     ),
-              //     validator: (value) {
-              //       if (value == null || value.isEmpty) {
-              //         return 'Please enter tag number';
-              //       }
-              //       return null;
-              //     },
-              //   ),
-              // ),
-              // const SizedBox(height: 0.00008),
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: DropdownButtonFormField<String>(

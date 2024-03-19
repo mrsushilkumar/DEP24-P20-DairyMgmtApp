@@ -32,13 +32,13 @@ class _FeedState extends State<FeedPage> {
   late DatabaseServicesForFeed feedDb;
   late List<Feed> allFeed = [];
 
-  Future<void> _fetchFeed() async {
-    final snapshot = await feedDb.infoFromServerAllFeed(uid);
-    setState(() {
-      allFeed =
-          snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
-    });
-  }
+  // Future<void> _fetchFeed() async {
+  //   final snapshot = await feedDb.infoFromServerAllFeed(uid);
+  //   setState(() {
+  //     allFeed =
+  //         snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
+  //   });
+  // }
 
   @override
   void initState() {
@@ -47,16 +47,11 @@ class _FeedState extends State<FeedPage> {
     feedDb = DatabaseServicesForFeed(uid);
 
     _streamController = feedDb.infoFromServerAllFeed(uid).asStream();
-    _fetchFeed();
+    // _fetchFeed();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<FeedItem> feedItems = [
-      FeedItem(name: 'Feed Item 1', currentStock: 50, need: 20),
-      FeedItem(name: 'Feed Item 2', currentStock: 30, need: 10),
-      FeedItem(name: 'Feed Item 3', currentStock: 40, need: 30),
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -91,32 +86,35 @@ class _FeedState extends State<FeedPage> {
               return const Center(
                 child: Text('Loading'),
               );
-            } else if (snapshot.hasData) {
+            }
+            else if (snapshot.hasData) {
+              allFeed = snapshot.requireData.docs.map((value) => Feed.fromFireStore(value,null)).toList();
               return ListView.builder(
-                itemCount: feedItems.length,
+                itemCount: allFeed.length,
                 itemBuilder: (context, index) {
-                  FeedItem feedItem = feedItems[index];
-                  return Card(
-                    // color: Colors.orange[100],
-                    color: Colors.blue[100],
-                    margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                    surfaceTintColor: Colors.lightBlue[100],
-                    shadowColor: Colors.lightBlue[100],
-                    elevation: 4,
-                    child: ListTile(
-                      title: Text(feedItem.name),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Current Stock: ${feedItem.currentStock}'),
-                          Text('Need: ${feedItem.need}'),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          _editFeedItem(feedItem);
-                        },
+                  Feed feedItem = allFeed[index];
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FeedDetail(feedItem: feedItem,)));
+                      });
+                    },
+                    child: Card(
+                      // color: Colors.orange[100],
+                      color: Colors.blue[100],
+                      margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      surfaceTintColor: Colors.lightBlue[100],
+                      shadowColor: Colors.lightBlue[100],
+                      elevation: 4,
+                      child: ListTile(
+                        title: Text(feedItem.itemName),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Current Stock: ${feedItem.quantity}'),
+                            Text('Need: ${feedItem.requiredQuantity}'),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -129,19 +127,48 @@ class _FeedState extends State<FeedPage> {
             }
           }),
     );
+
   }
 
-  void _editFeedItem(FeedItem feedItem) {
+}
+
+class FeedDetail extends StatefulWidget {
+  final Feed feedItem;
+  const FeedDetail({super.key,required this.feedItem});
+
+  @override
+  State<FeedDetail> createState() => _FeedDetailState();
+}
+
+class _FeedDetailState extends State<FeedDetail> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Item Detail'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            
+          },
+        ),
+      ),
+    );
+  }
+
+
+  void _editFeedItem(Feed feedItem) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         TextEditingController currentStockController =
-            TextEditingController(text: feedItem.currentStock.toString());
+        TextEditingController(text: feedItem.requiredQuantity.toString());
         TextEditingController needController =
-            TextEditingController(text: feedItem.need.toString());
+        TextEditingController(text: feedItem.requiredQuantity.toString());
 
         return AlertDialog(
-          title: Text('Edit Feed Item: ${feedItem.name}'),
+          title: Text('Edit Feed Item: ${feedItem.itemName}'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -170,8 +197,8 @@ class _FeedState extends State<FeedPage> {
                     int.tryParse(currentStockController.text) ?? 0;
                 int need = int.tryParse(needController.text) ?? 0;
                 setState(() {
-                  feedItem.currentStock = currentStock;
-                  feedItem.need = need;
+                  feedItem.quantity = currentStock;
+                  feedItem.requiredQuantity = need;
                 });
                 Navigator.pop(context);
               },
@@ -183,33 +210,3 @@ class _FeedState extends State<FeedPage> {
     );
   }
 }
-
-// class FeedCard extends StatefulWidget {
-//   final int index;
-//   final String info;
-//   const FeedCard({super.key,required this.index,required this.info});
-//
-//   @override
-//   State<FeedCard> createState() => _FeedCardState();
-// }
-//
-// class _FeedCardState extends State<FeedCard> {
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-//       color: Colors.lightBlue[100],
-//       child: Padding(
-//         padding: const EdgeInsets.all(8),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Text('${widget.index}'),
-//             Text(widget.info)
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
