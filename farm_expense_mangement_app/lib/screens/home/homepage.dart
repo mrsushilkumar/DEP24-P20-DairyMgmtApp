@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/cattle.dart';
 import '../../models/user.dart';
+import 'package:farm_expense_mangement_app/screens/feed/stock.dart';
 
 final listCattle = [
   Cattle(
@@ -41,7 +42,7 @@ void cattle(BuildContext context) //TODO: [FUNCTION FOR COW CARD]
 void feed(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
 {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const DryCowsPage()));
+      context, MaterialPageRoute(builder: (context) => const FeedSection()));
 }
 
 void transactions(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
@@ -174,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                     milkingCowsColor,
                         () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AvgMilkCowPage()),
+                      MaterialPageRoute(builder: (context) => const FeedSection()),
                     ),
                   ),
                 ),

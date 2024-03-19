@@ -6,10 +6,8 @@ import 'package:farm_expense_mangement_app/services/database/cattledatabase.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final cattleDemo = Cattle(rfid: '12345', breed: '');
-
 class AnimalList extends StatefulWidget {
-  const AnimalList({super.key});
+  const AnimalList({Key? key}) : super(key: key);
 
   @override
   State<AnimalList> createState() => _AnimalListState();
@@ -93,20 +91,20 @@ class _AnimalListState extends State<AnimalList> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
-          'Animals',
-          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+          'Cattles',
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF39445A),
+        backgroundColor: Colors.blue[200],
         actions: [
           IconButton(
 
             icon: const Icon(
               Icons.search,
-              color: Colors.white,
+              color: Colors.black,
               size: 30,
             ),
             onPressed: () {
@@ -119,7 +117,7 @@ class _AnimalListState extends State<AnimalList> {
           IconButton(
             icon: const Icon(
               Icons.filter_alt,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {
               // Implement filter options
@@ -130,14 +128,14 @@ class _AnimalListState extends State<AnimalList> {
 
         ],
         leading: IconButton(
-          color:Colors.white,
+          color:Colors.black,
           icon:const Icon(
             Icons.arrow_back,
           ),
-            onPressed:() {
-              // _HomePageState();
-              Navigator.pop(context);
-        },
+          onPressed:() {
+            // _HomePageState();
+            Navigator.pop(context);
+          },
         ),
       ),
       body: ListView.builder(
@@ -286,8 +284,6 @@ class _AnimalListState extends State<AnimalList> {
       ),
     );
   }
-
-
 
 }
 
@@ -458,15 +454,15 @@ class CattleListItem extends StatelessWidget {
   const CattleListItem({
     required this.cattle,
     required this.onTap,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Colors.lightBlue[100],
+        color: Colors.orange[100],
         child: ListTile(
           leading: Padding(
             padding: const EdgeInsets.all(2),
@@ -502,4 +498,3 @@ class CattleListItem extends StatelessWidget {
     );
   }
 }
-
