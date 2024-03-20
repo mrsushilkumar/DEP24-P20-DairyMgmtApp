@@ -150,6 +150,7 @@ class _FeedDetailState extends State<FeedDetail> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
+            // Navigator.pop(context);
             
           },
         ),

@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed {
-  String itemType;
+  String? itemType;
   String itemName;
   int quantity;
   String? category;
@@ -14,7 +14,7 @@ class Feed {
 
 
   Feed({
-    required this.itemType,
+     this.itemType,
     required this.itemName,
     required this.quantity,
     this.category,
