@@ -463,7 +463,8 @@ class CattleListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Colors.orange[100],
+        // color: Colors.orange[100],
+        color: Colors.blue.shade100,
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         surfaceTintColor: Colors.lightBlue[100],
         shadowColor: Colors.lightBlue[100],
