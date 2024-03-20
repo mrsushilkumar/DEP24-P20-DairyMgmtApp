@@ -5,17 +5,17 @@ import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FeedItem {
-  final String name;
-  int currentStock;
-  int need;
-
-  FeedItem({
-    required this.name,
-    required this.currentStock,
-    required this.need,
-  });
-}
+// class FeedItem {
+//   final String name;
+//   int currentStock;
+//   int need;
+//
+//   FeedItem({
+//     required this.name,
+//     required this.currentStock,
+//     required this.need,
+//   });
+// }
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
