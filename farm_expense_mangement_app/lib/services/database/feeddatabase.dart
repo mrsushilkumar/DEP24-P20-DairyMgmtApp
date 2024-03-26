@@ -9,6 +9,7 @@ class DatabaseServicesForFeed {
 
   Future<void> infoToServerFeed(Feed feed) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
+
     return await db
         .collection('User')
         .doc(uid)
