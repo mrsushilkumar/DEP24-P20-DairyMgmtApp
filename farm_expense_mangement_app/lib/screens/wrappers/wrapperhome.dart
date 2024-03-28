@@ -4,24 +4,6 @@ import 'package:farm_expense_mangement_app/screens/home/homepage.dart';
 import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
 
-
-// final listCattle = [
-//   Cattle(
-//     rfid: "5515154",
-//     sex: "female",
-//     age: 10,
-//     breed: "cow",
-//     weight: 120, /*dateOfBirth: DateTime.parse('2020-12-01')*/
-//     state: 'Dry'
-//   )
-// ];
-
-// final farmUser = FarmUser(
-//     ownerName: "sushil",
-//     farmName: "sushil dairy",
-//     location: "chandigarh",
-//     phoneNo: 8053004565);
-
 class WrapperHomePage extends StatefulWidget {
   const WrapperHomePage({super.key});
 
@@ -114,7 +96,16 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
               ),
               IconButton(
                 icon: const Icon(Icons.notifications),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    // final DatabaseServicesForCattle cattleDb = DatabaseServicesForCattle(FirebaseAuth.instance.currentUser!.uid);
+                    // for (var element in dummyDataList) {
+                    //
+                    //   cattleDb.infoToServerSingleCattle(element);
+                    // }
+
+                  });
+                },
                 iconSize: 32,
               ),
               IconButton(

@@ -6,10 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
-// final List<String> listCattle = List.of({"Cattle 1","Cattle 2","Cattle 3"});
-// final cattle = Cattle(rfid:"5515154",sex:  "male",age:  10,breed: "goat" ,lactationCycle:  3,weight:  120/*,dateOfBirth: DateTime.parse('2020-12-01')*/);
-
-// final farmUser = FarmUser(ownerName: "sushil",farmName:  "sushil dairy",address:  "chandigarh");
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

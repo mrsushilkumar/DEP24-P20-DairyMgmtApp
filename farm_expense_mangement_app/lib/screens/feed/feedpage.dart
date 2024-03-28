@@ -145,10 +145,10 @@ class _FeedDetailState extends State<FeedDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Item Detail'),
+        title: const Text('Item Detail'),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: (){
             // Navigator.pop(context);
             
