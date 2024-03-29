@@ -1,11 +1,10 @@
-
 import 'package:farm_expense_mangement_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:farm_expense_mangement_app/shared/constants.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
-  const Register({super.key,  required this.toggleView });
+  const Register({super.key, required this.toggleView });
 
   @override
   State<Register> createState() => _RegisterState();
@@ -17,7 +16,6 @@ class _RegisterState extends State<Register> {
   String error = '';
   final TextEditingController _textController = TextEditingController();
 
-
   // Text field state
   String email = '';
   String password = '';
@@ -26,139 +24,141 @@ class _RegisterState extends State<Register> {
   String location= '';
   int phoneNo=1234567;
 
-
   @override
   Widget build(BuildContext context) {
-    Color myColor=const Color(0xff39445a);
-    return MaterialApp( // Wrap with MaterialApp
+    // Color myColor=const Color(0xff39445a);
+    return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.brown[100],
-
-        appBar: AppBar(
-          backgroundColor: myColor,
-
-          // elevation: 0.0,
-          title: const Text('Dairy Management App',
-            style: TextStyle(
-              // backgroundColor: Colors.whiCol
-                color: Colors.white
-            ),),
-          // actions: <Widget>[],
-          actions: <Widget>[
-            TextButton.icon(
-              icon: const Icon(Icons.person,
-                color: Colors.white,
-              ),
-              label: const Text('Sign In',
-                style: TextStyle(
-                    color: Colors.white
+        body: Stack(
+          children: <Widget>[
+            // Background image
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('asset/f3.jpeg'), // Background image path
+                  fit: BoxFit.cover,
                 ),
-
               ),
-              onPressed: () => widget.toggleView(),
+            ),
+            // Content container with opacity
+            Container(
+              color: Colors.black.withOpacity(0.5), // Set opacity level here
+              child: Column(
+                children: [
+                  // App bar with transparent background
+                  Container(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top), // Adjust top padding to account for system status bar
+                    height: 90, // Set app bar height
+                    color: Colors.transparent, // Make app bar background transparent
+                    child: AppBar(
+                      backgroundColor: Colors.transparent, // Make app bar background transparent
+                      elevation: 0, // Remove app bar shadow
+                      // title: Text(
+                      //   'Dairy Management App',
+                      //   style: TextStyle(
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      actions: <Widget>[
+                        TextButton.icon(
+                          icon: const Icon(Icons.person,
+                              color: Colors.black),
+                          label: const Text(
+                            'Sign In',
+                            style: TextStyle(color: Colors.white,
+                                fontWeight:FontWeight.bold),
+                          ),
+                          onPressed: () => widget.toggleView(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Form content
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                      child: Form(
+                        key: _formKey,
+                        child: ListView(
+                          children: <Widget>[
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'email'),
+                              validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                              onChanged: (val) {
+                                setState(() => email = val);
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              obscureText: true,
+                              decoration: textInputDecoration.copyWith(hintText: 'password'),
+                              validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
+                              onChanged: (val) {
+                                setState(() => password = val);
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Owner_name'),
+                              onChanged: (val) {
+                                setState(() => ownerName = val);
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Farm_name'),
+                              onChanged: (val) {
+                                setState(() => farmName = val);
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Location'),
+                              onChanged: (val) {
+                                setState(() => location = val);
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: 'Phone_no'),
+                              keyboardType: TextInputType.number,
+                              controller: _textController,
+                            ),
+                            const SizedBox(height: 20.0),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange[900],
+                              ),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  dynamic result = await _auth.registerWithEmailAndPassword(email, password, ownerName, farmName, location, phoneNo);
+                                  if (result == null) {
+                                    setState(() {
+                                      error = 'Please supply a valid email';
+                                    });
+                                  }
+                                }
+                              },
+                              child: const Text(
+                                'Register',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            const SizedBox(height: 12.0),
+                            Text(
+                              error,
+                              style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
-
-        body: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: <Widget>[
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'email'),
-
-                  validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => email = val);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                TextFormField(
-                  obscureText: true,
-                  decoration: textInputDecoration.copyWith(hintText: 'password'),
-
-                  validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
-                  onChanged: (val) {
-                    setState(() => password = val);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Owner_name'),
-
-                  // validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => ownerName = val);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Farm_name'),
-
-                  // validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => farmName = val);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Location'),
-
-                  // validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => location = val);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Phone_no'),
-                    keyboardType: TextInputType.number,
-                  controller: _textController
-
-                  // validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                  // onChanged: (val) {
-                  //   setState(() => phoneNo = ${val});
-                  // },
-                ),
-
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.pink[400],
-                  ),
-                  onPressed: () async {
-                    // print(email);
-                    // print(password);
-                    if (_formKey.currentState!.validate()) {
-                      dynamic result = await _auth.registerWithEmailAndPassword(email, password,ownerName,farmName,location,phoneNo);
-                      // print(result);
-                      if (result == null) {
-                        setState(() {
-                          error = 'Please supply a valid email';
-                        });
-                      }
-                    }
-                  },
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: const TextStyle(color: Colors.red, fontSize: 14.0),
-                )
-              ],
-            ),
-          ),
         ),
       ),
     );

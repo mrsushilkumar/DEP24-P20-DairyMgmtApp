@@ -105,7 +105,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[800],
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
@@ -285,14 +285,13 @@ class _AddNewCattleState extends State<AddNewCattle> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[200]),
+                      backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(13, 166, 186, 1.0)),
                     ),
                     child: const Text(
                       'Submit',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 16),
                     ),
                   ),
