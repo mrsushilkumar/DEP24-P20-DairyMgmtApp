@@ -133,6 +133,7 @@ class _AddFeedItemState extends State<AddFeedItem> {
                 controller: _expiryDateController,
                 decoration: InputDecoration(
                   labelText: 'Expiry Date',
+                  hintText: "YYYY-MM-DD",
                   border: const OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.grey[200],
