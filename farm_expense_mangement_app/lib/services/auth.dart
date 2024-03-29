@@ -1,4 +1,4 @@
-import 'package:farm_expense_mangement_app/models/user.dart' as MyAppUser;
+import 'package:farm_expense_mangement_app/models/user.dart' as my_app_user;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farm_expense_mangement_app/Services/database/userdatabase.dart';
 
@@ -6,8 +6,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Create user object based on FirebaseUser
-  MyAppUser.User? _userFromFirebaseUser(User? user) {
-    return user != null ? MyAppUser.User(uid: user.uid) : null;
+  my_app_user.User? _userFromFirebaseUser(User? user) {
+    return user != null ? my_app_user.User(uid: user.uid) : null;
   }
 
   // Auth change user stream
@@ -19,14 +19,14 @@ class AuthService {
 
   // Register with email and password
 
-  Future<MyAppUser.User?> registerWithEmailAndPassword(String email, String password,String ownerName, String farmName,String location, int phoneNo) async {
+  Future<my_app_user.User?> registerWithEmailAndPassword(String email, String password,String ownerName, String farmName,String location, int phoneNo) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = result.user;
-      final farmUser = MyAppUser.FarmUser(ownerName: ownerName, farmName: farmName, location: location, phoneNo: phoneNo);
+      final farmUser = my_app_user.FarmUser(ownerName: ownerName, farmName: farmName, location: location, phoneNo: phoneNo);
       await DatabaseServicesForUser(user!.uid).infoToServer(user.uid, farmUser);
 
       return _userFromFirebaseUser(user);
@@ -35,7 +35,7 @@ class AuthService {
       return null;
     }
   }
-  Future<MyAppUser.User?> signInWithEmailAndPassword(String email, String password) async {
+  Future<my_app_user.User?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
