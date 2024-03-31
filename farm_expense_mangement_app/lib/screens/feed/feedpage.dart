@@ -18,7 +18,7 @@ class _FeedState extends State<FeedPage> {
 
   late DatabaseServicesForFeed feedDb;
   late List<Feed> allFeed = [];
-  late TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _FeedState extends State<FeedPage> {
   void addFeed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddFeedItem()),
+      MaterialPageRoute(builder: (context) => const AddFeedItem()),
     );
   }
 
@@ -118,8 +118,8 @@ class FeedListItem extends StatefulWidget {
   const FeedListItem({
     required this.feed,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<FeedListItem> createState() => _FeedListItemState();
