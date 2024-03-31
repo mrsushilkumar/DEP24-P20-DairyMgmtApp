@@ -45,8 +45,12 @@ class _FeedState extends State<FeedPage> {
   }
 
   void addFeed(BuildContext context) {
-    // Implement your logic to add feed
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddFeedItem()),
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {

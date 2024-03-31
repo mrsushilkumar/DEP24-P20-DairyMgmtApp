@@ -383,14 +383,17 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               );
                             },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange[100] // background color
+                                  backgroundColor:const Color.fromRGBO(13, 166, 186, 0.5)// background color
                                   // foregroundColor: Colors.white, // foreground color
                                   // shape: RoundedRectangleBorder(
                                   //   borderRadius: BorderRadius.circular(10.0), // rounded corners
                                   // ),
                                   // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
                                 ),
-                                child:Text("Add Event")
+                                child:Text("Add Event",
+                                style: TextStyle(
+                                  color:Colors.white
+                                ),)
                             )
                           ],
                         ),
@@ -837,7 +840,8 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     },
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.grey[200]),
+                          MaterialStateProperty.all(Color.fromRGBO(13, 166, 186, 1.0),
+                          ),
                     ),
                     child: const Text(
                       'Submit',
