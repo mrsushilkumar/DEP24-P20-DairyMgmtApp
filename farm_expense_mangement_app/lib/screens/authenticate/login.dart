@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:farm_expense_mangement_app/services/auth.dart';
 import 'package:farm_expense_mangement_app/shared/constants.dart';
@@ -34,7 +35,7 @@ class _SignInState extends State<SignIn> {
                 fit: BoxFit.cover,
               ),
             ),
-            Column(
+            ListView(
               children: [
                 AppBar(
                   backgroundColor: Colors.transparent,

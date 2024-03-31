@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:farm_expense_mangement_app/models/feed.dart';
 import 'package:farm_expense_mangement_app/screens/feed/addfeeditem.dart';
 import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({Key? key});
+  const FeedPage({super.key});
 
   @override
   State<FeedPage> createState() => _FeedState();

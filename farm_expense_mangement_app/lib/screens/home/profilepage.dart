@@ -1,3 +1,4 @@
+import 'package:farm_expense_mangement_app/main.dart';
 import 'package:farm_expense_mangement_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyApp()));
             },
             icon: const Icon(
               Icons.output_outlined,
