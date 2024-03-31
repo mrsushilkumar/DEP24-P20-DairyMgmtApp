@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                     dryCowsColor,
                         () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DryCowsPage()),
+                      MaterialPageRoute(builder: (context) =>  DryCowsPage()),
                     ),
                   ),
                 ),
@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.23,
         decoration: BoxDecoration(
-          color: Colors.blue[200],
+          color:Color.fromRGBO(13, 166, 186, 1.0),
           border: Border.all(
             color: Colors.indigo.shade300,
             width: 3,
@@ -278,12 +278,12 @@ class _HomePageState extends State<HomePage> {
                 margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.orange[300],
+                  color: Colors.orange[600],
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                    topRight: Radius.circular(0),
                     bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(0),
+                    bottomRight: Radius.circular(30),
                   ),
                 ),
                 child: Text(

@@ -23,28 +23,22 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    // Color myColor = const Color(0xff39445a);
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.transparent, // Set background color to transparent
+        backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            // Background Image
             Positioned.fill(
               child: Image.asset(
-                'asset/f3.jpeg', // Change the path to your image
+                'asset/f3.jpeg',
                 fit: BoxFit.cover,
               ),
             ),
-            // Content
             Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Absolute Positioned AppBar
                 AppBar(
                   backgroundColor: Colors.transparent,
-                  elevation: 0, // Remove the shadow
-
+                  elevation: 0,
                   actions: <Widget>[
                     TextButton.icon(
                       icon: const Icon(
@@ -63,18 +57,16 @@ class _SignInState extends State<SignIn> {
                     ),
                   ],
                 ),
-                // Form Content
                 Padding(
-                  padding: const EdgeInsets.all(20.0), // Add padding
+                  padding: const EdgeInsets.all(50.0),
                   child: Container(
-                    width: 300, // Adjust width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.3), // Set the color with opacity
-                      borderRadius: BorderRadius.circular(10), // Set border radius
-                      // border: Border.all(color: Colors.black), // Add border
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.black.withOpacity(0.5), // Set container color with opacity
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0), // Add padding
+                      padding: const EdgeInsets.all(10.0),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -97,7 +89,7 @@ class _SignInState extends State<SignIn> {
                             const SizedBox(height: 20.0),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange[900], // Set the button's background color
+                                backgroundColor: Colors.orange[900],
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
@@ -112,6 +104,16 @@ class _SignInState extends State<SignIn> {
                               },
                               child: const Text(
                                 'Sign In',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // Add your 'Forgot Password' action here
+                                // For example, you can navigate to a new screen for password reset
+                              },
+                              child: const Text(
+                                'Forgot Password?',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

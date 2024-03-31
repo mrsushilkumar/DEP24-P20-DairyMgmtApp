@@ -65,7 +65,7 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
           topRight: Radius.circular(36),
         ),
         child: BottomAppBar(
-          color: Colors.blue[200],
+          color:Color.fromRGBO(13, 166, 186, 1.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
