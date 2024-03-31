@@ -1,6 +1,9 @@
 import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:flutter/material.dart';
+// import '../wrappers/wrapperhome.dart';
+import 'milkavgpage.dart';
+
 
 // final listCattle = [
 //   Cattle(
@@ -332,18 +335,18 @@ class DryCowsPage extends StatelessWidget {
   }
 }
 
-class AvgMilkCowPage extends StatelessWidget {
-  const AvgMilkCowPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Avg Milk/Cow'),
-      ),
-      body: const Center(
-        child: Text('Avg Milk/Cow Page'),
-      ),
-    );
-  }
-}
+// class AvgMilkCowPage extends StatelessWidget {
+//   const AvgMilkCowPage({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Avg Milk/Cow'),
+//       ),
+//       body: const Center(
+//         child: Text('Avg Milk/Cow Page'),
+//       ),
+//     );
+//   }
+// }

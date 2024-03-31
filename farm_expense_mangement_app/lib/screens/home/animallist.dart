@@ -483,7 +483,7 @@ class _CattleListItemState extends State<CattleListItem> {
 
         child: Container(
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(242, 210, 189, 0.7),
+            color: const Color.fromRGBO(242, 210, 189, 0.8),
             borderRadius: BorderRadius.circular(8),
             // gradient: const LinearGradient(
             //     colors: [colorCard1,colorCard2]

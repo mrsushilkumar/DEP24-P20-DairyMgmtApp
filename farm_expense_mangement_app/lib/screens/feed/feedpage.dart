@@ -131,7 +131,7 @@ class _FeedListItemState extends State<FeedListItem> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        color: const Color.fromRGBO(242, 210, 189, 0.7), // Add background color
+        color: const Color.fromRGBO(242, 210, 189, 0.8), // Add background color
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         surfaceTintColor: Colors.lightBlue[100],
         shadowColor: Colors.white70,
