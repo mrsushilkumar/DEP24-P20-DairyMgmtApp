@@ -141,7 +141,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               margin: EdgeInsets.fromLTRB(20,10,20,10),
                               // color: Colors.blue[100],
                               //   color: Color.fromRGBO(242, 210, 189, 0.7),
-                                color: Colors.green[200],
+                                color: Colors.green[300],
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -150,7 +150,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                     //     borderRadius:
                                     //     BorderRadius.all(Radius.circular(10))),
                                     // color: Colors.white,
-                                    color: Colors.green[200],
+                                    color: Colors.green[300],
                                     // color: Color.fromRGBO(242, 210, 189, 0.7),
                                     margin: const EdgeInsets.all(8),
                                     child: Padding(
@@ -178,7 +178,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               child: Card(
                                 margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
                                 // color: Colors.blue[100],
-                                color: Color.fromRGBO(242, 210, 189, 0.7),
+                                color: Color.fromRGBO(255, 102, 102, 0.8),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -187,7 +187,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       //     borderRadius:
                                       //     BorderRadius.all(Radius.circular(12))),
                                       // color: Colors.blue[100],
-                                      color: Color.fromRGBO(242, 210, 189, 0.7),
+                                      color: Color.fromRGBO(255, 102, 102, 0.6),
                                       margin: const EdgeInsets.all(8),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -219,7 +219,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                             Expanded(
                               child: Card(
                                 margin: EdgeInsets.fromLTRB(20,10,20,10),
-                                color: Colors.purple[100],
+                                color: Colors.purple[200],
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -227,7 +227,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       // shape: const RoundedRectangleBorder(
                                       //     borderRadius:
                                       //     BorderRadius.all(Radius.circular(12))),
-                                      color: Colors.purple[100],
+                                      color: Colors.purple[200],
                                       margin: const EdgeInsets.all(8),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -253,7 +253,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                             Expanded(
                               child: Card(
                                 margin: EdgeInsets.fromLTRB(20,10,20,10),
-                                color: Colors.yellow[200],
+                                color: Colors.orange[300],
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
 
@@ -262,7 +262,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       // shape: const RoundedRectangleBorder(
                                       //     borderRadius:
                                       //     BorderRadius.all(Radius.circular(12))),
-                                      color: Colors.yellow[200],
+                                      color: Colors.orange[300],
                                       margin: const EdgeInsets.all(8),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15,5,15,5),
@@ -295,7 +295,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                             Expanded(
                               child: Card(
                                 margin: EdgeInsets.fromLTRB(20,10,20,10),
-                                color: Colors.teal[100],
+                                color:  Color.fromRGBO(102,178,255,1),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -303,7 +303,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       // shape: const RoundedRectangleBorder(
                                       //     borderRadius:
                                       //     BorderRadius.all(Radius.circular(12))),
-                                      color: Colors.teal[100],
+                                      color:  Color.fromRGBO(102,178,255,1),
+
                                       margin: const EdgeInsets.all(8),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15,5,15,5),
@@ -329,7 +330,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                             Expanded(
                               child: Card(
                                 margin: EdgeInsets.fromLTRB(20,10,20,10),
-                                color:Colors.pink[100],
+                                color:Colors.pink[200],
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                                       
@@ -338,7 +339,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       shape: const RoundedRectangleBorder(
                                           borderRadius:
                                           BorderRadius.all(Radius.circular(12))),
-                                      color: Colors.pink[100],
+                                      color: Colors.pink[200],
                                       margin: const EdgeInsets.all(8),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(15,5,15,5),
@@ -367,9 +368,32 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                     ],
                   ),
                   Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                      padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
                       child: Container(
-                        child: Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                            ElevatedButton(onPressed: (){
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AddEventPopup();
+                                },
+                              );
+                            },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange[100] // background color
+                                  // foregroundColor: Colors.white, // foreground color
+                                  // shape: RoundedRectangleBorder(
+                                  //   borderRadius: BorderRadius.circular(10.0), // rounded corners
+                                  // ),
+                                  // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
+                                ),
+                                child:Text("Add Event")
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   Expanded(
@@ -383,7 +407,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
-                                    color: Colors.blue[100],
+                                    color: const Color.fromRGBO(13, 166, 186, 0.5)
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -452,7 +476,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                         ),
                     // ),
 
-                    )
+                    ),
+
 
 
                     // GridView(
@@ -848,3 +873,201 @@ String capitalizeFirstLetterOfEachWord(String input) {
   }
   return words.join(' ');
 }
+
+class AddEventPopup extends StatefulWidget {
+  @override
+  _AddEventPopupState createState() => _AddEventPopupState();
+}
+
+class _AddEventPopupState extends State<AddEventPopup> {
+  String? selectedOption;
+  List<String> eventOptions = ['Abortion', 'Vaccination', 'Heifer', 'Insemination'];
+  DateTime?  selectedDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop(); // Close the dialog when tapping outside the content
+      },
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        child: contentBox(context),
+      ),
+    );
+  }
+
+  Widget contentBox(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+
+            Text(
+              'Add Event',
+              style: TextStyle(
+                fontSize: 22.0,
+                // backgroundColor: Color.fromRGBO(13, 152, 186, 1.0),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              width: double.infinity,
+              child: DropdownButtonFormField<String>(
+                value: selectedOption,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedOption = newValue;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Event Name',
+                  border: OutlineInputBorder(),
+                ),
+                items: eventOptions.map((String option) {
+                  return DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: 10.0),
+
+            // TextField(
+            //   onChanged: (value) {
+            //     selectedDate = value;
+            //   },
+            //   decoration: InputDecoration(
+            //     hintText: 'Event Date',
+            //   ),
+            // ),
+
+            TextFormField(
+              readOnly: true,
+              controller: TextEditingController(
+                  text: selectedDate != null
+                      ? selectedDate.toString().split(' ')[0]
+                      : ''),
+              onTap: () async {
+                final DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    selectedDate = pickedDate;
+                  });
+                }
+              },
+              decoration: InputDecoration(
+                hintText: 'Event Date',
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                // Implement submit action here
+                print('Event: $selectedOption, Date: $selectedDate');
+                Navigator.of(context).pop();
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// class AddEventPopup extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(10.0),
+//       ),
+//       elevation: 0.0,
+//       backgroundColor: Colors.transparent,
+//       child: contentBox(context),
+//     );
+//   }
+//
+//
+//   contentBox(BuildContext context) {
+//     List<String> eventOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+//     String selectedOption = eventOptions.first;
+//     return Center(
+//       child: Container(
+//         padding: EdgeInsets.all(20.0),
+//         decoration: BoxDecoration(
+//           shape: BoxShape.rectangle,
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(10.0),
+//         ),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             Text(
+//               'Add Event',
+//               style: TextStyle(
+//                 fontSize: 22.0,
+//                 fontWeight: FontWeight.w600,
+//               ),
+//             ),
+//             SizedBox(height: 15.0),
+//             // TextField(
+//             //   decoration: InputDecoration(
+//             //     hintText: 'Event Name',
+//             //   ),
+//             // ),
+//             DropdownButton<String>(
+//               value: selectedOption,
+//               onChanged: (String? newValue) {
+//                 setState(() {
+//                   selectedOption = newValue;
+//                 });
+//               },
+//               items: eventOptions.map((String option) {
+//                 return DropdownMenuItem<String>(
+//                   value: option,
+//                   child: Text(option),
+//                 );
+//               }).toList(),
+//             ),
+//             SizedBox(height: 10.0),
+//             TextField(
+//               decoration: InputDecoration(
+//                 hintText: 'Event Date',
+//               ),
+//             ),
+//             SizedBox(height: 20.0),
+//             ElevatedButton(
+//               onPressed: () {
+//                 // Implement submit action here
+//                 Navigator.of(context).pop();
+//               },
+//               child: Text('Submit'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
