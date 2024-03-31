@@ -1,7 +1,12 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
@@ -9,6 +14,7 @@ import '../../services/database/cattledatabase.dart';
 class AnimalDetails extends StatefulWidget {
   final String rfid;
   const AnimalDetails({super.key, required this.rfid});
+
 
   @override
   State<AnimalDetails> createState() => _AnimalDetailsState();
@@ -22,6 +28,15 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForCattle cattleDb;
   late Cattle cattle;
+
+  final List<Map<String, Object>> events = [
+    {"event": "abortion", "date": "2022-01-01"},
+    {"event": "vaccination", "date": "2022-02-01"},
+    {"event": "heifer", "date": "2022-03-01"},
+    {"event": "insemination", "date": "2022-04-01"},
+    {"event": "vaccination", "date": "2027-04-01"},
+  ];
+
 
   @override
   void initState() {
@@ -65,7 +80,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
           widget.rfid,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Color.fromRGBO(13, 152, 186, 1.0),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -102,122 +117,426 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               );
             } else if (snapshot.hasData) {
               cattle = Cattle.fromFireStore(snapshot.requireData, null);
-              return GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          color: Colors.grey.shade500,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Text(
-                              "${cattle.age}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "Age",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    child: Container(
+                      child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
                     ),
                   ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          color: Colors.grey.shade500,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Text(
-                              cattle.sex,
-                              style: const TextStyle(
-                                fontSize: 16,
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10,10,10,10),
+                        child: Row(
+
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+
+                            Expanded(
+
+                              child: Card(
+                              margin: EdgeInsets.fromLTRB(20,10,20,10),
+                              // color: Colors.blue[100],
+                              //   color: Color.fromRGBO(242, 210, 189, 0.7),
+                                color: Colors.green[200],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    // shape: const RoundedRectangleBorder(
+                                    //     borderRadius:
+                                    //     BorderRadius.all(Radius.circular(10))),
+                                    // color: Colors.white,
+                                    color: Colors.green[200],
+                                    // color: Color.fromRGBO(242, 210, 189, 0.7),
+                                    margin: const EdgeInsets.all(8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      child: Text(
+                                        "${cattle.age}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Age",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),
+                                  )
+                                ],
+                              ),
+                                                      ),
+                            ),
+                            Expanded(
+                              child: Card(
+                                margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                // color: Colors.blue[100],
+                                color: Color.fromRGBO(242, 210, 189, 0.7),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius:
+                                      //     BorderRadius.all(Radius.circular(12))),
+                                      // color: Colors.blue[100],
+                                      color: Color.fromRGBO(242, 210, 189, 0.7),
+                                      margin: const EdgeInsets.all(8),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                        child: Text(
+                                          cattle.sex,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Gender",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),]
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                margin: EdgeInsets.fromLTRB(20,10,20,10),
+                                color: Colors.purple[100],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius:
+                                      //     BorderRadius.all(Radius.circular(12))),
+                                      color: Colors.purple[100],
+                                      margin: const EdgeInsets.all(8),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                        child: Text(
+                                          "${cattle.weight}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Weight",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        const Text(
-                          "Gender",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          color: Colors.grey.shade500,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Text(
-                              "${cattle.weight}",
-                              style: const TextStyle(
-                                fontSize: 16,
+                            Expanded(
+                              child: Card(
+                                margin: EdgeInsets.fromLTRB(20,10,20,10),
+                                color: Colors.yellow[200],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+
+                                  children: [
+                                    Container(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius:
+                                      //     BorderRadius.all(Radius.circular(12))),
+                                      color: Colors.yellow[200],
+                                      margin: const EdgeInsets.all(8),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(15,5,15,5),
+                                        child: Text(
+                                          cattle.breed,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Breed",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        const Text(
-                          "Weight",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          color: Colors.grey.shade500,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            child: Text(
-                              cattle.breed,
-                              style: const TextStyle(
-                                fontSize: 16,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                margin: EdgeInsets.fromLTRB(20,10,20,10),
+                                color: Colors.teal[100],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      // shape: const RoundedRectangleBorder(
+                                      //     borderRadius:
+                                      //     BorderRadius.all(Radius.circular(12))),
+                                      color: Colors.teal[100],
+                                      margin: const EdgeInsets.all(8),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(15,5,15,5),
+                                        child: Text(
+                                          cattle.breed,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Status",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
+                            Expanded(
+                              child: Card(
+                                margin: EdgeInsets.fromLTRB(20,10,20,10),
+                                color:Colors.pink[100],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                      
+                                  children: [
+                                    Card(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(12))),
+                                      color: Colors.pink[100],
+                                      margin: const EdgeInsets.all(8),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(15,5,15,5),
+                                        child: Text(
+                                          cattle.breed,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Source of Cattle",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const Text(
-                          "Breed",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                      child: Container(
+                        child: Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                      ),
+                    ),
+                  Expanded(
+
+                      // child:SingleChildScrollView(
+                      //   scrollDirection: Axis.vertical,
+                        child: ListView(
+                          children: events
+                              .map((event) => Padding(
+                              padding: EdgeInsets.fromLTRB(10,7,10,7),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.blue[100],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+
+                                  Container(
+                                    // padding: EdgeInsets.all(10),
+                                   width: 130,
+                                    height: 60,
+                                    alignment: Alignment.centerLeft,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Expanded(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          if (event['event'].toString() == 'abortion')
+                                          Image.asset('asset/Cross_img.png',width: 30,height: 35,),
+
+                                          if (event['event'].toString() == 'vaccination')
+                                            Image.asset('asset/Vaccination.png',width: 30,height: 35,),
+
+                                          if (event['event'].toString() == 'heifer')
+                                            Image.asset('asset/heifer.png',width: 30,height: 35,),
+
+                                          if (event['event'].toString() == 'insemination')
+                                            Image.asset('asset/Vaccination.png',width: 30,height: 35,),
+
+                                          Text(
+                                        " ${  capitalizeFirstLetterOfEachWord(event['event'].toString())}",
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+
+                                        ]
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    // width: 80,
+                                    child: Text(
+                                      event["date"].toString(), // Display the raw date string
+                                      softWrap: false,
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("Deleting item");
+                                      // Implement deletion logic here
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                      size: 24,
+                                    ),
+                                  ),
+                                                              ],
+                                                            ),
+                                ),
+                              ))
+                              .toList(),
+                        ),
+                    // ),
+
+                    )
+
+
+                    // GridView(
+                    //
+                    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    //       crossAxisCount: 2,
+                    //       crossAxisSpacing: 0, // Spacing between columns
+                    //       childAspectRatio: 1.5),
+                    //
+                    //   children: [
+                    //             Card(
+                    //               margin: EdgeInsets.fromLTRB(20,20,20,20),
+                    //               color: Colors.blue[100],
+                    //               child: Column(
+                    //                 mainAxisAlignment: MainAxisAlignment.center,
+                    //                 children: [
+                    //                   Container(
+                    //                     // shape: const RoundedRectangleBorder(
+                    //                     //     borderRadius:
+                    //                     //     BorderRadius.all(Radius.circular(10))),
+                    //                     // color: Colors.white,
+                    //                     color: Colors.blue[100],
+                    //
+                    //                     margin: const EdgeInsets.all(8),
+                    //                     child: Padding(
+                    //                       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    //                       child: Text(
+                    //                         "${cattle.age}",
+                    //                         style: const TextStyle(
+                    //                           fontWeight: FontWeight.bold,
+                    //                           fontSize: 16,
+                    //                           color: Colors.white,
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                   const Text(
+                    //                     "Age",
+                    //                     style: TextStyle(
+                    //                         fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),
+                    //                   )
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //             Card(
+                    //               margin: EdgeInsets.all(20),
+                    //               color: Colors.blue[100],
+                    //               child: Column(
+                    //                 mainAxisAlignment: MainAxisAlignment.center,
+                    //                 children: [
+                    //                   Container(
+                    //                     // shape: const RoundedRectangleBorder(
+                    //                     //     borderRadius:
+                    //                     //     BorderRadius.all(Radius.circular(12))),
+                    //                     color: Colors.blue[100],
+                    //                     margin: const EdgeInsets.all(8),
+                    //                     child: Padding(
+                    //                       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    //                       child: Text(
+                    //                         cattle.sex,
+                    //                         style: const TextStyle(
+                    //                           fontSize: 16,
+                    //                           fontWeight: FontWeight.bold,
+                    //                           color: Colors.white,
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                   const Text(
+                    //                     "Gender",
+                    //                     style: TextStyle(
+                    //                         fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
+                    //                   )
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //
+                    //
+                    //
+                    //
+                    //   ],
+                    // ),
+                    //
+                    //
                 ],
               );
             } else {
@@ -517,4 +836,14 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     _birthDateController.dispose();
     super.dispose();
   }
+}
+
+String capitalizeFirstLetterOfEachWord(String input) {
+  if (input.isEmpty) return "";
+
+  var words = input.toLowerCase().split(' ');
+  for (int i = 0; i < words.length; i++) {
+    words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+  }
+  return words.join(' ');
 }
