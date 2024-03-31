@@ -156,7 +156,9 @@ class _AnimalListState extends State<AnimalList> {
           addCattle(context);
         },
         tooltip: 'Add Cattle',
-        child: const Icon(Icons.add),
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+        child: const Icon(Icons.add
+        ),
       ),
     );
   }
