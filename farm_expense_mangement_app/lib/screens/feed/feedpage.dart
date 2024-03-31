@@ -5,146 +5,220 @@ import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key});
+  const FeedPage({Key? key});
 
   @override
   State<FeedPage> createState() => _FeedState();
 }
 
 class _FeedState extends State<FeedPage> {
-  late final Stream<QuerySnapshot<Map<String, dynamic>>> _streamController;
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   late DatabaseServicesForFeed feedDb;
   late List<Feed> allFeed = [];
-
-  // Future<void> _fetchFeed() async {
-  //   final snapshot = await feedDb.infoFromServerAllFeed(uid);
-  //   setState(() {
-  //     allFeed =
-  //         snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
-  //   });
-  // }
+  late TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     feedDb = DatabaseServicesForFeed(uid);
+    _fetchFeed();
+  }
 
-    _streamController = feedDb.infoFromServerAllFeed(uid).asStream();
-    // _fetchFeed();
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchFeed() async {
+    final snapshot = await feedDb.infoFromServerAllFeed(uid);
+    setState(() {
+      allFeed = snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
+    });
+  }
+
+  void viewFeedDetail(Feed feed) {
+    // Implement your logic to view feed detail
+  }
+
+  void addFeed(BuildContext context) {
+    // Implement your logic to add feed
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Feed> filteredFeed = allFeed;
+
+    if (_searchController.text.isNotEmpty) {
+      filteredFeed = filteredFeed.where((feed) =>
+          feed.itemName.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
+    }
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            setState(() {
-              Navigator.pop(context);
-            });
-          },
+        title: const Text(
+          'Feeds',
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+          textAlign: TextAlign.center,
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Text('Feed Section'),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: FeedSearchDelegate(allFeed),
+              );
+            },
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: filteredFeed.length,
+        itemBuilder: (context, index) {
+          final feedInfo = filteredFeed[index];
+          return FeedListItem(
+            feed: feedInfo,
+            onTap: () {
+              viewFeedDetail(feedInfo);
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const AddFeedItem()));
-          },
-          backgroundColor: Colors.blue[100],
-          focusElevation: 16,
-          focusColor: Colors.lightBlue[200],
-          child: const Icon(
-            Icons.add,
-          ),
+        onPressed: () {
+          addFeed(context);
+        },
+        tooltip: 'Add Feed',
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+        child: const Icon(Icons.add),
       ),
-      body: StreamBuilder(
-          stream: _streamController,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: Text('Loading'),
-              );
-            }
-            else if (snapshot.hasData) {
-              allFeed = snapshot.requireData.docs.map((value) => Feed.fromFireStore(value,null)).toList();
-              return ListView.builder(
-                itemCount: allFeed.length,
-                itemBuilder: (context, index) {
-                  Feed feedItem = allFeed[index];
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => FeedDetail(feedItem: feedItem,)));
-                      });
-                    },
-                    child: Card(
-                      // color: Colors.orange[100],
-                      color: const Color.fromRGBO(242, 210, 189, 0.7),
-                      margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                      surfaceTintColor: Colors.lightBlue[100],
-                      shadowColor: Colors.lightBlue[100],
-                      elevation: 4,
-                      child: ListTile(
-                        title: Text(feedItem.itemName),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Current Stock: ${feedItem.quantity}'),
-                            Text('Need: ${feedItem.requiredQuantity}'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: Text('Error in Fetch'),
-              );
-            }
-          }),
     );
-
   }
-
 }
 
-class FeedDetail extends StatefulWidget {
-  final Feed feedItem;
-  const FeedDetail({super.key,required this.feedItem});
+class FeedListItem extends StatefulWidget {
+  final Feed feed;
+  final VoidCallback onTap;
+
+  const FeedListItem({
+    required this.feed,
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<FeedDetail> createState() => _FeedDetailState();
+  State<FeedListItem> createState() => _FeedListItemState();
 }
 
-class _FeedDetailState extends State<FeedDetail> {
+class _FeedListItemState extends State<FeedListItem> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Item Detail'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: (){
-            // Navigator.pop(context);
-            
-          },
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Card(
+        color: const Color.fromRGBO(242, 210, 189, 0.7), // Add background color
+        margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+        surfaceTintColor: Colors.lightBlue[100],
+        shadowColor: Colors.white70,
+        elevation: 8,
+        child: ListTile(
+          title: Text(widget.feed.itemName),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Current Stock: ${widget.feed.quantity}'),
+              Text('Need: ${widget.feed.requiredQuantity}'),
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
+class FeedSearchDelegate extends SearchDelegate<Feed> {
+  final List<Feed> allFeed;
+
+  FeedSearchDelegate(this.allFeed);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(
+          Icons.clear,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          query = '';
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(
+        Icons.arrow_back,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        close(context, query.isEmpty ? Feed(itemName: '', category: '',quantity: 10) : Feed(itemName: '', category: '',quantity: 10));
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final searchResults = query.isEmpty
+        ? allFeed
+        : allFeed
+        .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        final feedInfo = searchResults[index];
+        return FeedListItem(
+          feed: feedInfo,
+          onTap: () {
+            close(context, feedInfo);
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final searchResults = query.isEmpty
+        ? allFeed
+        : allFeed
+        .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        final feedInfo = searchResults[index];
+        return FeedListItem(
+          feed: feedInfo,
+          onTap: () {
+            close(context, feedInfo);
+          },
+        );
+      },
+    );
+  }
 }
