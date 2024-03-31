@@ -99,7 +99,7 @@ class _AnimalListState extends State<AnimalList> {
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue[200],
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         actions: [
           IconButton(
 
@@ -448,7 +448,7 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
   String get searchFieldLabel => 'Search Cattle';
 }
 
-class CattleListItem extends StatelessWidget {
+class CattleListItem extends StatefulWidget {
   final Cattle cattle;
   final VoidCallback onTap;
 
@@ -459,67 +459,93 @@ class CattleListItem extends StatelessWidget {
   });
 
   @override
+  State<CattleListItem> createState() => _CattleListItemState();
+}
+
+class _CattleListItemState extends State<CattleListItem> {
+
+  // static const colorCard1 = Color(0xFF90CAF9);
+  // static const colorCard2 = Color(0xFFFFCC80);
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Card(
         // color: Colors.orange[100],
-        color: Colors.blue.shade100,
+        // color: Colors.white70,
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         surfaceTintColor: Colors.lightBlue[100],
-        shadowColor: Colors.lightBlue[100],
-        elevation: 4,
+        shadowColor: Colors.white70,
+        elevation: 8,
 
-        child: ListTile(
-          leading: Padding(
-            padding: const EdgeInsets.all(8),
-            child: cattle.sex == 'Female'
-                ? Container(
-                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                  foregroundDecoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.asset(
-                                'asset/cow.jpg',
-                                fit: BoxFit.cover,// Replace with your image asset for male
-                                // width: 50,
-                                // height: 50,
-                              ),
-                )
-                : Container(
-                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                  foregroundDecoration: const BoxDecoration(
-                    shape: BoxShape.circle
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.asset(
-                                'asset/bull.jpg', // Replace with your image asset for female
-                                fit: BoxFit.cover,
-                              ),
-                ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(242, 210, 189, 0.7),
+            borderRadius: BorderRadius.circular(8),
+            // gradient: const LinearGradient(
+            //     colors: [colorCard1,colorCard2]
+            // )
           ),
-          title: Row(
-            children: [
-              const Text(
-                'RF id : ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+          child: ListTile(
+            // textColor: Colors.brown,
+            leading: Padding(
+              padding: const EdgeInsets.all(8),
+              child: widget.cattle.sex == 'Female'
+                  ? Container(
+                    margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                    foregroundDecoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50)
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.asset(
+                                  'asset/cow.jpg',
+                                  fit: BoxFit.cover,// Replace with your image asset for male
+                                  // width: 50,
+                                  // height: 50,
+                                ),
+                  )
+                  : Container(
+                    margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                    foregroundDecoration: const BoxDecoration(
+                      shape: BoxShape.circle
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50)
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.asset(
+                                  'asset/bull.jpg', // Replace with your image asset for female
+                                  fit: BoxFit.cover,
+                                ),
+                  ),
+            ),
+            title: Row(
+              children: [
+                const Text(
+                  'RF id : ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                cattle.rfid,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
+                Text(
+                  widget.cattle.rfid,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Breed:${widget.cattle.breed}"),
+                  Text("Age:${widget.cattle.age}")
+                ]
+            ),
+            // trailing: const Icon(Icons.arrow_forward_ios_outlined),
           ),
-          trailing: const Icon(Icons.arrow_forward_ios_outlined),
         ),
       ),
     );

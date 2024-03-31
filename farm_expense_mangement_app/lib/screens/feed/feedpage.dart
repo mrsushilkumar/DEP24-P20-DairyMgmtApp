@@ -5,17 +5,6 @@ import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// class FeedItem {
-//   final String name;
-//   int currentStock;
-//   int need;
-//
-//   FeedItem({
-//     required this.name,
-//     required this.currentStock,
-//     required this.need,
-//   });
-// }
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
@@ -65,7 +54,7 @@ class _FeedState extends State<FeedPage> {
           },
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue[200],
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text('Feed Section'),
       ),
       floatingActionButton: FloatingActionButton(
@@ -101,7 +90,7 @@ class _FeedState extends State<FeedPage> {
                     },
                     child: Card(
                       // color: Colors.orange[100],
-                      color: Colors.blue[100],
+                      color: const Color.fromRGBO(242, 210, 189, 0.7),
                       margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                       surfaceTintColor: Colors.lightBlue[100],
                       shadowColor: Colors.lightBlue[100],
@@ -158,56 +147,4 @@ class _FeedDetailState extends State<FeedDetail> {
     );
   }
 
-
-  void _editFeedItem(Feed feedItem) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        TextEditingController currentStockController =
-        TextEditingController(text: feedItem.requiredQuantity.toString());
-        TextEditingController needController =
-        TextEditingController(text: feedItem.requiredQuantity.toString());
-
-        return AlertDialog(
-          title: Text('Edit Feed Item: ${feedItem.itemName}'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: currentStockController,
-                decoration: const InputDecoration(labelText: 'Current Stock'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: needController,
-                decoration: const InputDecoration(labelText: 'Need'),
-                keyboardType: TextInputType.number,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                int currentStock =
-                    int.tryParse(currentStockController.text) ?? 0;
-                int need = int.tryParse(needController.text) ?? 0;
-                setState(() {
-                  feedItem.quantity = currentStock;
-                  feedItem.requiredQuantity = need;
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }

@@ -701,6 +701,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                   controller: _birthDateController,
                   decoration: InputDecoration(
                     labelText: 'Birth Date',
+                    hintText: "YYYY-MM-DD",
                     border: const OutlineInputBorder(),
                     filled: true,
                     fillColor: Colors.grey[200],
