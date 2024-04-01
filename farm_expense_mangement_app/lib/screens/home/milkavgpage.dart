@@ -44,19 +44,19 @@ class AvgMilkCowPage extends StatelessWidget {
         // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
 
-        title: Center(child: Text('Milk Records')),
+        title: const Center(child: Text('Milk Records')),
         actions: [
           IconButton(
             onPressed: () {
               // Handle search action
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
               // Handle filter action
             },
-            icon: Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list),
           ),
 
         ],
@@ -83,12 +83,12 @@ class AvgMilkCowPage extends StatelessWidget {
           // Handle add action
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddMilkDataPage()),
+            MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
           );
         },
           backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
 
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -97,7 +97,7 @@ class AvgMilkCowPage extends StatelessWidget {
 class MilkDataRow extends StatelessWidget {
   final MilkData data;
 
-  const MilkDataRow({Key? key, required this.data}) : super(key: key);
+  const MilkDataRow({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -105,24 +105,24 @@ class MilkDataRow extends StatelessWidget {
       // color: Colors.blue[100],
       color: const Color.fromRGBO(242, 210, 189, 0.8),
 
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(8,13,8,13),
+        padding: const EdgeInsets.fromLTRB(8,13,8,13),
         child: Row(
           children: [
             Image.asset('asset/cow.jpg',width: 30,height: 35,),
-            SizedBox(width: 10.0),
-            Expanded(child: Text("RFID: ${data.rfid}"),flex: 1,),
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
+            Expanded(flex: 1,child: Text("RFID: ${data.rfid}"),),
+            const SizedBox(width: 10.0),
             Image.asset('asset/morning.webp',width: 30,height: 35,),
-            Expanded(child: Text("${data.milkInMorning}L"),flex: 1,),
+            Expanded(flex: 1,child: Text("${data.milkInMorning}L"),),
 
             Image.asset('asset/evening2.jpg',width: 25,height: 35,),
-            Expanded(child: Text(" ${data.milkInEvening}L"),flex: 1,),
+            Expanded(flex: 1,child: Text(" ${data.milkInEvening}L"),),
 
-            SizedBox(width: 9.0),
+            const SizedBox(width: 9.0),
 
-            Expanded(child: Text("Total Milk: ${data.milkInEvening +data.milkInMorning}L"),flex: 2,),
+            Expanded(flex: 2,child: Text("Total Milk: ${data.milkInEvening +data.milkInMorning}L"),),
           ],
         ),
       ),
@@ -132,6 +132,8 @@ class MilkDataRow extends StatelessWidget {
 
 
 class AddMilkDataPage extends StatefulWidget {
+  const AddMilkDataPage({super.key});
+
   @override
   _AddMilkDataPageState createState() => _AddMilkDataPageState();
 }
@@ -146,7 +148,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Milk Data'),
+        title: const Text('Add Milk Data'),
         // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
 
@@ -163,37 +165,37 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                   onChanged: (value) {
                     rfid = value;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'RFID',
                     border: InputBorder.none,
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               _buildInputBox(
                 child: TextFormField(
                   onChanged: (value) {
                     milkInMorning = double.tryParse(value);
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Morning Milk',
                     border: InputBorder.none,
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               _buildInputBox(
                 child: TextFormField(
                   onChanged: (value) {
                     milkInEvening = double.tryParse(value);
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Evening Milk',
                     border: InputBorder.none,
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               _buildInputBox(
                 child: InkWell(
                   onTap: () async {
@@ -215,7 +217,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       controller: TextEditingController(
                         text: milkingDate != null ? '${milkingDate!.year}-${milkingDate!.month}-${milkingDate!.day}' : '',
                       ),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Milking Date',
                         suffixIcon: Icon(Icons.calendar_today),
                         border: InputBorder.none,
@@ -224,7 +226,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Center(
 
 
@@ -249,8 +251,8 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       Navigator.pop(context); // Close the add milk data page
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text('Add',style: TextStyle(fontSize: 20),),
                   ),
                 ),
@@ -269,7 +271,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5.0),
       ),
-      padding: EdgeInsets.fromLTRB(10, 2, 2, 2),
+      padding: const EdgeInsets.fromLTRB(10, 2, 2, 2),
       child: child,
     );
   }

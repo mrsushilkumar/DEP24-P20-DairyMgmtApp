@@ -193,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                     dryCowsColor,
                         () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  DryCowsPage()),
+                      MaterialPageRoute(builder: (context) =>  const DryCowsPage()),
                     ),
                   ),
                 ),
@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.23,
         decoration: BoxDecoration(
-          color:Color.fromRGBO(13, 166, 186, 1.0),
+          color:const Color.fromRGBO(13, 166, 186, 1.0),
           border: Border.all(
             color: Colors.indigo.shade300,
             width: 3,
