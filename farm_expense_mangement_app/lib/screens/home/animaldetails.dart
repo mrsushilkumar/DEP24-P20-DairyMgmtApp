@@ -35,6 +35,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     {"event": "heifer", "date": "2022-03-01"},
     {"event": "insemination", "date": "2022-04-01"},
     {"event": "vaccination", "date": "2027-04-01"},
+    {"event": "vaccination", "date": "2027-04-01"},
+
   ];
 
 
@@ -673,7 +675,8 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
               const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey[800],
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
