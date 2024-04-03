@@ -135,7 +135,7 @@ class AddMilkDataPage extends StatefulWidget {
   const AddMilkDataPage({super.key});
 
   @override
-  _AddMilkDataPageState createState() => _AddMilkDataPageState();
+  State<AddMilkDataPage> createState() => _AddMilkDataPageState();
 }
 
 class _AddMilkDataPageState extends State<AddMilkDataPage> {

@@ -118,11 +118,9 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 5, 0, 0),
-                    child: Container(
-                      child: const Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                    ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
                   ),
                   Column(
                     children: [
@@ -367,34 +365,32 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                   ),
                   Padding(
                       padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                            ElevatedButton(onPressed: (){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AddEventPopup();
-                                },
-                              );
-                            },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:const Color.fromRGBO(13, 166, 186, 0.5)// background color
-                                  // foregroundColor: Colors.white, // foreground color
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(10.0), // rounded corners
-                                  // ),
-                                  // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
-                                ),
-                                child:const Text("Add Event",
-                                style: TextStyle(
-                                  color:Colors.white
-                                ),)
-                            )
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                          ElevatedButton(onPressed: (){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AddEventPopup();
+                              },
+                            );
+                          },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:const Color.fromRGBO(13, 166, 186, 0.5)// background color
+                                // foregroundColor: Colors.white, // foreground color
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(10.0), // rounded corners
+                                // ),
+                                // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
+                              ),
+                              child:const Text("Add Event",
+                              style: TextStyle(
+                                color:Colors.white
+                              ),)
+                          )
+                        ],
                       ),
                     ),
                   Expanded(
@@ -881,7 +877,7 @@ class AddEventPopup extends StatefulWidget {
   const AddEventPopup({super.key});
 
   @override
-  _AddEventPopupState createState() => _AddEventPopupState();
+  State<AddEventPopup> createState() => _AddEventPopupState();
 }
 
 class _AddEventPopupState extends State<AddEventPopup> {
