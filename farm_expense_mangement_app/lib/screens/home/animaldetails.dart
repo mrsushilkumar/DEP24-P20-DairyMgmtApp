@@ -2,9 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
@@ -76,19 +74,31 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   Widget build(BuildContext context) {
 
     Widget buildWidget(Map<String,Object> event) {
-      if (event['event'].toString() == 'abortion')
-        return Image.asset('asset/Cross_img.png',width: 30,height: 35,);
-
-      else if (event['event'].toString() == 'vaccination')
-        return Image.asset('asset/Vaccination.png',width: 30,height: 35,);
-
-      else if (event['event'].toString() == 'heifer')
-        return Image.asset('asset/heifer.png',width: 30,height: 35,);
-
-      else
-        return Image.asset('asset/Vaccination.png',width: 30,height: 35,);
-
-
+      if (event['event'].toString() == 'abortion') {
+        return Image.asset(
+          'asset/Cross_img.png',
+          width: 30,
+          height: 35,
+        );
+      } else if (event['event'].toString() == 'vaccination') {
+        return Image.asset(
+          'asset/Vaccination.png',
+          width: 30,
+          height: 35,
+        );
+      } else if (event['event'].toString() == 'heifer') {
+        return Image.asset(
+          'asset/heifer.png',
+          width: 30,
+          height: 35,
+        );
+      } else {
+        return Image.asset(
+          'asset/Vaccination.png',
+          width: 30,
+          height: 35,
+        );
+      }
     }
 
 
