@@ -1,4 +1,3 @@
-
 import 'package:farm_expense_mangement_app/models/cattle.dart';
 import 'package:farm_expense_mangement_app/screens/home/animaldetails.dart';
 import 'package:farm_expense_mangement_app/screens/home/newcattle.dart';
@@ -17,8 +16,8 @@ class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Set<String> selectedStates = {};
-  Set<String> selectedGenders = {};
+  Set<String> selectedStates = <String>{};
+  Set<String> selectedGenders = <String>{};
 
   late DatabaseServicesForCattle cattleDb;
   late List<Cattle> allCattle = [];
@@ -60,189 +59,215 @@ class _AnimalListState extends State<AnimalList> {
   }
 
   Future<Widget?> _showFilter(BuildContext context) async {
-    return showDialog<Widget>(context: context, builder: (context) => Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-                'Filter Option',
+    return showDialog<Widget>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title:            const Text(
+              'Filter Option',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-              ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
-            const Text(
-              'State:',
-              style: TextStyle(
-                  color: Colors.blue
-              ),
-            ),
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              runAlignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Milked'),
-                      selected: selectedStates.contains('Milked'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedStates.add('Milked');
-                          } else {
-                            selectedStates.remove('Milked');
-                          }
-
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Heifer'),
-                      selected: selectedStates.contains('Heifer'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-
-                          if (selected) {
-                            selectedStates.add('Heifer');
-                          } else {
-                            selectedStates.remove('Heifer');
-                          }
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Insemination'),
-                      selected: selectedStates.contains('Insemination'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedStates.add('Insemination');
-                          } else {
-                            selectedStates.remove('Insemination');
-                          }
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Abortion'),
-                      selected: selectedStates.contains('Abortion'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedStates.add('Abortion');
-                          } else {
-                            selectedStates.remove('Abortion');
-                          }
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Dry'),
-                      selected: selectedStates.contains('Dry'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedStates.add('Dry');
-                          } else {
-                            selectedStates.remove('Dry');
-                          }
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Calved'),
-                      selected: selectedStates.contains('Calved'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedStates.add('Calved');
-                          } else {
-                            selectedStates.remove('Calved');
-                          }
-                        })
-                      }),
-                ),
-
-              ],
-            ),
-            const Text(
-              'State:',
-              style: TextStyle(
-                  color: Colors.blue
-              ),
-            ),
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              runAlignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Female'),
-                      selected: selectedGenders.contains('Female'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedGenders.add('Female');
-                          } else {
-                            selectedGenders.remove('Female');
-                          }
-                        })
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FilterChip(
-                      label: const Text('Male'),
-                      selected: selectedGenders.contains('Male'),
-                      onSelected: (bool selected) => {
-                        setState(() {
-                          if (selected) {
-                            selectedGenders.add('Male');
-                          } else {
-                            selectedGenders.remove('Male');
-                          }
-                        })
-                      }),
-                ),
-
-              ],
-            ),
-            Row(
+            content: Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(onPressed: () {
-                  selectedGenders.clear();
-                  selectedStates.clear();
-                }, child: const Text('Clear all')),
-                TextButton(onPressed: () {
-                  Navigator.pop(context);
-                }, child: const Text('Confirm Filter'))
+                const Text(
+                  'State:',
+                  style: TextStyle(
+                      color: Colors.blue,
+                    fontSize: 20
+                  ),
+                ),
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runAlignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Milked'),
+                          selected: selectedStates.contains('Milked'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Milked');
+                              } else {
+                                selectedStates.remove('Milked');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Heifer'),
+                          selected: selectedStates.contains('Heifer'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Heifer');
+                              } else {
+                                selectedStates.remove('Heifer');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Insemination'),
+                          selected: selectedStates.contains('Insemination'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Insemination');
+                              } else {
+                                selectedStates.remove('Insemination');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Abortion'),
+                          selected: selectedStates.contains('Abortion'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Abortion');
+                              } else {
+                                selectedStates.remove('Abortion');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Dry'),
+                          selected: selectedStates.contains('Dry'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Dry');
+                              } else {
+                                selectedStates.remove('Dry');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Calved'),
+                          selected: selectedStates.contains('Calved'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedStates.add('Calved');
+                              } else {
+                                selectedStates.remove('Calved');
+                              }
+                            })
+                          }),
+                    ),
+                  ],
+                ),
+                const Text(
+                  'Gender:',
+                  style: TextStyle(
+                      color: Colors.blue,
+                    fontSize: 20
+                  ),
+                ),
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runAlignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Female'),
+                          selected: selectedGenders.contains('Female'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedGenders.add('Female');
+                              } else {
+                                selectedGenders.remove('Female');
+                              }
+                            })
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: FilterChip(
+                          label: const Text('Male'),
+                          selected: selectedGenders.contains('Male'),
+                          onSelected: (bool selected) => {
+                            setState(() {
+                              if (selected) {
+                                selectedGenders.add('Male');
+                              } else {
+                                selectedGenders.remove('Male');
+                              }
+                            })
+                          }),
+                    ),
+                  ],
+                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     TextButton(
+                //         onPressed: () {
+                //
+                //           setState(() {
+                //             selectedGenders.clear();
+                //             selectedStates.clear();
+                //
+                //           });
+                //           Navigator.pop(context);
+                //         },
+                //         child: const Text('Clear all')),
+                //     TextButton(
+                //         onPressed: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: const Text('Confirm Filter'))
+                //   ],
+                // ),
               ],
             ),
-          ],
-        ),
-      ),
-    ));
+            actions: [
+              TextButton(
+                  onPressed: () {
+
+                    setState(() {
+                      selectedGenders.clear();
+                      selectedStates.clear();
+
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Clear all')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Confirm Filter'))
+            ],
+          );
+        }
+    );
   }
 
   @override
@@ -338,8 +363,7 @@ class _AnimalListState extends State<AnimalList> {
         },
         tooltip: 'Add Cattle',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add
-        ),
+        child: const Icon(Icons.add),
       ),
     );
   }
