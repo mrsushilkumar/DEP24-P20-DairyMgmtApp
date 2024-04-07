@@ -30,8 +30,7 @@ class DatabaseServicesForFeed {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllFeed(
-      String uid) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> infoFromServerAllFeed() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db
