@@ -34,7 +34,7 @@ class _FeedState extends State<FeedPage> {
   }
 
   Future<void> _fetchFeed() async {
-    final snapshot = await feedDb.infoFromServerAllFeed(uid);
+    final snapshot = await feedDb.infoFromServerAllFeed();
     setState(() {
       allFeed = snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
     });
