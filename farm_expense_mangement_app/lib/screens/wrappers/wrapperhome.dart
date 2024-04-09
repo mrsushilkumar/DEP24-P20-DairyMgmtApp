@@ -5,7 +5,7 @@ import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
 
 class WrapperHomePage extends StatefulWidget {
-  const WrapperHomePage({super.key});
+  const WrapperHomePage({Key? key});
 
   @override
   State<WrapperHomePage> createState() => _WrapperHomePageState();
@@ -14,20 +14,19 @@ class WrapperHomePage extends StatefulWidget {
 class _WrapperHomePageState extends State<WrapperHomePage> {
   late StreamController<int> _streamControllerScreen;
   final int _screenFromNumber = 0;
+  int _selectedIndex = 0; // Add this variable to track selected index
 
   late PreferredSizeWidget _appBar;
   late PreferredSizeWidget _bodyScreen;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _streamControllerScreen.close();
     super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _streamControllerScreen = StreamController<int>.broadcast();
     _streamControllerScreen.add(_screenFromNumber);
@@ -35,16 +34,23 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
     _bodyScreen = const HomePage() as PreferredSizeWidget;
   }
 
+  void _updateIndex(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   void home(BuildContext context) {
     setState(() {
+      _updateIndex(0); // Update index when home is pressed
       _appBar = const HomeAppBar();
       _bodyScreen = const HomePage() as PreferredSizeWidget;
     });
   }
 
   void profile(BuildContext context) {
-    //TODO: [FUNCTION FOR BOTTOM PROFILE BUTTON]
     setState(() {
+      _updateIndex(1); // Update index when profile is pressed
       _appBar = const ProfileAppBar();
       _bodyScreen = const ProfilePage() as PreferredSizeWidget;
     });
@@ -53,19 +59,17 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
-      // extendBody: true,
       backgroundColor: Colors.grey.shade300,
       appBar: _appBar,
       body: _bodyScreen,
-      bottomNavigationBar:ClipRRect(
+      bottomNavigationBar: ClipRRect(
         clipBehavior: Clip.hardEdge,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(36),
           topRight: Radius.circular(36),
         ),
         child: BottomAppBar(
-          color:const Color.fromRGBO(13, 166, 186, 1.0),
+          color: const Color.fromRGBO(13, 166, 186, 1.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -92,20 +96,10 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
                   elevation: 0,
                   child: const Icon(Icons.home, color: Colors.white70,),
                 ),
-                // margin: EdgeInsets.only(top: 8), // Adjust the top margin as needed
               ),
               IconButton(
                 icon: const Icon(Icons.notifications),
-                onPressed: () {
-                  setState(() {
-                    // final DatabaseServicesForCattle cattleDb = DatabaseServicesForCattle(FirebaseAuth.instance.currentUser!.uid);
-                    // for (var element in dummyDataList) {
-                    //
-                    //   cattleDb.infoToServerSingleCattle(element);
-                    // }
-
-                  });
-                },
+                onPressed: () {},
                 iconSize: 32,
               ),
               IconButton(
@@ -116,120 +110,6 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  GestureDetector buildClickableContainer({
-    required BuildContext context,
-    required String value,
-    required String imageUrl,
-    required Color containerColor,
-    required Function() onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.3,
-        decoration: BoxDecoration(
-          color: containerColor, // Using the color passed from the parent
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Stack(
-          children: [
-            ClipPath(
-              clipper: ArcClipper(),
-              child: Container(
-                color: Colors.white,
-                width: double.infinity,
-                height: double.infinity,
-                padding: const EdgeInsets.only(bottom: 40, right: 20),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: ClipOval(
-                child: Image.asset(
-                  imageUrl,
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: MediaQuery.of(context).size.width * 0.25,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 25,
-              left: 20,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      value,
-                      style: const TextStyle(
-                          fontSize: 21, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ArcClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.moveTo(size.width, size.height * 0.8);
-    path.lineTo(size.width * 0.8, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}
-
-class DryCowsPage extends StatelessWidget {
-  const DryCowsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dry Cows'),
-      ),
-      body: const Center(
-        child: Text('Dry Cows Page'),
-      ),
-    );
-  }
-}
-
-class AvgMilkCowPage extends StatelessWidget {
-  const AvgMilkCowPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Avg Milk/Cow'),
-      ),
-      body: const Center(
-        child: Text('Avg Milk/Cow Page'),
       ),
     );
   }

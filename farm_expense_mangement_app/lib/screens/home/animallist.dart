@@ -15,6 +15,7 @@ class AnimalList extends StatefulWidget {
 class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  // const mycolor=Color(0xbbdefb);
 
   Set<String> selectedStates = <String>{};
   Set<String> selectedGenders = <String>{};
@@ -297,8 +298,10 @@ class _AnimalListState extends State<AnimalList> {
     }
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
+
         title: const Text(
           'Cattles',
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
@@ -562,7 +565,7 @@ class _CattleListItemState extends State<CattleListItem> {
 
         child: Container(
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(242, 210, 189, 0.8),
+            color: Color.fromRGBO(240,255, 255, 1),
             borderRadius: BorderRadius.circular(8),
             // gradient: const LinearGradient(
             //     colors: [colorCard1,colorCard2]

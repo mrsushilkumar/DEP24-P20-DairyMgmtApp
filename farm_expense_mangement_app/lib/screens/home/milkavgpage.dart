@@ -40,6 +40,7 @@ class AvgMilkCowPage extends StatelessWidget {
 
 
     return Scaffold(
+      backgroundColor:  const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -47,12 +48,14 @@ class AvgMilkCowPage extends StatelessWidget {
         title: const Center(child: Text('Milk Records')),
         actions: [
           IconButton(
+            color: Colors.black,
             onPressed: () {
               // Handle search action
             },
             icon: const Icon(Icons.search),
           ),
           IconButton(
+            color:Colors.black,
             onPressed: () {
               // Handle filter action
             },
@@ -103,7 +106,7 @@ class MilkDataRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       // color: Colors.blue[100],
-      color: const Color.fromRGBO(242, 210, 189, 0.8),
+      color: const Color.fromRGBO(230, 255, 255, 1),
 
       margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Padding(
@@ -147,6 +150,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:   const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         title: const Text('Add Milk Data'),
         // backgroundColor: Colors.blue[100],
