@@ -27,7 +27,7 @@ class Feed {
       'itemName': itemName,
       'quantity': quantity,
       'category': category,
-      'expiryDate': Timestamp.fromDate(expiryDate!),
+      'expiryDate': expiryDate != null ? Timestamp.fromDate(expiryDate!) : null,
       'requiredQuantity': requiredQuantity,
 
     };

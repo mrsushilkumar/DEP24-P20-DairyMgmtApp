@@ -1,12 +1,14 @@
-
+import 'package:flutter/material.dart';
 import 'package:farm_expense_mangement_app/models/feed.dart';
 import 'package:farm_expense_mangement_app/screens/feed/addfeeditem.dart';
 import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key});
+  const FeedPage({Key? key}) : super(key: key);
 
   @override
   State<FeedPage> createState() => _FeedState();
@@ -40,8 +42,14 @@ class _FeedState extends State<FeedPage> {
     });
   }
 
-  void viewFeedDetail(Feed feed) {
+  void editFeedDetail(Feed feed) {
     // Implement your logic to view feed detail
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditFeedItemPage(feed: feed),
+      ),
+    );
   }
 
   void addFeed(BuildContext context) {
@@ -51,7 +59,6 @@ class _FeedState extends State<FeedPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Feed> filteredFeed = allFeed;
@@ -60,6 +67,14 @@ class _FeedState extends State<FeedPage> {
       filteredFeed = filteredFeed.where((feed) =>
           feed.itemName.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
     }
+
+    // Check for expiry date and set current stock to 0 if expired
+    final currentDate = DateTime.now();
+    filteredFeed.forEach((feed) {
+      if (feed.expiryDate != null && currentDate.isAfter(feed.expiryDate!)) {
+        feed.quantity = 0;
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -94,7 +109,11 @@ class _FeedState extends State<FeedPage> {
           return FeedListItem(
             feed: feedInfo,
             onTap: () {
-              viewFeedDetail(feedInfo);
+              // viewFeedDetail(feedInfo);
+            },
+            onEdit: () {
+              // Implement your edit logic here
+              editFeedDetail(feedInfo);
             },
           );
         },
@@ -114,12 +133,14 @@ class _FeedState extends State<FeedPage> {
 class FeedListItem extends StatefulWidget {
   final Feed feed;
   final VoidCallback onTap;
+  final VoidCallback onEdit;
 
   const FeedListItem({
     required this.feed,
     required this.onTap,
-    super.key,
-  });
+    required this.onEdit,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<FeedListItem> createState() => _FeedListItemState();
@@ -128,28 +149,48 @@ class FeedListItem extends StatefulWidget {
 class _FeedListItemState extends State<FeedListItem> {
   @override
   Widget build(BuildContext context) {
+    final bool isExpired = widget.feed.expiryDate != null &&
+        DateTime.now().isAfter(widget.feed.expiryDate!);
+
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        color: const Color.fromRGBO(242, 210, 189, 0.8), // Add background color
+        color: isExpired ? Colors.white : Colors.white,
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-        surfaceTintColor: Colors.lightBlue[100],
         shadowColor: Colors.white70,
         elevation: 8,
         child: ListTile(
-          title: Text(widget.feed.itemName),
+          title: Text(
+            widget.feed.itemName,
+            style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+          ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Current Stock: ${widget.feed.quantity}'),
-              Text('Need: ${widget.feed.requiredQuantity}'),
+              Text(
+                'Current Stock: ${widget.feed.quantity}',
+                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+              ),
+              Text(
+                'Need: ${widget.feed.requiredQuantity}',
+                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+              ),
+              Text(
+                'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}', // Format expiry date
+                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+              ),
             ],
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: widget.onEdit,
           ),
         ),
       ),
     );
   }
 }
+
 
 class FeedSearchDelegate extends SearchDelegate<Feed> {
   final List<Feed> allFeed;
@@ -200,6 +241,9 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
           onTap: () {
             close(context, feedInfo);
           },
+          onEdit: () {
+            // Implement your edit logic here
+          },
         );
       },
     );
@@ -220,6 +264,9 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
           feed: feedInfo,
           onTap: () {
             close(context, feedInfo);
+          },
+          onEdit: () {
+            // Implement your edit logic here
           },
         );
       },
