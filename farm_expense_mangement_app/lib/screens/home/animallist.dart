@@ -158,7 +158,7 @@ class _AnimalListState extends State<AnimalList> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
@@ -410,7 +410,7 @@ class _CattleListItemState extends State<CattleListItem> {
       onTap: widget.onTap,
       child: Card(
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-        color: Colors.white,// Increase top margin for more gap between cards
+        color: Color.fromRGBO(240, 255, 255, 1),// Increase top margin for more gap between cards
         elevation: 8, // Increase card elevation for stronger shadow
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),

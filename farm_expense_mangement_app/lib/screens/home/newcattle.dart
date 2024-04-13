@@ -99,7 +99,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
+
         title: const Text(
           'New Cattle',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -129,7 +131,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Enter The RFID*',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -149,7 +151,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Gender*',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -179,7 +182,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Birth Date',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context),
@@ -197,7 +201,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Enter The Weight',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -210,7 +215,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Source of Cattle*',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: sourceOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -240,7 +246,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Enter The Breed',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -253,7 +260,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Status',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                      fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: stateOptions.map((String stage) {
                     return DropdownMenuItem<String>(

@@ -47,7 +47,7 @@ class _FeedState extends State<FeedPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditFeedItemPage(feed: feed),
+        builder: (context) => EditFeedItemPage(feed: feed,uid:uid),
       ),
     );
   }
@@ -77,6 +77,7 @@ class _FeedState extends State<FeedPage> {
     });
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
@@ -96,7 +97,7 @@ class _FeedState extends State<FeedPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: FeedSearchDelegate(allFeed),
+                delegate: FeedSearchDelegate(allFeed, editFeedDetail), // Pass editFeedDetail function
               );
             },
           ),
@@ -155,35 +156,50 @@ class _FeedListItemState extends State<FeedListItem> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        color: isExpired ? Colors.white : Colors.white,
+        color: Color.fromRGBO(240, 255,255, 1),
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         shadowColor: Colors.white70,
         elevation: 8,
         child: ListTile(
           title: Text(
             widget.feed.itemName,
-            style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+            style: TextStyle(color: Colors.black,
+            fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        isExpired ? Icons.warning : Icons.calendar_today,
+                        color: isExpired ? Colors.red : Colors.black,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
+                        style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: widget.onEdit,
+                  ),
+                ],
+              ),
               Text(
                 'Current Stock: ${widget.feed.quantity}',
-                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+                style: TextStyle(color: Colors.black),
               ),
               Text(
                 'Need: ${widget.feed.requiredQuantity}',
-                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
-              ),
-              Text(
-                'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}', // Format expiry date
-                style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+                style: TextStyle(color: Colors.black),
               ),
             ],
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: widget.onEdit,
           ),
         ),
       ),
@@ -194,8 +210,9 @@ class _FeedListItemState extends State<FeedListItem> {
 
 class FeedSearchDelegate extends SearchDelegate<Feed> {
   final List<Feed> allFeed;
+  final Function(Feed) editFeedDetail; // Callback function to handle edit functionality
 
-  FeedSearchDelegate(this.allFeed);
+  FeedSearchDelegate(this.allFeed, this.editFeedDetail);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -242,7 +259,8 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
             close(context, feedInfo);
           },
           onEdit: () {
-            // Implement your edit logic here
+            // Call the callback function to handle edit functionality
+            editFeedDetail(feedInfo);
           },
         );
       },
@@ -266,7 +284,8 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
             close(context, feedInfo);
           },
           onEdit: () {
-            // Implement your edit logic here
+            // Call the callback function to handle edit functionality
+            editFeedDetail(feedInfo);
           },
         );
       },
