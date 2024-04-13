@@ -6,7 +6,7 @@ class Sale {
   double animalSale;
   double milkSale;
   double byProductSale;
-  DateTime saleOnMonth
+  DateTime saleOnMonth;
 
   Sale({required this.animalSale,required this.milkSale,required this.byProductSale,required this.saleOnMonth});
 

@@ -7,24 +7,64 @@ class DatabaseForMilk {
   final String uid;
   DatabaseForMilk(this.uid);
 
+  Future<QuerySnapshot<Map<String,dynamic>>> infoFromServerAllMilk(DateTime date) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Milk')
+        .doc('D${date.day}M${date.month}Y${date.year}')
+        .collection('Store')
+        .get();
+  }
+
+  Future<void> infoToServerMilk(Milk milk) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Milk')
+        .doc('D${milk.dateOfMilk?.day}M${milk.dateOfMilk?.month}Y${milk.dateOfMilk?.year}')
+        .collection('Store')
+        .doc(milk.rfid)
+        .set(milk.toFireStore());
+  }
+
+}
+
+class DatabaseForMilkByDate {
+  final String uid;
+  DatabaseForMilkByDate(this.uid);
+
   Future<QuerySnapshot<Map<String,dynamic>>> infoFromServerAllMilk() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     return await db
         .collection('User')
         .doc(uid)
-        .collection('milk')
-        .orderBy('dateOfMilk')
+        .collection('Milk')
+        .orderBy('dateOfMilk',descending: true)
         .get();
   }
 
-  Future<void> infoToServerFeed(Milk milk) async {
+  Future<DocumentSnapshot<Map<String,dynamic>>> infoFromServerMilk(DateTime date) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Milk')
+        .doc('D${date.day}M${date.month}Y${date.year}')
+        .get();
+  }
+
+  Future<void> infoToServerMilk(MilkByDate milk) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db
         .collection('User')
         .doc(uid)
-        .collection('milk')
-        .doc(milk.rfid)
+        .collection('Milk')
+        .doc('D${milk.dateOfMilk?.day}M${milk.dateOfMilk?.month}Y${milk.dateOfMilk?.year}')
         .set(milk.toFireStore());
   }
 

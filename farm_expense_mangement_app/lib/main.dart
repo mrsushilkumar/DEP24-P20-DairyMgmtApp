@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -21,19 +19,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        final user = snapshot.data;
-        if (user == null) {
-          return const Authenticate();
-        } else {
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          final user = snapshot.data;
+          if (user == null) {
+            return const Authenticate();
+          } else {
           // final cattleDb = DatabaseServicesForCattle(user.uid);
 
           // cattleDb.infoToServerSingleCattle(cattle);
-          return const WrapperHomePage();
-        }
-      },
-    ));
+            return const WrapperHomePage();
+          }
+        },
+      ),
+      navigatorObservers: [RouteObserver()],
+    );
   }
 }

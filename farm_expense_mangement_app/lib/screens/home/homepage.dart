@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                     avgMilkPerCowColor,
                         () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AvgMilkCowPage()),
+                      MaterialPageRoute(builder: (context) => const AvgMilkPage()),
                     ),
                   ),
                 ),
