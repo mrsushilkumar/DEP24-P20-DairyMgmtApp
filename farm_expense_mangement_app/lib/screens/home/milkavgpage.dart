@@ -20,12 +20,12 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
 
   late DatabaseForMilkByDate db;
 
-  List<MilkByDate> allMilkByDate = [];
+  List<MilkByDate> _allMilkByDate = [];
 
   Future<void> _fetchAllMilkByDate() async {
     final snapshot = await db.infoFromServerAllMilk();
     setState(() {
-      allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
+      _allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
     });
   }
 
@@ -75,9 +75,9 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: allMilkByDate.length,
+        itemCount: _allMilkByDate.length,
         itemBuilder: (context, index) {
-          final data = allMilkByDate[index];
+          final data = _allMilkByDate[index];
           return MilkDataRowByDate(data: data);
         },
       ),

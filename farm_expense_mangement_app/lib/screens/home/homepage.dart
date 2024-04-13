@@ -5,53 +5,6 @@ import 'package:flutter/material.dart';
 import 'milkavgpage.dart';
 
 
-// final listCattle = [
-//   Cattle(
-//     rfid: "5515154",
-//     sex: "female",
-//     age: 10,
-//     breed: "cow",
-//     weight: 120,
-//     state: 'Dry'/*dateOfBirth: DateTime.parse('2020-12-01')*/
-//   ),
-//   Cattle(
-//     rfid: '12345',
-//     breed: 'cow',
-//     state: 'Dry'/* dateOfBirth: DateTime.parse('2020-05-05')*/
-//   )
-// ];
-//
-// final farmUser = FarmUser(
-//     ownerName: "sushil",
-//     farmName: "sushil dairy",
-//     location: "chandigarh",
-//     phoneNo: 8053004565);
-//
-// void milkRecords(BuildContext context) //TODO: [FUNCTION FOR AVG. MILK COW CARD]
-// {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
-// }
-//
-// void cattle(BuildContext context) //TODO: [FUNCTION FOR COW CARD]
-// {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const AnimalList()));
-// }
-//
-// void feed(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
-// {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const FeedSection()));
-// }
-//
-// void transactions(BuildContext context) //TODO: [FUNCTION FOR TRANSACTIONS CARD]
-// {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => const AvgMilkCowPage()));
-// }
-//
-
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
@@ -334,19 +287,3 @@ class DryCowsPage extends StatelessWidget {
     );
   }
 }
-
-// class AvgMilkCowPage extends StatelessWidget {
-//   const AvgMilkCowPage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Avg Milk/Cow'),
-//       ),
-//       body: const Center(
-//         child: Text('Avg Milk/Cow Page'),
-//       ),
-//     );
-//   }
-// }

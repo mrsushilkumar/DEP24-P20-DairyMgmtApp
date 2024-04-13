@@ -18,14 +18,14 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   late DatabaseForMilk db;
 
-  List<Milk> allMilkInDate = [];
+  List<Milk> _allMilkInDate = [];
 
 
   Future<void> _fetchAllMilk() async {
     final DateTime dateTime = widget.dateOfMilk!;
     final snapshot = await db.infoFromServerAllMilk(dateTime);
     setState(() {
-      allMilkInDate = snapshot.docs.map((doc) => Milk.fromFireStore(doc,null)).toList();
+      _allMilkInDate = snapshot.docs.map((doc) => Milk.fromFireStore(doc,null)).toList();
     });
   }
 
@@ -79,9 +79,9 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: allMilkInDate.length,
+        itemCount: _allMilkInDate.length,
         itemBuilder: (context, index) {
-          final data = allMilkInDate[index];
+          final data = _allMilkInDate[index];
           return MilkDataRow(data: data);
         },
       ),
@@ -108,6 +108,7 @@ class MilkDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final double totalMilk = data.evening +data.morning;
     return Card(
       // color: Colors.blue[100],

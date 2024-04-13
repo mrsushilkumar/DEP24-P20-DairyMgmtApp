@@ -16,8 +16,8 @@ class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Set<String> selectedStates = <String>{};
-  Set<String> selectedGenders = <String>{};
+  final Set<String> _selectedStates = <String>{};
+  final Set<String> _selectedGenders = <String>{};
 
   late DatabaseServicesForCattle cattleDb;
   late List<Cattle> allCattle = [];
@@ -71,12 +71,12 @@ class _AnimalListState extends State<AnimalList> {
               color: Colors.black,
             ),
           ),
-          content: Column(
+          content: const Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'State:',
                 style: TextStyle(
                   color: Colors.blue,
@@ -91,7 +91,7 @@ class _AnimalListState extends State<AnimalList> {
                   // Add FilterChip widgets for states here
                 ],
               ),
-              const Text(
+              Text(
                 'Gender:',
                 style: TextStyle(
                   color: Colors.blue,
@@ -112,8 +112,8 @@ class _AnimalListState extends State<AnimalList> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  selectedGenders.clear();
-                  selectedStates.clear();
+                  _selectedGenders.clear();
+                  _selectedStates.clear();
                 });
                 Navigator.pop(context);
               },
@@ -135,9 +135,9 @@ class _AnimalListState extends State<AnimalList> {
   Widget build(BuildContext context) {
     List<Cattle> filteredCattle = allCattle;
 
-    if (selectedStates.isNotEmpty) {
+    if (_selectedStates.isNotEmpty) {
       filteredCattle = filteredCattle.where((cattle) {
-        for (var state in selectedStates) {
+        for (var state in _selectedStates) {
           if (cattle.state.contains(state)) {
             return true;
           }
@@ -146,9 +146,9 @@ class _AnimalListState extends State<AnimalList> {
       }).toList();
     }
 
-    if (selectedGenders.isNotEmpty) {
+    if (_selectedGenders.isNotEmpty) {
       filteredCattle = filteredCattle.where((cattle) {
-        for (var gender in selectedGenders) {
+        for (var gender in _selectedGenders) {
           if (cattle.sex.contains(gender)) {
             return true;
           }
@@ -414,7 +414,7 @@ class _CattleListItemState extends State<CattleListItem> {
         elevation: 8, // Increase card elevation for stronger shadow
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
-          side: BorderSide(
+          side: const BorderSide(
             color: Colors.white, // Fluorescent color boundary
             width: 3, // Width of the boundary
           ),

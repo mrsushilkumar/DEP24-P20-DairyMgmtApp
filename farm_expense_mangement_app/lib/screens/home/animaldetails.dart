@@ -23,7 +23,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
   // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForCattle cattleDb;
-  late Cattle cattle;
+  late Cattle _cattle;
 
   final List<Map<String, Object>> events = [
     {"event": "abortion", "date": "2022-01-01"},
@@ -53,7 +53,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EditAnimalDetail(cattle: cattle)));
+            builder: (context) => EditAnimalDetail(cattle: _cattle)));
   }
 
   void deleteCattle() {
@@ -144,7 +144,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                 child: Text('Please Wait ..'),
               );
             } else if (snapshot.hasData) {
-              cattle = Cattle.fromFireStore(snapshot.requireData, null);
+              _cattle = Cattle.fromFireStore(snapshot.requireData, null);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -278,231 +278,227 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               });
                             },
                           ),
-                          Container(
-                              // color: Colors.lightBlue[400],
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(12.0,8,12,2),
-                                child: Text("Details",style: TextStyle(fontSize: 24,color: Colors.blue[400],fontWeight:FontWeight.bold),),
-                              ))
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12.0,8,12,2),
+                            child: Text("Details",style: TextStyle(fontSize: 24,color: Colors.blue[400],fontWeight:FontWeight.bold),),
+                          )
                             ],
                       ),
                     ),
                   ),
                   AnimatedContainer(
-                    margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                     // color: Colors.grey[200],
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     height: isDetailVisible ? 300 : 0, // Set height based on visibility
                     child: SingleChildScrollView(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
 
-                              Container(
-                                color: Colors.blue[200],
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width:100,
-                                      child: Text(
-                                        "Age",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color: Colors.blue[200],
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width:100,
+                                    child: Text(
+                                      "Age",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.age}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "${_cattle.age}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                color: Colors.blue[200],
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Sex",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color: Colors.blue[200],
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Sex",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.sex}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.sex,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                color:Colors.blue[200] ,
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Weight",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color:Colors.blue[200] ,
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Weight",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.weight}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "${_cattle.weight}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 50,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Breed",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              height: 50,
+                              color: Colors.blue[200],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Breed",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.breed}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.breed,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 50,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "State",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              height: 50,
+                              color: Colors.blue[200],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "State",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.state}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.state,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 60,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                        child:Text(
-                                            "Source of Cattle",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
+                            Container(
+                              height: 60,
+                              color: Colors.blue[200],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                      child:Text(
+                                          "Source of Cattle",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                            fontSize: 20,
                                           ),
-
-                                      ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.sex}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
                                         ),
+
+                                    ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.sex,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
+                            ),
 
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
