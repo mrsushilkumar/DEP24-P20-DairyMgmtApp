@@ -43,7 +43,7 @@ class DatabaseForMilkByDate {
         .collection('User')
         .doc(uid)
         .collection('Milk')
-        .orderBy('dateOfMilk')
+        .orderBy('dateOfMilk',descending: true)
         .get();
   }
 
