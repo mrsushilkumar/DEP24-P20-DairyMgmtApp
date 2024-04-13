@@ -21,6 +21,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
   <component name="ProjectId" id="2daSlx2Ix5c1IdI1SoQMLYIrmDU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,7 +38,7 @@
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/github/Farm_Expense_Management/farm_expense_mangement_app",
+    "last_opened_file_path": "C:/Users/Ayush/OneDrive/Documents/GitHub/Farm_Expense_Management/farm_expense_mangement_app",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>

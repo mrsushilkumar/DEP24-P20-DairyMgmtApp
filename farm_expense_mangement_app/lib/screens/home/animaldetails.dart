@@ -69,7 +69,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const AnimalList()));
   }
-
+  bool isDetailVisible = false;
   @override
   Widget build(BuildContext context) {
 
@@ -148,366 +148,371 @@ class _AnimalDetailsState extends State<AnimalDetails> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                      child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                    ),
-                  ),
                   Expanded(
-                    flex: 10,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5,10,10,10),
-                          child: Row(
-
-                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-
-                              Expanded(
-                                child: Card(
-                                margin: const EdgeInsets.fromLTRB(20,10,20,10),
-                                // color: Colors.blue[100],
-                                //   color: Color.fromRGBO(242, 210, 189, 0.7),
-                                  color: Colors.green[300],
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      // shape: const RoundedRectangleBorder(
-                                      //     borderRadius:
-                                      //     BorderRadius.all(Radius.circular(10))),
-                                      // color: Colors.white,
-                                      color: Colors.green[300],
-                                      // color: Color.fromRGBO(242, 210, 189, 0.7),
-                                      margin: const EdgeInsets.all(8),
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                        child: Text(
-                                          "${cattle.age}",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const Text(
-                                      "Age",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),
-                                    )
-                                  ],
-                                ),
-                                                        ),
-                              ),
-                              Expanded(
-                                child: Card(
-                                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                  // color: Colors.blue[100],
-                                  color: const Color.fromRGBO(255, 102, 102, 0.8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // shape: const RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //     BorderRadius.all(Radius.circular(12))),
-                                        // color: Colors.blue[100],
-                                        color: const Color.fromRGBO(255, 102, 102, 0.6),
-                                        margin: const EdgeInsets.all(8),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                          child: Text(
-                                            cattle.sex,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Gender",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ]
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Card(
-                                  margin: const EdgeInsets.fromLTRB(20,10,20,10),
-                                  color: Colors.purple[200],
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // shape: const RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //     BorderRadius.all(Radius.circular(12))),
-                                        color: Colors.purple[200],
-                                        margin: const EdgeInsets.all(8),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                          child: Text(
-                                            "${cattle.weight}",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Weight",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Card(
-                                  margin: const EdgeInsets.fromLTRB(20,10,20,10),
-                                  color: Colors.orange[300],
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-
-                                    children: [
-                                      Container(
-                                        // shape: const RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //     BorderRadius.all(Radius.circular(12))),
-                                        color: Colors.orange[300],
-                                        margin: const EdgeInsets.all(8),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15,5,15,5),
-                                          child: Text(
-                                            cattle.breed,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Breed",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Card(
-                                  margin: const EdgeInsets.fromLTRB(20,10,20,10),
-                                  color:  const Color.fromRGBO(102,178,255,1),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        // shape: const RoundedRectangleBorder(
-                                        //     borderRadius:
-                                        //     BorderRadius.all(Radius.circular(12))),
-                                        color:  const Color.fromRGBO(102,178,255,1),
-
-                                        margin: const EdgeInsets.all(8),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15,5,15,5),
-                                          child: Text(
-                                            cattle.breed,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Status",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Card(
-                                  margin: const EdgeInsets.fromLTRB(20,10,20,10),
-                                  color:Colors.pink[200],
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-
-                                    children: [
-                                      Card(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(12))),
-                                        color: Colors.pink[200],
-                                        margin: const EdgeInsets.all(8),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(15,5,15,5),
-                                          child: Text(
-                                            cattle.breed,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        "Source of Cattle",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
+                    // flex: 2,
                     child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                            ElevatedButton(onPressed: (){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AddEventPopup();
-                                },
-                              );
-                            },
-                                style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                          ElevatedButton(onPressed: (){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AddEventPopup();
+                              },
+                            );
+                          },
+                              style: ElevatedButton.styleFrom(
                                   backgroundColor:const Color.fromRGBO(13, 166, 186, 0.5)// background color
-                                  // foregroundColor: Colors.white, // foreground color
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(10.0), // rounded corners
-                                  // ),
-                                  // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
-                                ),
-                                child:const Text("Add Event",
+                                // foregroundColor: Colors.white, // foreground color
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(10.0), // rounded corners
+                                // ),
+                                // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
+                              ),
+                              child:const Text("Add Event",
                                 style: TextStyle(
-                                  color:Colors.white
+                                    color:Colors.white
                                 ),)
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
+                    ),
                   ),
                   Expanded(
-                    flex: 10,
-                      // child:SingleChildScrollView(
-                      //   scrollDirection: Axis.vertical,
-                        child: ListView(
-                          children: events
-                              .map((event) => Padding(
-                              padding: const EdgeInsets.fromLTRB(10,7,10,7),
+                    flex: 6,
+                    // child:SingleChildScrollView(
+                    //   scrollDirection: Axis.vertical,
+                    child: ListView(
+                      children: events
+                          .map((event) => Padding(
+                        padding: const EdgeInsets.fromLTRB(10,7,10,7),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: const Color.fromRGBO(13, 166, 186, 0.5)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+
+                              Expanded(
+                                flex: 4,
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: const Color.fromRGBO(13, 166, 186, 0.5)
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-
-                                  Expanded(
-                                    flex: 4,
-                                    child: Container(
-                                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
-                                      width: 130,
-                                      height: 60,
-                                      alignment: Alignment.centerLeft,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: buildWidget(event)
-
+                                    padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+                                    width: 130,
+                                    height: 60,
+                                    alignment: Alignment.centerLeft,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 12,
-                                    child: Text(
-                                          " ${capitalizeFirstLetterOfEachWord(event['event'].toString())}",
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                  ),
-                                  Expanded(
-                                    flex: 6,
-                                    child: SizedBox(
-                                      // width: 80,
-                                      child: Text(
-                                        event["date"].toString(), // Display the raw date string
-                                        softWrap: false,
-                                        textAlign: TextAlign.left,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  ),
-                                  // GestureDetector(
-                                  //   onTap: () {
-                                  //     print("Deleting item");
-                                  //     // Implement deletion logic here
-                                  //   },
-                                  //   child: const Icon(
-                                  //     Icons.delete,
-                                  //     color: Colors.red,
-                                  //     size: 24,
-                                  //   ),
-                                  // ),
-                                  ],
+                                    child: buildWidget(event)
+
+                                ),
+                              ),
+                              Expanded(
+                                flex: 12,
+                                child: Text(
+                                  " ${capitalizeFirstLetterOfEachWord(event['event'].toString())}",
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: SizedBox(
+                                  // width: 80,
+                                  child: Text(
+                                    event["date"].toString(), // Display the raw date string
+                                    softWrap: false,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                 ),
-                              )
-                          ).toList(),
+                              ),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     print("Deleting item");
+                              //     // Implement deletion logic here
+                              //   },
+                              //   child: const Icon(
+                              //     Icons.delete,
+                              //     color: Colors.red,
+                              //     size: 24,
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
+                      )
+                      ).toList(),
+                    ),
                     // ),
 
+                  ),
+                  //  Expanded(
+                  //   flex: 1,
+                  //   child: Padding(
+                  //     padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
+                  //     child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                  //   ),
+                  // ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              isDetailVisible ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                              color: Colors.blue,
+                              size: 40,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isDetailVisible = !isDetailVisible; // Toggle visibility
+                              });
+                            },
+                          ),
+                          Container(
+                              // color: Colors.lightBlue[400],
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(12.0,8,12,2),
+                                child: Text("Details",style: TextStyle(fontSize: 24,color: Colors.blue[400],fontWeight:FontWeight.bold),),
+                              ))
+                            ],
+                      ),
                     ),
+                  ),
+                  AnimatedContainer(
+                    margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                    // color: Colors.grey[200],
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    height: isDetailVisible ? 300 : 0, // Set height based on visibility
+                    child: SingleChildScrollView(
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 20),
+
+                              Container(
+                                color: Colors.blue[200],
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width:100,
+                                      child: Text(
+                                        "Age",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.age}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+
+                              Container(
+                                color: Colors.blue[200],
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "Sex",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.sex}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+
+                              Container(
+                                color:Colors.blue[200] ,
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "Weight",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.weight}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+
+                              Container(
+                                height: 50,
+                                color: Colors.blue[200],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "Breed",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.breed}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+
+                              Container(
+                                height: 50,
+                                color: Colors.blue[200],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "State",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.state}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+
+                              Container(
+                                height: 60,
+                                color: Colors.blue[200],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                        child:Text(
+                                            "Source of Cattle",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+
+                                      ),
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        "${cattle.sex}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
 
 
 
-                    // GridView(
+
+
+                  // GridView(
                     //
                     //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     //       crossAxisCount: 2,
