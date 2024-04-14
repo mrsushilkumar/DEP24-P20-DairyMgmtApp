@@ -5,7 +5,7 @@ import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
 
 class WrapperHomePage extends StatefulWidget {
-  const WrapperHomePage({Key? key});
+  const WrapperHomePage({super.key,});
 
   @override
   State<WrapperHomePage> createState() => _WrapperHomePageState();

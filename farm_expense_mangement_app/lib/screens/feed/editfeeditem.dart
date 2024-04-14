@@ -7,7 +7,7 @@ class EditFeedItemPage extends StatefulWidget {
   final Feed feed;
   final String uid;
 
-  const EditFeedItemPage({Key? key, required this.feed, required this.uid}) : super(key: key);
+  const EditFeedItemPage({super.key, required this.feed, required this.uid});
 
   @override
   _EditFeedItemPageState createState() => _EditFeedItemPageState();
@@ -63,10 +63,10 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: Text(
+        title: const Text(
           'Edit Feed Item',
           style: TextStyle(color: Colors.black),
         ),
@@ -78,15 +78,15 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
           child: ListView(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _itemNameController,
-                  decoration: InputDecoration(labelText: 'Item Name'),
+                  decoration: const InputDecoration(labelText: 'Item Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter item name';
@@ -96,27 +96,27 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Category'),
+                  decoration: const InputDecoration(labelText: 'Category'),
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _needController,
-                  decoration: InputDecoration(labelText: 'Need'),
+                  decoration: const InputDecoration(labelText: 'Need'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -130,15 +130,15 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: TextFormField(
                   controller: _stockController,
-                  decoration: InputDecoration(labelText: 'Stock'),
+                  decoration: const InputDecoration(labelText: 'Stock'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -152,8 +152,8 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
@@ -178,9 +178,9 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(13, 166, 186, 0.9)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
                 ),
-                child: Text(
+                child: const Text(
                   'Save',
                   style: TextStyle(color: Colors.black),
                 ),

@@ -184,7 +184,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               const Color.fromRGBO(240, 255, 255, 1.0),
                             ),
                             side: MaterialStateProperty.all<BorderSide>(
-                              BorderSide(color: Colors.black), // Set the border color here
+                              const BorderSide(color: Colors.black), // Set the border color here
                             ),
                           ),
 
@@ -289,10 +289,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               });
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(12.0,8,12,2),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(12.0,8,12,2),
                             child: Text("Details",style: TextStyle(fontSize: 24,color:
-                                const Color.fromRGBO(13, 166, 186, 1.0),fontWeight:FontWeight.bold),),
+                                Color.fromRGBO(13, 166, 186, 1.0),fontWeight:FontWeight.bold),),
                           )
                             ],
                       ),
@@ -625,12 +625,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1.0),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1.0),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Edit Details',
           style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -658,9 +658,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Gender*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -694,7 +694,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     hintText: "YYYY-MM-DD",
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
 
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
@@ -709,9 +709,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _weightTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Weight',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -723,9 +723,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedSource,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Source of Cattle*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -754,9 +754,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   controller: _breedTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Breed',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -768,9 +768,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedStage,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Status',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -852,10 +852,10 @@ class AddEventPopup extends StatefulWidget {
   final Cattle cattle;
 
   const AddEventPopup({
-    Key? key,
+    super.key,
     required this.uid,
     required this.cattle,
-  }) : super(key: key);
+  });
 
   @override
   State<AddEventPopup> createState() => _AddEventPopupState();
@@ -892,14 +892,14 @@ class _AddEventPopupState extends State<AddEventPopup> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
+          const Text(
             'Add Event',
             style: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           SizedBox(
             width: double.infinity,
             child: DropdownButtonFormField<String>(
@@ -909,7 +909,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
                   selectedOption = newValue;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Event Name',
                 border: OutlineInputBorder(),
               ),
@@ -921,7 +921,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
               }).toList(),
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           TextFormField(
             readOnly: true,
             controller: TextEditingController(
@@ -942,12 +942,12 @@ class _AddEventPopupState extends State<AddEventPopup> {
                 });
               }
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Event Date',
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () {
               if (selectedOption != null && selectedDate != null) {
@@ -968,7 +968,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
               } else {
                 // Show an error message if any field is empty
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Please select an event and date.'),
                     backgroundColor: Colors.red,
                   ),
