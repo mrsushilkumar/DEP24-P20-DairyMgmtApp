@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({Key? key}) : super(key: key);
+  const FeedPage({super.key});
 
   @override
   State<FeedPage> createState() => _FeedState();
@@ -70,14 +70,14 @@ class _FeedState extends State<FeedPage> {
 
     // Check for expiry date and set current stock to 0 if expired
     final currentDate = DateTime.now();
-    filteredFeed.forEach((feed) {
+    for (var feed in filteredFeed) {
       if (feed.expiryDate != null && currentDate.isAfter(feed.expiryDate!)) {
         feed.quantity = 0;
       }
-    });
+    }
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
@@ -140,8 +140,8 @@ class FeedListItem extends StatefulWidget {
     required this.feed,
     required this.onTap,
     required this.onEdit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<FeedListItem> createState() => _FeedListItemState();
@@ -156,14 +156,14 @@ class _FeedListItemState extends State<FeedListItem> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        color: Color.fromRGBO(240, 255,255, 1),
+        color: const Color.fromRGBO(240, 255,255, 1),
         margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         shadowColor: Colors.white70,
         elevation: 8,
         child: ListTile(
           title: Text(
             widget.feed.itemName,
-            style: TextStyle(color: Colors.black,
+            style: const TextStyle(color: Colors.black,
             fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
@@ -178,7 +178,7 @@ class _FeedListItemState extends State<FeedListItem> {
                         isExpired ? Icons.warning : Icons.calendar_today,
                         color: isExpired ? Colors.red : Colors.black,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
                         style: TextStyle(color: isExpired ? Colors.red : Colors.black),
@@ -193,11 +193,11 @@ class _FeedListItemState extends State<FeedListItem> {
               ),
               Text(
                 'Current Stock: ${widget.feed.quantity}',
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
               Text(
                 'Need: ${widget.feed.requiredQuantity}',
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ],
           ),

@@ -99,7 +99,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
 
         title: const Text(
@@ -127,9 +127,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: TextFormField(
                   controller: _rfidTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The RFID*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
                   ),
@@ -147,9 +147,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Gender*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -182,7 +182,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Birth Date',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
 
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
@@ -197,9 +197,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _weightTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Weight',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -211,9 +211,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedSource,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Source of Cattle*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -242,9 +242,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   controller: _breedTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Breed',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
@@ -256,9 +256,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedState,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Status',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
                       fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
