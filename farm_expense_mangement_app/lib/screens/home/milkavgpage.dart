@@ -14,9 +14,10 @@ class AvgMilkPage extends StatefulWidget {
   State<AvgMilkPage> createState() => _AvgMilkPageState();
 }
 
-class _AvgMilkPageState extends State<AvgMilkPage> {
+class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  final RouteObserver<Route<dynamic>> _routeObserver = RouteObserver<Route<dynamic>>();
 
   late DatabaseForMilkByDate db;
 
@@ -25,6 +26,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
   Future<void> _fetchAllMilkByDate() async {
     final snapshot = await db.infoFromServerAllMilk();
     setState(() {
+      _allMilkByDate = [];
       _allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
     });
   }
@@ -34,6 +36,28 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
     // TODO: implement initState
     super.initState();
     db = DatabaseForMilkByDate(uid);
+    _fetchAllMilkByDate();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    // super.didPopNext();
     _fetchAllMilkByDate();
   }
 
@@ -77,8 +101,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       body: ListView.builder(
         itemCount: _allMilkByDate.length,
         itemBuilder: (context, index) {
-          final data = _allMilkByDate[index];
-          return MilkDataRowByDate(data: data);
+          return MilkDataRowByDate(data: _allMilkByDate[index]);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -95,6 +118,8 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       ),
     );
   }
+
+
 }
 
 
@@ -177,8 +202,8 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 
 
   void _addMilk(Milk data) async {
-    final MilkByDate  milkByDate;
     await db.infoToServerMilk(data);
+    final MilkByDate  milkByDate;
     final snapshot = await dbByDate.infoFromServerMilk(data.dateOfMilk!);
     if(snapshot.exists)
       {
@@ -198,7 +223,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:   const Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         title: const Text('Add Milk Data'),
         // backgroundColor: Colors.blue[100],
@@ -301,9 +326,14 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       );
                       // Here, you can add the new milk data to your list or database
                       _addMilk(newMilkData);
+
                       Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));// Close the add milk data page
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AvgMilkPage()
+                          )
+                      );// Close the add milk data page
                     }
                   },
                   child: const Padding(
