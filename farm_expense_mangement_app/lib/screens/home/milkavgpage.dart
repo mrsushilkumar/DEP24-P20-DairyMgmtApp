@@ -72,13 +72,6 @@ class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
         title: const Center(child: Text('Milk Records')),
         actions: [
           IconButton(
-            color: Colors.black,
-            onPressed: () {
-              // Handle search action
-            },
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
             color:Colors.black,
             onPressed: () {
               // Handle filter action
