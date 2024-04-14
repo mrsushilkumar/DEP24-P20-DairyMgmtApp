@@ -100,7 +100,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Handle add action
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
           );
@@ -128,7 +128,7 @@ class MilkDataRowByDate extends StatefulWidget {
 class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
 
   void viewMilkByDate() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
   }
 
   @override
@@ -217,10 +217,19 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
+
       appBar: AppBar(
         title: const Text('Add Milk Data'),
         // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+          },
+        ),
 
       ),
       body: SingleChildScrollView(
@@ -320,7 +329,6 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       // Here, you can add the new milk data to your list or database
                       _addMilk(newMilkData);
 
-                      Navigator.pop(context);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

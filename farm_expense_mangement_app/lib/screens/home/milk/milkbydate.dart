@@ -1,4 +1,5 @@
 
+import 'package:farm_expense_mangement_app/screens/home/milkavgpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,7 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
           ),
           onPressed:() {
             // HomeAppBar();
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
           },
         ),
       ),
@@ -132,15 +133,15 @@ class _MilkDataRowState extends State<MilkDataRow> {
 
 
 
+  void editDetail (){
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditMilkByDate(data: widget.data)));
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    void editDetail (){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditMilkByDate(data: widget.data)));
-    }
+    final double totalMilk = widget.data.evening + widget.data.morning;
 
-    final double totalMilk = widget.data.evening +widget.data.morning;
     return GestureDetector(
       onTap: editDetail,
       child: Card(
