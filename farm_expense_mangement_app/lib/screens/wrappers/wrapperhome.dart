@@ -37,22 +37,25 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
   void _updateIndex(int index) {
     setState(() {
       _selectedIndex = index;
+      if (_selectedIndex == 0) {
+        _appBar = const HomeAppBar();
+        _bodyScreen = const HomePage() as PreferredSizeWidget;
+      } else {
+        _appBar = const ProfileAppBar();
+        _bodyScreen = const ProfilePage() as PreferredSizeWidget;
+      }
     });
   }
 
   void home(BuildContext context) {
     setState(() {
       _updateIndex(0); // Update index when home is pressed
-      _appBar = const HomeAppBar();
-      _bodyScreen = const HomePage() as PreferredSizeWidget;
     });
   }
 
   void profile(BuildContext context) {
     setState(() {
       _updateIndex(1); // Update index when profile is pressed
-      _appBar = const ProfileAppBar();
-      _bodyScreen = const ProfilePage() as PreferredSizeWidget;
     });
   }
 
@@ -71,20 +74,23 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
         child: BottomAppBar(
           color: const Color.fromRGBO(13, 166, 186, 1.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.message),
-                onPressed: () {},
-                iconSize: 32,
-              ),
-              IconButton(
-                icon: const Icon(Icons.account_circle),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [ SizedBox(
+              width: 60,
+              height: 60,
+              child: FloatingActionButton(
                 onPressed: () {
                   profile(context);
                 },
-                iconSize: 32,
+                backgroundColor: _selectedIndex == 1 ? Colors.black : const Color.fromRGBO(13, 166, 186, 1.0),
+                elevation: 0,
+                child: const Icon(Icons.person_4, color: Colors.white70,),
+
               ),
+
+            ),
+
+
               SizedBox(
                 width: 60,
                 height: 60,
@@ -92,20 +98,10 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
                   onPressed: () {
                     home(context);
                   },
-                  backgroundColor: Colors.black,
+                  backgroundColor: _selectedIndex == 0 ? Colors.black : const Color.fromRGBO(13, 166, 186, 1.0),
                   elevation: 0,
                   child: const Icon(Icons.home, color: Colors.white70,),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.notifications),
-                onPressed: () {},
-                iconSize: 32,
-              ),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {},
-                iconSize: 32,
               ),
             ],
           ),

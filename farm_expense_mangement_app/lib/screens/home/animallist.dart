@@ -281,75 +281,9 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         ? allCattle
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),
-            color: Colors.blue[200],
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 16.0),
-          child: Row(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.blue[200],
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back,
-                      size: 35, color: Colors.white),
-                  onPressed: () {
-                    // Implement filter functionality
-                  },
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Cattle',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    onChanged: (value) {
-                      // Implement search functionality
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.blue[200],
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.clear, size: 35, color: Colors.white),
-                  onPressed: () {
-                    close(
-                      context,
-                      query.isEmpty
-                          ? Cattle(rfid: '', breed: '')
-                          : Cattle(rfid: '', breed: ''),
-                    );
-                    // Implement filter functionality
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+
       body: ListView.builder(
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
@@ -371,19 +305,24 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
     final searchResults = query.isEmpty
         ? allCattle
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
-    return ListView.builder(
-      itemCount: searchResults.length,
-      itemBuilder: (context, index) {
-        final cattleInfo = searchResults[index];
-        return CattleListItem(
-          cattle: cattleInfo,
-          onTap: () {
-            viewCattleDetail1(context, cattleInfo);
-          },
-        );
-      },
+
+    return Container(
+      color: Color.fromRGBO(240, 255, 255, 1), // Set the desired background color here
+      child: ListView.builder(
+        itemCount: searchResults.length,
+        itemBuilder: (context, index) {
+          final cattleInfo = searchResults[index];
+          return CattleListItem(
+            cattle: cattleInfo,
+            onTap: () {
+              viewCattleDetail1(context, cattleInfo);
+            },
+          );
+        },
+      ),
     );
   }
+
 
   @override
   String get searchFieldLabel => 'Search Cattle';

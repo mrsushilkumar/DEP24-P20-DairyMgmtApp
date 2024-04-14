@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
-import 'package:farm_expense_mangement_app/models/cattle.dart';
 import 'package:farm_expense_mangement_app/models/history.dart';
 import 'package:farm_expense_mangement_app/services/database/cattlehistorydatabase.dart';
 
@@ -27,16 +27,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
   // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForCattle cattleDb;
+  late DatabaseServiceForCattleHistory cattleHistory;
   late Cattle _cattle;
 
-  final List<Map<String, Object>> events = [
-    {"event": "abortion", "date": "2022-01-01"},
-    {"event": "vaccination", "date": "2022-02-01"},
-    {"event": "heifer", "date": "2022-03-01"},
-    {"event": "insemination", "date": "2022-04-01"},
-    {"event": "vaccination", "date": "2027-04-01"},
-    {"event": "vaccination", "date": "2027-04-01"},
-
+  late List<CattleHistory> events = [
   ];
 
 
@@ -45,6 +39,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     // TODO: implement initState
     super.initState();
     cattleDb = DatabaseServicesForCattle(uid);
+    cattleHistory=DatabaseServiceForCattleHistory(uid:uid);
+    _fetchCattleHistory();
 
     _streamController = _fetchCattleDetail();
   }
@@ -52,6 +48,21 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   Stream<DocumentSnapshot<Map<String, dynamic>>> _fetchCattleDetail() {
     return cattleDb.infoFromServer(widget.rfid).asStream();
   }
+  Future<void> _fetchCattleHistory() async {
+    final snapshot = await cattleHistory.historyFromServer(widget.rfid);
+    for (var doc in snapshot.docs) {
+      print('Document ID: ${doc.id}');
+      print('Document Data: ${doc.data()}');
+    }
+    setState(() {
+      events = snapshot.docs.map((doc) => CattleHistory.fromFireStore(doc, null)).toList();
+    });
+    events.sort((a, b) => b.date.compareTo(a.date));
+
+  }
+
+
+
 
   void editCattleDetail() {
     Navigator.push(
@@ -77,20 +88,20 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   @override
   Widget build(BuildContext context) {
 
-    Widget buildWidget(Map<String,Object> event) {
-      if (event['event'].toString() == 'abortion') {
+    Widget buildWidget(CattleHistory event) {
+      if (event.name == 'Abortion') {
         return Image.asset(
           'asset/Cross_img.png',
           width: 30,
           height: 35,
         );
-      } else if (event['event'].toString() == 'vaccination') {
+      } else if (event.name == 'Vaccination') {
         return Image.asset(
           'asset/Vaccination.png',
           width: 30,
           height: 35,
         );
-      } else if (event['event'].toString() == 'heifer') {
+      } else if (event.name == 'Heifer') {
         return Image.asset(
           'asset/heifer.png',
           width: 30,
@@ -199,6 +210,11 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.grey, // Set the border color here
+                                width: 1.5, // Set the border width here
+                              ),
+
                               color: Color.fromRGBO(240, 255, 255, 1)
                           ),
                           child: Row(
@@ -214,6 +230,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                     alignment: Alignment.centerLeft,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
+
                                     ),
                                     child: buildWidget(event)
 
@@ -222,7 +239,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               Expanded(
                                 flex: 12,
                                 child: Text(
-                                  " ${capitalizeFirstLetterOfEachWord(event['event'].toString())}",
+                                  " ${capitalizeFirstLetterOfEachWord(event.name)}",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(fontSize: 16,
@@ -235,7 +252,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 child: SizedBox(
                                   // width: 80,
                                   child: Text(
-                                    event["date"].toString(), // Display the raw date string
+                                    '${DateFormat('yyyy-MM-dd').format(event.date!)}', // Display the raw date string
                                     softWrap: false,
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(fontSize: 16,
@@ -244,17 +261,6 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                   ),
                                 ),
                               ),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     print("Deleting item");
-                              //     // Implement deletion logic here
-                              //   },
-                              //   child: const Icon(
-                              //     Icons.delete,
-                              //     color: Colors.red,
-                              //     size: 24,
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -264,13 +270,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                     // ),
 
                   ),
-                  //  Expanded(
-                  //   flex: 1,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                  //     child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                  //   ),
-                  // ),
+
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
@@ -865,6 +865,9 @@ class _AddEventPopupState extends State<AddEventPopup> {
   String? selectedOption;
   List<String> eventOptions = ['Abortion', 'Vaccination', 'Heifer', 'Insemination'];
   DateTime? selectedDate;
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  // final AnimalDetails detail=AnimalDetails(rfid);
 
   @override
   Widget build(BuildContext context) {
@@ -924,7 +927,8 @@ class _AddEventPopupState extends State<AddEventPopup> {
             controller: TextEditingController(
                 text: selectedDate != null
                     ? selectedDate.toString().split(' ')[0]
-                    : ''),
+                    : ''
+            ),
             onTap: () async {
               final DateTime? pickedDate = await showDatePicker(
                 context: context,
@@ -948,6 +952,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
             onPressed: () {
               if (selectedOption != null && selectedDate != null) {
                 // Create a new history entry
+                // final dateWithoutTime = DateTime(selectedDate.year, date.month, date.day);
                 final newHistory = CattleHistory(
                   name: selectedOption!,
                   date: selectedDate!,
@@ -958,6 +963,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
                     .historyToServerSingleCattle(widget.cattle, newHistory);
 
                 // Close the popup dialog
+                // fetch
                 Navigator.of(context).pop();
               } else {
                 // Show an error message if any field is empty
@@ -969,12 +975,15 @@ class _AddEventPopupState extends State<AddEventPopup> {
                 );
               }
             },
-            child: const Text('Submit'),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                 const Color.fromRGBO(13, 166, 186, 0.6),
               ),
             ),
+            child: const Text('Submit',
+            style: TextStyle(
+              color:Colors.white
+            ),),
           ),
         ],
       ),
