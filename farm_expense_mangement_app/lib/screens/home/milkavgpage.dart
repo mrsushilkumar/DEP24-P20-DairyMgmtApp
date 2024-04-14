@@ -136,28 +136,65 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
     return GestureDetector(
       onTap: viewMilkByDate,
       child: Card(
-        // color: Colors.blue[100],
-        color: const Color.fromRGBO(230, 255, 255, 1),
-
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8,13,8,13),
-          child: Row(
-            children: [
-              Image.asset('asset/cow.jpg',width: 30,height: 35,),
-              const SizedBox(width: 10.0),
-              Expanded(flex: 1,child: Text("Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}"),),
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+        color: const Color.fromRGBO(
+            240, 255, 255, 1), // Increase top margin for more gap between cards
+        elevation: 8, // Increase card elevation for stronger shadow
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(
+            color: Colors.white, // Fluorescent color boundary
+            width: 3, // Width of the boundary
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                  foregroundDecoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                    'asset/cow1.jpg',
+                    fit: BoxFit.cover,
+                    width: 70, // Adjust width to maximize the size
+                    height: 150, // Adjust height to maximize the size
+                  ),
+                ),
+            ),
+            title: Text(
+                "Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+            ),
               // const SizedBox(width: 10.0),
               // Image.asset('asset/morning.webp',width: 30,height: 35,),
               // Expanded(flex: 1,child: Text("${data.morning.toStringAsFixed(2)}L"),),
               //
               // Image.asset('asset/evening2.jpg',width: 25,height: 35,),
               // Expanded(flex: 1,child: Text(" ${data.evening.toStringAsFixed(2)}L"),),
+              subtitle: Row(
+                  children: [
+                    const Text(
+                        "Total Milk: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    Text("${widget.data.totalMilk.toStringAsFixed(2)}L")
+                  ]
+              ),
 
-              const SizedBox(width: 9.0),
-
-              Expanded(flex: 2,child: Text("Total Milk: ${widget.data.totalMilk.toStringAsFixed(2)}L"),),
-            ],
           ),
         ),
       ),

@@ -158,7 +158,7 @@ class _AnimalListState extends State<AnimalList> {
     }
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
@@ -291,8 +291,7 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
             ),
             color: Colors.blue[200],
           ),
-          padding:
-          const EdgeInsets.symmetric(vertical: 50.0, horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 16.0),
           child: Row(
             children: [
               Container(
@@ -302,7 +301,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
                   color: Colors.blue[200],
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, size: 35, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back,
+                      size: 35, color: Colors.white),
                   onPressed: () {
                     // Implement filter functionality
                   },
@@ -410,7 +410,8 @@ class _CattleListItemState extends State<CattleListItem> {
       onTap: widget.onTap,
       child: Card(
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-        color: Color.fromRGBO(240, 255, 255, 1),// Increase top margin for more gap between cards
+        color: const Color.fromRGBO(
+            240, 255, 255, 1), // Increase top margin for more gap between cards
         elevation: 8, // Increase card elevation for stronger shadow
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
@@ -422,43 +423,42 @@ class _CattleListItemState extends State<CattleListItem> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-
           ),
           child: ListTile(
             leading: Padding(
               padding: const EdgeInsets.all(5),
               child: widget.cattle.sex == 'Female'
                   ? Container(
-                margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                foregroundDecoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  'asset/cow1.jpg',
-                  fit: BoxFit.cover,
-                  width: 70, // Adjust width to maximize the size
-                  height: 150, // Adjust height to maximize the size
-                ),
-              )
+                      margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                      foregroundDecoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.asset(
+                        'asset/cow1.jpg',
+                        fit: BoxFit.cover,
+                        width: 70, // Adjust width to maximize the size
+                        height: 150, // Adjust height to maximize the size
+                      ),
+                    )
                   : Container(
-                margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                foregroundDecoration:
-                const BoxDecoration(shape: BoxShape.circle),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  'asset/Bull1.jpg',
-                  fit: BoxFit.cover,
-                  width: 70, // Adjust width to maximize the size
-                  height: 150, // Adjust height to maximize the size
-                ),
-              ),
+                      margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                      foregroundDecoration:
+                          const BoxDecoration(shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.asset(
+                        'asset/Bull1.jpg',
+                        fit: BoxFit.cover,
+                        width: 70, // Adjust width to maximize the size
+                        height: 150, // Adjust height to maximize the size
+                      ),
+                    ),
             ),
             title: Row(
               children: [
