@@ -460,19 +460,11 @@ class _CattleListItemState extends State<CattleListItem> {
                       ),
                     ),
             ),
-            title: Row(
-              children: [
-                const Text(
-                  'RF id : ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  widget.cattle.rfid,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+            title: Text(
+              'RF id : ${widget.cattle.rfid}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
