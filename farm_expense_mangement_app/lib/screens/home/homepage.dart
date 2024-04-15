@@ -3,6 +3,7 @@ import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:flutter/material.dart';
 // import '../wrappers/wrapperhome.dart';
 import 'milkavgpage.dart';
+import 'transactions.dart';
 
 
 // final listCattle = [
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                     dryCowsColor,
                         () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  const DryCowsPage()),
+                      MaterialPageRoute(builder: (context) =>  TransactionPage()),
                     ),
                   ),
                 ),
