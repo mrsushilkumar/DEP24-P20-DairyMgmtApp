@@ -3,9 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
+import 'package:farm_expense_mangement_app/models/history.dart';
+import 'package:farm_expense_mangement_app/services/database/cattlehistorydatabase.dart';
+
 
 class AnimalDetails extends StatefulWidget {
   final String rfid;
@@ -23,16 +27,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
   // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForCattle cattleDb;
-  late Cattle cattle;
+  late DatabaseServiceForCattleHistory cattleHistory;
+  late Cattle _cattle;
 
-  final List<Map<String, Object>> events = [
-    {"event": "abortion", "date": "2022-01-01"},
-    {"event": "vaccination", "date": "2022-02-01"},
-    {"event": "heifer", "date": "2022-03-01"},
-    {"event": "insemination", "date": "2022-04-01"},
-    {"event": "vaccination", "date": "2027-04-01"},
-    {"event": "vaccination", "date": "2027-04-01"},
-
+  late List<CattleHistory> events = [
   ];
 
 
@@ -41,6 +39,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     // TODO: implement initState
     super.initState();
     cattleDb = DatabaseServicesForCattle(uid);
+    cattleHistory=DatabaseServiceForCattleHistory(uid:uid);
+    _fetchCattleHistory();
 
     _streamController = _fetchCattleDetail();
   }
@@ -48,12 +48,27 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   Stream<DocumentSnapshot<Map<String, dynamic>>> _fetchCattleDetail() {
     return cattleDb.infoFromServer(widget.rfid).asStream();
   }
+  Future<void> _fetchCattleHistory() async {
+    final snapshot = await cattleHistory.historyFromServer(widget.rfid);
+    for (var doc in snapshot.docs) {
+      print('Document ID: ${doc.id}');
+      print('Document Data: ${doc.data()}');
+    }
+    setState(() {
+      events = snapshot.docs.map((doc) => CattleHistory.fromFireStore(doc, null)).toList();
+    });
+    events.sort((a, b) => b.date.compareTo(a.date));
+
+  }
+
+
+
 
   void editCattleDetail() {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EditAnimalDetail(cattle: cattle)));
+            builder: (context) => EditAnimalDetail(cattle: _cattle)));
   }
 
   void deleteCattle() {
@@ -73,20 +88,20 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   @override
   Widget build(BuildContext context) {
 
-    Widget buildWidget(Map<String,Object> event) {
-      if (event['event'].toString() == 'abortion') {
+    Widget buildWidget(CattleHistory event) {
+      if (event.name == 'Abortion') {
         return Image.asset(
           'asset/Cross_img.png',
           width: 30,
           height: 35,
         );
-      } else if (event['event'].toString() == 'vaccination') {
+      } else if (event.name == 'Vaccination') {
         return Image.asset(
           'asset/Vaccination.png',
           width: 30,
           height: 35,
         );
-      } else if (event['event'].toString() == 'heifer') {
+      } else if (event.name == 'Heifer') {
         return Image.asset(
           'asset/heifer.png',
           width: 30,
@@ -103,12 +118,13 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1.0),
       appBar: AppBar(
         title: Text(
           widget.rfid,
           style: const TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color.fromRGBO(13, 152, 186, 1.0),
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -144,7 +160,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                 child: Text('Please Wait ..'),
               );
             } else if (snapshot.hasData) {
-              cattle = Cattle.fromFireStore(snapshot.requireData, null);
+              _cattle = Cattle.fromFireStore(snapshot.requireData, null);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -155,26 +171,28 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("History",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
+                          const Text("Events",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),),
                           ElevatedButton(onPressed: (){
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return const AddEventPopup();
+                                return AddEventPopup(uid: uid, cattle: _cattle);
                               },
                             );
-                          },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:const Color.fromRGBO(13, 166, 186, 0.5)// background color
-                                // foregroundColor: Colors.white, // foreground color
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(10.0), // rounded corners
-                                // ),
-                                // padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // padding
-                              ),
+                          },style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color.fromRGBO(240, 255, 255, 1.0),
+                            ),
+                            side: MaterialStateProperty.all<BorderSide>(
+                              const BorderSide(color: Colors.black), // Set the border color here
+                            ),
+                          ),
+
                               child:const Text("Add Event",
                                 style: TextStyle(
-                                    color:Colors.white
+                                    color:Colors.black
+                                        ,
+                                  fontWeight: FontWeight.bold
                                 ),)
                           )
                         ],
@@ -192,7 +210,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromRGBO(13, 166, 186, 0.5)
+                              border: Border.all(
+                                color: Colors.grey, // Set the border color here
+                                width: 1.5, // Set the border width here
+                              ),
+
+                              color: Color.fromRGBO(240, 255, 255, 1)
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -207,6 +230,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                     alignment: Alignment.centerLeft,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
+
                                     ),
                                     child: buildWidget(event)
 
@@ -215,10 +239,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               Expanded(
                                 flex: 12,
                                 child: Text(
-                                  " ${capitalizeFirstLetterOfEachWord(event['event'].toString())}",
+                                  " ${capitalizeFirstLetterOfEachWord(event.name)}",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                                 ),
                               ),
                               Expanded(
@@ -226,24 +252,15 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 child: SizedBox(
                                   // width: 80,
                                   child: Text(
-                                    event["date"].toString(), // Display the raw date string
+                                    '${DateFormat('yyyy-MM-dd').format(event.date!)}', // Display the raw date string
                                     softWrap: false,
                                     textAlign: TextAlign.left,
-                                    style: const TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16,
+                                    color:Colors.black,
+                                    fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     print("Deleting item");
-                              //     // Implement deletion logic here
-                              //   },
-                              //   child: const Icon(
-                              //     Icons.delete,
-                              //     color: Colors.red,
-                              //     size: 24,
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -253,13 +270,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                     // ),
 
                   ),
-                  //  Expanded(
-                  //   flex: 1,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                  //     child: Text("Details",style: TextStyle(fontWeight:FontWeight.w400,fontSize: 20),),
-                  //   ),
-                  // ),
+
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
@@ -278,231 +289,233 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               });
                             },
                           ),
-                          Container(
-                              // color: Colors.lightBlue[400],
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(12.0,8,12,2),
-                                child: Text("Details",style: TextStyle(fontSize: 24,color: Colors.blue[400],fontWeight:FontWeight.bold),),
-                              ))
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(12.0,8,12,2),
+                            child: Text("Details",style: TextStyle(fontSize: 24,color:
+                                Color.fromRGBO(13, 166, 186, 1.0),fontWeight:FontWeight.bold),),
+                          )
                             ],
                       ),
                     ),
                   ),
                   AnimatedContainer(
-                    margin: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                     // color: Colors.grey[200],
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     height: isDetailVisible ? 300 : 0, // Set height based on visibility
                     child: SingleChildScrollView(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
 
-                              Container(
-                                color: Colors.blue[200],
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width:100,
-                                      child: Text(
-                                        "Age",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width:100,
+                                    child: Text(
+                                      "Age",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.age}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "${_cattle.age}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                color: Colors.blue[200],
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Sex",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Sex",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.sex}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.sex,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                color:Colors.blue[200] ,
-                                height: 50,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Weight",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Weight",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.weight}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "${_cattle.weight}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 50,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "Breed",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              height: 50,
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "Breed",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.breed}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.breed,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 50,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "State",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                            Container(
+                              height: 50,
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      "State",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.state}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
+                                  ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.state,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 10),
+                            ),
+                            const SizedBox(height: 10),
 
-                              Container(
-                                height: 60,
-                                color: Colors.blue[200],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                        child:Text(
-                                            "Source of Cattle",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
+                            Container(
+                              height: 60,
+                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  const SizedBox(
+                                    width: 100,
+                                      child:Text(
+                                          "Source of Cattle",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                            fontSize: 20,
                                           ),
-
-                                      ),
-                                    Container(
-                                      width: 100,
-                                      child: Text(
-                                        "${cattle.sex}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 20,
                                         ),
+
+                                    ),
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      _cattle.sex,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
+                            ),
 
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
@@ -511,89 +524,6 @@ class _AnimalDetailsState extends State<AnimalDetails> {
 
 
 
-
-                  // GridView(
-                    //
-                    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    //       crossAxisCount: 2,
-                    //       crossAxisSpacing: 0, // Spacing between columns
-                    //       childAspectRatio: 1.5),
-                    //
-                    //   children: [
-                    //             Card(
-                    //               margin: EdgeInsets.fromLTRB(20,20,20,20),
-                    //               color: Colors.blue[100],
-                    //               child: Column(
-                    //                 mainAxisAlignment: MainAxisAlignment.center,
-                    //                 children: [
-                    //                   Container(
-                    //                     // shape: const RoundedRectangleBorder(
-                    //                     //     borderRadius:
-                    //                     //     BorderRadius.all(Radius.circular(10))),
-                    //                     // color: Colors.white,
-                    //                     color: Colors.blue[100],
-                    //
-                    //                     margin: const EdgeInsets.all(8),
-                    //                     child: Padding(
-                    //                       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    //                       child: Text(
-                    //                         "${cattle.age}",
-                    //                         style: const TextStyle(
-                    //                           fontWeight: FontWeight.bold,
-                    //                           fontSize: 16,
-                    //                           color: Colors.white,
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                   const Text(
-                    //                     "Age",
-                    //                     style: TextStyle(
-                    //                         fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),
-                    //                   )
-                    //                 ],
-                    //               ),
-                    //             ),
-                    //             Card(
-                    //               margin: EdgeInsets.all(20),
-                    //               color: Colors.blue[100],
-                    //               child: Column(
-                    //                 mainAxisAlignment: MainAxisAlignment.center,
-                    //                 children: [
-                    //                   Container(
-                    //                     // shape: const RoundedRectangleBorder(
-                    //                     //     borderRadius:
-                    //                     //     BorderRadius.all(Radius.circular(12))),
-                    //                     color: Colors.blue[100],
-                    //                     margin: const EdgeInsets.all(8),
-                    //                     child: Padding(
-                    //                       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    //                       child: Text(
-                    //                         cattle.sex,
-                    //                         style: const TextStyle(
-                    //                           fontSize: 16,
-                    //                           fontWeight: FontWeight.bold,
-                    //                           color: Colors.white,
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                   const Text(
-                    //                     "Gender",
-                    //                     style: TextStyle(
-                    //                         fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white,),
-                    //                   )
-                    //                 ],
-                    //               ),
-                    //             ),
-                    //
-                    //
-                    //
-                    //
-                    //   ],
-                    // ),
-                    //
-                    //
                 ],
               );
             } else {
@@ -695,11 +625,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1.0),
       appBar: AppBar(
-        title: Text(
-          'Edit Cattle ${widget.cattle.rfid}',
+        title: const Text(
+          'Edit Details',
           style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -727,11 +658,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Gender*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -762,7 +694,8 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     hintText: "YYYY-MM-DD",
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
+
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context),
@@ -776,11 +709,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _weightTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Weight',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -789,11 +723,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedSource,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Source of Cattle*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: sourceOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -819,11 +754,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   controller: _breedTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Breed',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -832,11 +768,12 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedStage,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Status',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: stageOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -877,7 +814,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                       'Submit',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 16),
                     ),
                   ),
@@ -908,8 +845,17 @@ String capitalizeFirstLetterOfEachWord(String input) {
   return words.join(' ');
 }
 
+
+
 class AddEventPopup extends StatefulWidget {
-  const AddEventPopup({super.key});
+  final String uid;
+  final Cattle cattle;
+
+  const AddEventPopup({
+    super.key,
+    required this.uid,
+    required this.cattle,
+  });
 
   @override
   State<AddEventPopup> createState() => _AddEventPopupState();
@@ -918,192 +864,130 @@ class AddEventPopup extends StatefulWidget {
 class _AddEventPopupState extends State<AddEventPopup> {
   String? selectedOption;
   List<String> eventOptions = ['Abortion', 'Vaccination', 'Heifer', 'Insemination'];
-  DateTime?  selectedDate;
+  DateTime? selectedDate;
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  // final AnimalDetails detail=AnimalDetails(rfid);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop(); // Close the dialog when tapping outside the content
-      },
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        child: contentBox(context),
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: contentBox(context),
     );
   }
 
   Widget contentBox(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-
-            const Text(
-              'Add Event',
-              style: TextStyle(
-                fontSize: 22.0,
-                // backgroundColor: Color.fromRGBO(13, 152, 186, 1.0),
-                fontWeight: FontWeight.w600,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const Text(
+            'Add Event',
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w600,
             ),
-            const SizedBox(height: 15.0),
-            SizedBox(
-              width: double.infinity,
-              child: DropdownButtonFormField<String>(
-                value: selectedOption,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedOption = newValue;
-                  });
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Event Name',
-                  border: OutlineInputBorder(),
-                ),
-                items: eventOptions.map((String option) {
-                  return DropdownMenuItem<String>(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-
-            // TextField(
-            //   onChanged: (value) {
-            //     selectedDate = value;
-            //   },
-            //   decoration: InputDecoration(
-            //     hintText: 'Event Date',
-            //   ),
-            // ),
-
-            TextFormField(
-              readOnly: true,
-              controller: TextEditingController(
-                  text: selectedDate != null
-                      ? selectedDate.toString().split(' ')[0]
-                      : ''),
-              onTap: () async {
-                final DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                if (pickedDate != null) {
-                  setState(() {
-                    selectedDate = pickedDate;
-                  });
-                }
+          ),
+          const SizedBox(height: 15.0),
+          SizedBox(
+            width: double.infinity,
+            child: DropdownButtonFormField<String>(
+              value: selectedOption,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedOption = newValue;
+                });
               },
               decoration: const InputDecoration(
-                hintText: 'Event Date',
+                hintText: 'Event Name',
                 border: OutlineInputBorder(),
               ),
+              items: eventOptions.map((String option) {
+                return DropdownMenuItem<String>(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList(),
             ),
+          ),
+          const SizedBox(height: 10.0),
+          TextFormField(
+            readOnly: true,
+            controller: TextEditingController(
+                text: selectedDate != null
+                    ? selectedDate.toString().split(' ')[0]
+                    : ''
+            ),
+            onTap: () async {
+              final DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+              );
+              if (pickedDate != null) {
+                setState(() {
+                  selectedDate = pickedDate;
+                });
+              }
+            },
+            decoration: const InputDecoration(
+              hintText: 'Event Date',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              if (selectedOption != null && selectedDate != null) {
+                // Create a new history entry
+                // final dateWithoutTime = DateTime(selectedDate.year, date.month, date.day);
+                final newHistory = CattleHistory(
+                  name: selectedOption!,
+                  date: selectedDate!,
+                );
 
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                // Implement submit action here
-                print('Event: $selectedOption, Date: $selectedDate');
+                // Add the new history entry to the database
+                DatabaseServiceForCattleHistory(uid: widget.uid)
+                    .historyToServerSingleCattle(widget.cattle, newHistory);
+
+                // Close the popup dialog
+                // fetch
                 Navigator.of(context).pop();
-              },
-              child: const Text('Submit'),
+              } else {
+                // Show an error message if any field is empty
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please select an event and date.'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                const Color.fromRGBO(13, 166, 186, 0.6),
+              ),
             ),
-          ],
-        ),
+            child: const Text('Submit',
+            style: TextStyle(
+              color:Colors.white
+            ),),
+          ),
+        ],
       ),
     );
   }
 }
 
-// class AddEventPopup extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(10.0),
-//       ),
-//       elevation: 0.0,
-//       backgroundColor: Colors.transparent,
-//       child: contentBox(context),
-//     );
-//   }
-//
-//
-//   contentBox(BuildContext context) {
-//     List<String> eventOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
-//     String selectedOption = eventOptions.first;
-//     return Center(
-//       child: Container(
-//         padding: EdgeInsets.all(20.0),
-//         decoration: BoxDecoration(
-//           shape: BoxShape.rectangle,
-//           color: Colors.white,
-//           borderRadius: BorderRadius.circular(10.0),
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             Text(
-//               'Add Event',
-//               style: TextStyle(
-//                 fontSize: 22.0,
-//                 fontWeight: FontWeight.w600,
-//               ),
-//             ),
-//             SizedBox(height: 15.0),
-//             // TextField(
-//             //   decoration: InputDecoration(
-//             //     hintText: 'Event Name',
-//             //   ),
-//             // ),
-//             DropdownButton<String>(
-//               value: selectedOption,
-//               onChanged: (String? newValue) {
-//                 setState(() {
-//                   selectedOption = newValue;
-//                 });
-//               },
-//               items: eventOptions.map((String option) {
-//                 return DropdownMenuItem<String>(
-//                   value: option,
-//                   child: Text(option),
-//                 );
-//               }).toList(),
-//             ),
-//             SizedBox(height: 10.0),
-//             TextField(
-//               decoration: InputDecoration(
-//                 hintText: 'Event Date',
-//               ),
-//             ),
-//             SizedBox(height: 20.0),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Implement submit action here
-//                 Navigator.of(context).pop();
-//               },
-//               child: Text('Submit'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

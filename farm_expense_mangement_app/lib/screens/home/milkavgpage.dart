@@ -14,18 +14,20 @@ class AvgMilkPage extends StatefulWidget {
   State<AvgMilkPage> createState() => _AvgMilkPageState();
 }
 
-class _AvgMilkPageState extends State<AvgMilkPage> {
+class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  final RouteObserver<Route<dynamic>> _routeObserver = RouteObserver<Route<dynamic>>();
 
   late DatabaseForMilkByDate db;
 
-  List<MilkByDate> allMilkByDate = [];
+  List<MilkByDate> _allMilkByDate = [];
 
   Future<void> _fetchAllMilkByDate() async {
     final snapshot = await db.infoFromServerAllMilk();
     setState(() {
-      allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
+      _allMilkByDate = [];
+      _allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
     });
   }
 
@@ -34,6 +36,28 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
     // TODO: implement initState
     super.initState();
     db = DatabaseForMilkByDate(uid);
+    _fetchAllMilkByDate();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    // super.didPopNext();
     _fetchAllMilkByDate();
   }
 
@@ -47,13 +71,6 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
 
         title: const Center(child: Text('Milk Records')),
         actions: [
-          IconButton(
-            color: Colors.black,
-            onPressed: () {
-              // Handle search action
-            },
-            icon: const Icon(Icons.search),
-          ),
           IconButton(
             color:Colors.black,
             onPressed: () {
@@ -75,16 +92,15 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: allMilkByDate.length,
+        itemCount: _allMilkByDate.length,
         itemBuilder: (context, index) {
-          final data = allMilkByDate[index];
-          return MilkDataRowByDate(data: data);
+          return MilkDataRowByDate(data: _allMilkByDate[index]);
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Handle add action
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
           );
@@ -95,6 +111,8 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       ),
     );
   }
+
+
 }
 
 
@@ -110,7 +128,7 @@ class MilkDataRowByDate extends StatefulWidget {
 class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
 
   void viewMilkByDate() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
   }
 
   @override
@@ -118,28 +136,65 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
     return GestureDetector(
       onTap: viewMilkByDate,
       child: Card(
-        // color: Colors.blue[100],
-        color: const Color.fromRGBO(230, 255, 255, 1),
-
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8,13,8,13),
-          child: Row(
-            children: [
-              Image.asset('asset/cow.jpg',width: 30,height: 35,),
-              const SizedBox(width: 10.0),
-              Expanded(flex: 1,child: Text("Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}"),),
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+        color: const Color.fromRGBO(
+            240, 255, 255, 1), // Increase top margin for more gap between cards
+        elevation: 8, // Increase card elevation for stronger shadow
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(
+            color: Colors.white, // Fluorescent color boundary
+            width: 3, // Width of the boundary
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                  foregroundDecoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.asset(
+                    'asset/cow1.jpg',
+                    fit: BoxFit.cover,
+                    width: 70, // Adjust width to maximize the size
+                    height: 150, // Adjust height to maximize the size
+                  ),
+                ),
+            ),
+            title: Text(
+                "Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold
+              ),
+            ),
               // const SizedBox(width: 10.0),
               // Image.asset('asset/morning.webp',width: 30,height: 35,),
               // Expanded(flex: 1,child: Text("${data.morning.toStringAsFixed(2)}L"),),
               //
               // Image.asset('asset/evening2.jpg',width: 25,height: 35,),
               // Expanded(flex: 1,child: Text(" ${data.evening.toStringAsFixed(2)}L"),),
+              subtitle: Row(
+                  children: [
+                    const Text(
+                        "Total Milk: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    Text("${widget.data.totalMilk.toStringAsFixed(2)}L")
+                  ]
+              ),
 
-              const SizedBox(width: 9.0),
-
-              Expanded(flex: 2,child: Text("Total Milk: ${widget.data.totalMilk.toStringAsFixed(2)}L"),),
-            ],
           ),
         ),
       ),
@@ -177,8 +232,8 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 
 
   void _addMilk(Milk data) async {
-    final MilkByDate  milkByDate;
     await db.infoToServerMilk(data);
+    final MilkByDate  milkByDate;
     final snapshot = await dbByDate.infoFromServerMilk(data.dateOfMilk!);
     if(snapshot.exists)
       {
@@ -198,11 +253,20 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:   const Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
+
       appBar: AppBar(
         title: const Text('Add Milk Data'),
         // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+          },
+        ),
 
       ),
       body: SingleChildScrollView(
@@ -301,9 +365,13 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       );
                       // Here, you can add the new milk data to your list or database
                       _addMilk(newMilkData);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));// Close the add milk data page
+
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AvgMilkPage()
+                          )
+                      );// Close the add milk data page
                     }
                   },
                   child: const Padding(

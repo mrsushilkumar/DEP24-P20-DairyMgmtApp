@@ -99,7 +99,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
+
         title: const Text(
           'New Cattle',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -125,11 +127,11 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: TextFormField(
                   controller: _rfidTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The RFID*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -145,11 +147,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Gender*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -179,7 +182,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Birth Date',
                     border: const OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
+
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context),
@@ -193,11 +197,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _weightTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Weight',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -206,11 +211,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedSource,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Source of Cattle*',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: sourceOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -236,11 +242,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   controller: _breedTextController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter The Breed',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                 ),
               ),
@@ -249,11 +256,12 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedState,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Status',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                      fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
                   items: stateOptions.map((String stage) {
                     return DropdownMenuItem<String>(

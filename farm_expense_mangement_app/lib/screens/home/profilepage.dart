@@ -11,23 +11,28 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return AppBar(
       centerTitle: true,
       title: const Text(
         'Profile',
         style: TextStyle(color: Colors.white),
       ),
-      backgroundColor: myColor,
+      backgroundColor: Color.fromRGBO(13, 166, 186, 1.0),
       actions: [
         IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyApp()));
-            },
-            icon: const Icon(
-              Icons.output_outlined,
-              color: Colors.white,
-            ))
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+          icon: const Icon(
+            Icons.output_outlined,
+            color: Colors.white,
+          ),
+        )
       ],
     );
   }
@@ -53,12 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   late FarmUser farmUser;
-  // late DocumentSnapshot<Map<String,dynamic>> snapshot;
   late DatabaseServicesForUser userDb;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userDb = DatabaseServicesForUser(uid);
   }
@@ -66,135 +69,71 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: userDb.infoFromServer(uid),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Card(
-                  color: Colors.grey.shade400,
-                  child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                    width: double.infinity,
-                    height: 50,
-                  ),
-                );
-              },
-            );
-          } else if (snapshot.hasData) {
-            farmUser = FarmUser.fromFireStore(snapshot.requireData, null);
+      future: userDb.infoFromServer(uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasData) {
+          farmUser = FarmUser.fromFireStore(snapshot.requireData, null);
 
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      child: Icon(
-                        Icons.person,
-                        size: 60,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Farm Owner: ',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          farmUser.ownerName,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Farm Name: ',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          farmUser.farmName,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Email: ',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          user!.email ?? "",
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Phone Number: ',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${farmUser.phoneNo}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Address: ',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          farmUser.location,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileEditPage()),
-                        );
-                      },
-                      child: const Text('Edit Profile'),
-                    ),
-                  ],
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  radius: 50,
+                  child: Icon(
+                    Icons.person,
+                    size: 60,
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return const Center(
-              child: Text('Error in Fetch'),
-            );
-          }
-        });
+                const SizedBox(height: 20),
+                ProfileInfoRow(
+                  label: 'Farm Owner: ',
+                  value: farmUser.ownerName,
+                ),
+                ProfileInfoRow(
+                  label: 'Farm Name: ',
+                  value: farmUser.farmName,
+                ),
+                ProfileInfoRow(
+                  label: 'Email: ',
+                  value: user!.email ?? "",
+                ),
+                ProfileInfoRow(
+                  label: 'Phone Number: ',
+                  value: '${farmUser.phoneNo}',
+                ),
+                ProfileInfoRow(
+                  label: 'Address: ',
+                  value: farmUser.location,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileEditPage(),
+                      ),
+                    );
+                  },
+                  child: const Text('Edit Profile'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const Center(
+            child: Text('Error in Fetch'),
+          );
+        }
+      },
+    );
   }
 }
 
@@ -207,38 +146,73 @@ class ProfileEditPage extends StatefulWidget {
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final _controllerName = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.red,
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                TextFormField(
-                  controller: _controllerName,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      hintText: 'Name',
-                      disabledBorder: InputBorder.none),
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _controllerName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  hintText: 'Name',
                 ),
-              ],
-            )),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Save Changes'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
+class ProfileInfoRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const ProfileInfoRow({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+}
+

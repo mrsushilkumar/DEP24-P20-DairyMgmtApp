@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/models/feed.dart';
+import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 
 class EditFeedItemPage extends StatefulWidget {
   final Feed feed;
+  final String uid;
 
-  const EditFeedItemPage({Key? key, required this.feed}) : super(key: key);
+  const EditFeedItemPage({super.key, required this.feed, required this.uid});
 
   @override
   _EditFeedItemPageState createState() => _EditFeedItemPageState();
@@ -19,14 +21,18 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   late TextEditingController _stockController;
   late DateTime _expiryDate;
 
+  late DatabaseServicesForFeed _dbService;
+
   @override
   void initState() {
     super.initState();
     _itemNameController = TextEditingController(text: widget.feed.itemName);
-    _categoryController = TextEditingController(text: widget.feed.category);
-    _needController = TextEditingController(text: widget.feed.requiredQuantity.toString());
+    _categoryController = TextEditingController(text: widget.feed.category ?? '');
+    _needController = TextEditingController(text: widget.feed.requiredQuantity?.toString() ?? '');
     _stockController = TextEditingController(text: widget.feed.quantity.toString());
     _expiryDate = widget.feed.expiryDate ?? DateTime.now();
+
+    _dbService = DatabaseServicesForFeed(widget.uid);
   }
 
   @override
@@ -38,20 +44,18 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Form is valid, update the feed item
       final updatedFeed = Feed(
         itemName: _itemNameController.text,
         category: _categoryController.text,
-        requiredQuantity: int.parse(_needController.text),
+        requiredQuantity: int.tryParse(_needController.text),
         quantity: int.parse(_stockController.text),
         expiryDate: _expiryDate,
       );
 
-      // TODO: Implement logic to update feed item in database or wherever it's stored
+      await _dbService.infoToServerFeed(updatedFeed);
 
-      // Navigate back to previous screen
       Navigator.pop(context);
     }
   }
@@ -59,10 +63,13 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-
-        title: Text('Edit Feed Item'),
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+        title: const Text(
+          'Edit Feed Item',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,15 +78,15 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
           child: ListView(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _itemNameController,
-                  decoration: InputDecoration(labelText: 'Item Name'),
+                  decoration: const InputDecoration(labelText: 'Item Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter item name';
@@ -89,28 +96,27 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Category'),
-
+                  decoration: const InputDecoration(labelText: 'Category'),
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
                   controller: _needController,
-                  decoration: InputDecoration(labelText: 'Need'),
+                  decoration: const InputDecoration(labelText: 'Need'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -124,15 +130,15 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: TextFormField(
                   controller: _stockController,
-                  decoration: InputDecoration(labelText: 'Stock'),
+                  decoration: const InputDecoration(labelText: 'Stock'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -146,8 +152,8 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                padding: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
@@ -157,7 +163,7 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                   onTap: () async {
                     final selectedDate = await showDatePicker(
                       context: context,
-                      initialDate: _expiryDate,
+                      initialDate: DateTime.now().isBefore(_expiryDate) ? _expiryDate : DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 10),
                     );
@@ -172,14 +178,12 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(13, 166, 186, 0.9))
-
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
                 ),
-
-                child: Text('Save'
-                ,style: TextStyle(
-                    color: Colors.black
-                  ),),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
             ],
           ),
