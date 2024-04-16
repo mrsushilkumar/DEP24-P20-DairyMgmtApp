@@ -177,7 +177,8 @@ class _AnimalListState extends State<AnimalList> {
                   _buildFilterOption(
                     'State:',
                     ['Milked', 'Heifer', 'Insemination', 'Abortion', 'Dry', 'Calved'],
-                        (List<String> selectedOptions) {
+                    _selectedStates,
+                        (selectedOptions) {
                       setState(() {
                         _selectedStates = selectedOptions;
                       });
@@ -187,7 +188,8 @@ class _AnimalListState extends State<AnimalList> {
                   _buildFilterOption(
                     'Gender:',
                     ['Male', 'Female'],
-                        (List<String> selectedOptions) {
+                    _selectedGenders,
+                        (selectedOptions) {
                       setState(() {
                         _selectedGenders = selectedOptions;
                       });
@@ -199,13 +201,19 @@ class _AnimalListState extends State<AnimalList> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          // Apply filters here
+                          // For demonstration, print the selected options
+                          print('Selected States: $_selectedStates');
+                          print('Selected Genders: $_selectedGenders');
+
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(color: Colors.black), // Add border
                         ),
                         child: const Text('Confirm Filters',
-                        style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                        style: TextStyle(color:Colors.black,
+                        fontWeight: FontWeight.bold),),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -214,17 +222,17 @@ class _AnimalListState extends State<AnimalList> {
                             _selectedGenders.clear();
                           });
 
-                          _fetchCattle(); // Refetch original list
+                          // _fetchCattle(); // Refetch original list
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(color: Colors.black), // Add border
                         ),
-                        child: const Text('Clear Filters'
-                        ,style:TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold
-                            )),
+                        child: const Text('Clear Filters',
+                        style: TextStyle(
+                          color:Colors.black,
+                          fontWeight: FontWeight.bold
+                        ),),
                       ),
                     ],
                   ),
@@ -237,12 +245,9 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 
-  Widget _buildFilterOption(String title, List<String> options, Function(List<String>) onSelect) {
-    List<String> selectedOptions = [];
-
+  Widget _buildFilterOption(String title, List<String> options, List<String> selectedOptions, Function(List<String>) onSelect) {
     return Container(
       decoration: BoxDecoration(
-
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(12.0),
@@ -265,22 +270,28 @@ class _AnimalListState extends State<AnimalList> {
               final isSelected = selectedOptions.contains(option);
               return FilterChip(
                 label: Text(option),
+                selected: isSelected,
                 onSelected: (isSelected) {
-                  setState(() {
-                    if (isSelected) {
-                      selectedOptions.add(option);
-                    } else {
-                      selectedOptions.remove(option);
-                    }
-                  });
-                  onSelect(selectedOptions);
+                  List<String> updatedOptions = List.from(selectedOptions);
+                  if (isSelected) {
+                    setState(() {
+
+                      updatedOptions.add(option);
+                    });
+                  } else {
+                    setState(() {
+
+                      updatedOptions.remove(option);
+                    });
+                  }
+                  onSelect(updatedOptions);
                 },
-                selectedColor: isSelected ? Colors.blue.withOpacity(1.0) : null,
+                selectedColor: Color.fromRGBO(250, 255, 255, 1.0),
                 checkmarkColor: Colors.black,
-                backgroundColor: isSelected ? Colors.blue.withOpacity(0.9) : Colors.grey.withOpacity(0.3),
+                backgroundColor: Colors.grey.withOpacity(0.3),
                 shape: StadiumBorder(
                   side: BorderSide(color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.5)),
-                ), // Disable delete icon if option is not selected
+                ),
               );
             }).toList(),
           ),
@@ -289,6 +300,8 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 }
+
+
 
 
 
@@ -303,6 +316,34 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
       context,
       MaterialPageRoute(
         builder: (context) => AnimalDetails(rfid: cattle.rfid),
+      ),
+    );
+  }
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      appBarTheme: AppBarTheme(
+        color: Color.fromRGBO(13, 166, 186, 1)
+      ),
+      // Customize the search bar's appearance
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true, // Set to true to add a background color
+        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        // hintStyle: TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
@@ -333,8 +374,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         close(
           context,
           query.isEmpty
-              ? Cattle(rfid: '', breed: '')
-              : Cattle(rfid: '', breed: ''),
+              ? Cattle(rfid: '', breed: '',sex:' ')
+              : Cattle(rfid: '', breed: '', sex:' '),
         );
       },
     );
@@ -478,7 +519,7 @@ class _CattleListItemState extends State<CattleListItem> {
                   // style: TextStyle(color: Colors.amber[800]),
                 ),
                 Text(
-                  "Age:${widget.cattle.age}",
+                  "Sex:${widget.cattle.sex}",
                   // style: TextStyle(color: Colors.pinkAccent[400]),
                 )
               ],

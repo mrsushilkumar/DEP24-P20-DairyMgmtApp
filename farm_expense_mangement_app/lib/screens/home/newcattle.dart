@@ -17,6 +17,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
   final TextEditingController _rfidTextController = TextEditingController();
   final TextEditingController _weightTextController = TextEditingController();
   final TextEditingController _breedTextController = TextEditingController();
+  final TextEditingController _agetextController = TextEditingController();
+
   // final TextEditingController _tagNumberController3 = TextEditingController();
 
   String? _selectedGender; // Variable to store selected gender
@@ -63,10 +65,10 @@ class _AddNewCattleState extends State<AddNewCattle> {
   void addNewCattleButton(BuildContext context) {
     final cattle = Cattle(
         rfid: _rfidTextController.text,
-        age: 4,
+        age: _agetextController.text.isNotEmpty?int.parse(_agetextController.text):0,
         breed: _breedTextController.text,
         sex: _selectedGender != null? _selectedGender! : '',
-        weight: int.parse(_weightTextController.text),
+        weight: _weightTextController.text.isNotEmpty?int.parse(_weightTextController.text):0,
         state: _selectedState != null? _selectedState! : ''
     );
 
@@ -85,6 +87,9 @@ class _AddNewCattleState extends State<AddNewCattle> {
     super.initState();
 
     cattleDb = DatabaseServicesForCattle(uid);
+    setState(() {
+
+    });
   }
 
   @override
@@ -177,17 +182,15 @@ class _AddNewCattleState extends State<AddNewCattle> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
-                  controller: _birthDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Birth Date',
-                    border: const OutlineInputBorder(),
+                  keyboardType: TextInputType.number,
+                  // initialValue: '0',
+                  controller: _agetextController,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter The Age',
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDate(context),
-                    ),
                   ),
                 ),
               ),
@@ -196,6 +199,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
+                  // initialValue: '0',
                   controller: _weightTextController,
                   decoration: const InputDecoration(
                     labelText: 'Enter The Weight',
@@ -229,12 +233,13 @@ class _AddNewCattleState extends State<AddNewCattle> {
                       _selectedSource = value;
                     });
                   },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select Source';
-                    }
-                    return null;
-                  },
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please Enter Breed';
+      }
+      return null;
+    }
+
                 ),
               ),
               // SizedBox(height: 10),
@@ -243,13 +248,20 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 child: TextFormField(
                   controller: _breedTextController,
                   decoration: const InputDecoration(
-                    labelText: 'Enter The Breed',
+                    labelText: 'Enter The Breed*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Breed';
+                    }
+                    return null;
+                  },
                 ),
+
               ),
 
               Padding(
