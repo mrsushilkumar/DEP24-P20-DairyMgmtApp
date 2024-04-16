@@ -313,6 +313,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
           ),
           IconButton(
             icon: const Icon(Icons.edit),
+              color: Colors.black,
             onPressed: () {
               editDetail();
             },

@@ -222,7 +222,7 @@ class _AnimalListState extends State<AnimalList> {
                             _selectedGenders.clear();
                           });
 
-                          // _fetchCattle(); // Refetch original list
+                          _fetchCattle(); // Refetch original list
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
@@ -234,6 +234,7 @@ class _AnimalListState extends State<AnimalList> {
                           fontWeight: FontWeight.bold
                         ),),
                       ),
+
                     ],
                   ),
                 ],
@@ -286,7 +287,7 @@ class _AnimalListState extends State<AnimalList> {
                   }
                   onSelect(updatedOptions);
                 },
-                selectedColor: Color.fromRGBO(250, 255, 255, 1.0),
+                selectedColor: Colors.lightBlue[100],
                 checkmarkColor: Colors.black,
                 backgroundColor: Colors.grey.withOpacity(0.3),
                 shape: StadiumBorder(
