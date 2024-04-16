@@ -215,7 +215,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 width: 1.5, // Set the border width here
                               ),
 
-                              color: Color.fromRGBO(240, 255, 255, 1)
+                              color: const Color.fromRGBO(240, 255, 255, 1)
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -252,7 +252,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 child: SizedBox(
                                   // width: 80,
                                   child: Text(
-                                    '${DateFormat('yyyy-MM-dd').format(event.date!)}', // Display the raw date string
+                                    DateFormat('yyyy-MM-dd').format(event.date), // Display the raw date string
                                     softWrap: false,
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(fontSize: 16,

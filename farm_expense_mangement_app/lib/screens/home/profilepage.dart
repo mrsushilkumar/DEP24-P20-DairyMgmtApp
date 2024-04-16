@@ -18,7 +18,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
         'Profile',
         style: TextStyle(color: Colors.white),
       ),
-      backgroundColor: Color.fromRGBO(13, 166, 186, 1.0),
+      backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
       actions: [
         IconButton(
           onPressed: () {
@@ -187,7 +187,7 @@ class ProfileInfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const ProfileInfoRow({
+  const ProfileInfoRow({super.key,
     required this.label,
     required this.value,
   });

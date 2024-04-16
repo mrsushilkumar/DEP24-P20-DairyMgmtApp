@@ -347,7 +347,7 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
     return Scaffold(
 
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
 
       body: ListView.builder(
         itemCount: searchResults.length,
@@ -372,7 +372,7 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
 
     return Container(
-      color: Color.fromRGBO(240, 255, 255, 1), // Set the desired background color here
+      color: const Color.fromRGBO(240, 255, 255, 1), // Set the desired background color here
       child: ListView.builder(
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
