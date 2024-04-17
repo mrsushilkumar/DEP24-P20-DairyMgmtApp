@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> {
     Color avgMilkPerCowColor =
         const Color.fromRGBO(202, 217, 173, 1.0); // Yellow color
     return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
       child: Container(
         height: 600,
         color: Colors.grey[300],
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 17),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -135,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

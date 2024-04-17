@@ -39,8 +39,8 @@ class _RegisterState extends State<Register> {
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('asset/f3.jpeg'), // Background image path
-                  fit: BoxFit.cover,
+                  image: AssetImage('asset/bgscreen.png'), // Background image path
+                  fit: BoxFit.fitHeight
                 ),
               ),
             ),
@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> {
                       actions: <Widget>[
                         TextButton.icon(
                           icon: const Icon(Icons.person,
-                              color: Colors.black),
+                              color: Colors.white),
                           label: const Text(
                             'Sign In',
                             style: TextStyle(color: Colors.white,

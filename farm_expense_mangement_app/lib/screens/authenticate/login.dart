@@ -30,8 +30,10 @@ class _SignInState extends State<SignIn> {
           children: [
             Positioned.fill(
               child: Image.asset(
-                'asset/f3.jpeg',
-                fit: BoxFit.cover,
+                'asset/bgscreen.png',
+                fit: BoxFit.fitHeight
+
+                ,
               ),
             ),
             ListView(
@@ -50,20 +52,21 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.black ,
                         ),
                       ),
                       onPressed: () => widget.toggleView(),
                     ),
                   ],
                 ),
+                const SizedBox(height: 0,),
                 Padding(
                   padding: const EdgeInsets.all(50.0),
                   child: Container(
                     width: 300,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.black.withOpacity(0.5), // Set container color with opacity
+                      color: Colors.black.withOpacity(0.4), // Set container color with opacity
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -72,8 +75,11 @@ class _SignInState extends State<SignIn> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 20.0),
+
                             TextFormField(
-                              decoration: textInputDecoration.copyWith(hintText: 'email'),
+
+                              decoration: textInputDecoration.copyWith(hintText: 'email',
+                              ),
                               onChanged: (val) {
                                 setState(() => email = val);
                               },
@@ -114,7 +120,8 @@ class _SignInState extends State<SignIn> {
                               },
                               child: const Text(
                                 'Forgot Password?',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white,
+                                fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

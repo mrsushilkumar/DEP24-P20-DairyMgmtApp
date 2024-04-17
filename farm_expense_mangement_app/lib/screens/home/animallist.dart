@@ -330,7 +330,12 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
-        fillColor: const Color.fromRGBO(240, 255, 255, 1),
+
+        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: TextStyle(
+          fontSize: 18
+        ),
+
         // hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

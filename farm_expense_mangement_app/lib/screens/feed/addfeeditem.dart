@@ -69,66 +69,73 @@ class _AddFeedItemState extends State<AddFeedItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Text('Add Feed Item'),
+        title: const Text('Add Feed Item',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 26),
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _itemNameController,
                 decoration: InputDecoration(
                   labelText: 'Item Name',
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Color.fromRGBO(240, 255, 255, 1),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _quantityController,
                 decoration: InputDecoration(
                   labelText: 'Quantity',
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                 ),
                 keyboardType: TextInputType.number,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _requiredQuantityController,
                 decoration: InputDecoration(
                   labelText: 'Required Quantity',
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                 ),
                 keyboardType: TextInputType.number,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _categoryDateController,
                 decoration: InputDecoration(
                   labelText: 'Category',
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextFormField(
                 controller: _expiryDateController,
                 decoration: InputDecoration(
@@ -136,7 +143,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   hintText: "YYYY-MM-DD",
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
@@ -150,7 +158,13 @@ class _AddFeedItemState extends State<AddFeedItem> {
               onPressed: () {
                 _saveFeedItem(context);
               },
-              child: const Text('Save'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(13, 166,186,1)), // Background color
+                // Other styles such as padding, shape, textStyle can also be specified here
+              ),
+              child: const Text('Save',
+              style: TextStyle(color:Colors.black,
+              fontWeight: FontWeight.bold),),
             ),
           ],
         ),

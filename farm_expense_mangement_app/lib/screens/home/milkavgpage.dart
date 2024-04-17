@@ -1,7 +1,10 @@
 import 'package:farm_expense_mangement_app/models/milk.dart';
 import 'package:farm_expense_mangement_app/services/database/milkdatabase.dart';
+import 'package:farm_expense_mangement_app/services/database/cattledatabase.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:farm_expense_mangement_app/models/cattle.dart';
 
 import 'milk/milkbydate.dart';
 
@@ -75,7 +78,10 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Center(child: Text('Milk Records')),
+        title: const Center(child: Text('Milk Records',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),)),
         actions: [
           IconButton(
             color: Colors.black,
@@ -117,7 +123,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
           );
@@ -142,8 +148,22 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   late DatabaseForMilk db;
   late DatabaseForMilkByDate dbByDate;
+  late DatabaseServicesForCattle cattleDb;
 
-  String? rfid;
+  late List<Cattle> allCattle = [];
+  List<String> allRfids = [];
+
+  Future<void> _fetchCattle() async {
+    final snapshot = await cattleDb.infoFromServerAllCattle(uid);
+    setState(() {
+      allCattle =
+          snapshot.docs.map((doc) => Cattle.fromFireStore(doc, null)).toList();
+      // Extracting RFIDs and storing them in the allRfids list
+      allRfids = allCattle.map((cattle) => cattle.rfid).toList();
+    });
+  }
+
+  String? selectedRfid;
   double? milkInMorning;
   double? milkInEvening;
   DateTime? milkingDate;
@@ -153,6 +173,9 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
     super.initState();
     db = DatabaseForMilk(uid);
     dbByDate = DatabaseForMilkByDate(uid);
+    cattleDb = DatabaseServicesForCattle(uid);
+    // selectedRfid = '';
+    _fetchCattle();
   }
 
   void _addMilk(Milk data) async {
@@ -165,8 +188,10 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
       milkByDate = MilkByDate(dateOfMilk: data.dateOfMilk);
       await dbByDate.infoToServerMilk(milkByDate);
     }
-    final double totalMilk = milkByDate.totalMilk + data.morning + data.evening;
-    await dbByDate.infoToServerMilk(MilkByDate(dateOfMilk: data.dateOfMilk, totalMilk: totalMilk));
+    final double totalMilk =
+        milkByDate.totalMilk + data.morning + data.evening;
+    await dbByDate.infoToServerMilk(
+        MilkByDate(dateOfMilk: data.dateOfMilk, totalMilk: totalMilk));
   }
 
   @override
@@ -174,12 +199,15 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        title: const Text('Add Milk Data'),
+        title: const Text('Add Milk Data',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),),
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+            Navigator.pop(context);
           },
         ),
       ),
@@ -190,17 +218,45 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildInputBox(
-                child: TextFormField(
-                  onChanged: (value) {
-                    rfid = value;
-                  },
+              // _buildInputBox(
+
+                DropdownButtonFormField<String>(
+                  value: selectedRfid,
                   decoration: const InputDecoration(
-                    labelText: 'RFID',
-                    border: InputBorder.none,
+                    labelText: 'Select RFID',
+                    border: OutlineInputBorder(
+
+                    ),
+
+                    filled: true,
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+
                   ),
-                ),
+                  items: allRfids.map((String rfid) {
+
+                    return DropdownMenuItem<String>(
+                      value: rfid,
+                      child: Text(rfid),
+                    );
+
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRfid = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select RFID';
+                    }
+                    return null;
+                  },
+                  dropdownColor: Color.fromRGBO(240, 255, 255, 1)
+
+
+
               ),
+
               const SizedBox(height: 20.0),
               _buildInputBox(
                 child: TextFormField(
@@ -245,7 +301,9 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                     child: TextFormField(
                       readOnly: true,
                       controller: TextEditingController(
-                        text: milkingDate != null ? '${milkingDate!.year}-${milkingDate!.month}-${milkingDate!.day}' : '',
+                        text: milkingDate != null
+                            ? '${milkingDate!.year}-${milkingDate!.month}-${milkingDate!.day}'
+                            : '',
                       ),
                       decoration: const InputDecoration(
                         labelText: 'Milking Date',
@@ -263,12 +321,10 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                     backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
                   ),
                   onPressed: () {
-                    if (rfid != null &&
-                        milkInMorning != null &&
-                        milkInEvening != null &&
+                    if (selectedRfid != null &&
                         milkingDate != null) {
                       Milk newMilkData = Milk(
-                        rfid: rfid!,
+                        rfid: selectedRfid!,
                         morning: milkInMorning!,
                         evening: milkInEvening!,
                         dateOfMilk: milkingDate,
@@ -282,7 +338,9 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('Add', style: TextStyle(fontSize: 20)),
+                    child: Text('Add', style: TextStyle(fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),

@@ -156,57 +156,55 @@ class _FeedListItemState extends State<FeedListItem> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        elevation: 8, // Add elevation for shadow
-        color: const Color.fromRGBO(
-            240, 255, 255, 1),
-        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-      // Add margins
+        elevation: 8,
+        color: const Color.fromRGBO(240, 255, 255, 1),
+        margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25), // Add rounded corners
+          borderRadius: BorderRadius.circular(25),
           side: const BorderSide(
             color: Colors.white,
             width: 3,
-          ), // Add boundary color
+          ),
         ),
         child: ListTile(
-          title: Text(
-            widget.feed.itemName,
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text(
+                  widget.feed.itemName,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+              if (widget.feed.expiryDate != null)
+                Flexible(
+                  child: Text(
+                    'Expiry Date ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
+                    style: TextStyle(color: isExpired ? Colors.orange[700]: Colors.green[700]),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+            ],
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        isExpired ? Icons.warning : Icons.calendar_today,
-                        color: isExpired ? Colors.orange : Colors.green,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
-                        style: TextStyle(color: isExpired ? Colors.orange[700]: Colors.green[700]),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: widget.onEdit,
-                  ),
-                ],
-              ),
               Text(
                 'Current Stock: ${widget.feed.quantity}',
                 style: const TextStyle(color: Colors.black),
               ),
               Text(
-                'Need: ${widget.feed.requiredQuantity}',
+                'Current Need: ${widget.feed.requiredQuantity}',
                 style: const TextStyle(color: Colors.black),
               ),
             ],
+          ),
+          trailing: Container(
+            width: 40, // Adjust the width of the container to position the icon
+            child: IconButton(
+              icon: const Icon(Icons.edit, color: Colors.black),
+              onPressed: widget.onEdit,
+            ),
           ),
         ),
       ),
@@ -219,6 +217,34 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
   final Function(Feed) editFeedDetail; // Callback function to handle edit functionality
 
   FeedSearchDelegate(this.allFeed, this.editFeedDetail);
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      appBarTheme: AppBarTheme(
+          color: Color.fromRGBO(13, 166, 186, 1)
+      ),
+      // Customize the search bar's appearance
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true, // Set to true to add a background color
+        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: TextStyle(fontSize: 18),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.black), // Border color
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+      ),
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -280,7 +306,9 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         : allFeed
         .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
         .toList();
-    return ListView.builder(
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+    body:ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
         final feedInfo = searchResults[index];
@@ -295,6 +323,7 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
           },
         );
       },
+    )
     );
   }
 }

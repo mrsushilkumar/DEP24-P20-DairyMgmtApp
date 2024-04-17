@@ -280,7 +280,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                           IconButton(
                             icon: Icon(
                               isDetailVisible ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
-                              color: Colors.blue,
+                              color: Color.fromRGBO(13, 166, 186, 1),
                               size: 40,
                             ),
                             onPressed: () {
@@ -550,6 +550,8 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
   // final TextEditingController _rfidTextController = TextEditingController();
   final TextEditingController _weightTextController = TextEditingController();
   final TextEditingController _breedTextController = TextEditingController();
+  final TextEditingController _agetextController = TextEditingController();
+
   // final TextEditingController _tagNumberController3 = TextEditingController();
 
   String? _selectedGender; // Variable to store selected gender
@@ -655,7 +657,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
             key: _formKey,
             child: ListView(children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 8, 5, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
                   decoration: const InputDecoration(
@@ -686,26 +688,23 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
               ),
               // SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 26),
                 child: TextFormField(
-                  controller: _birthDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Birth Date',
-                    hintText: "YYYY-MM-DD",
-                    border: const OutlineInputBorder(),
+                  keyboardType: TextInputType.number,
+                  // initialValue: '0',
+                  controller: _agetextController,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter The Age',
+                    border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: const Color.fromRGBO(240, 255, 255, 0.7),
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDate(context),
-                    ),
                   ),
                 ),
               ),
               // SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 26),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _weightTextController,
@@ -720,7 +719,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
               ),
               // SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedSource,
                   decoration: const InputDecoration(
@@ -751,21 +750,29 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
               ),
               // SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 26),
                 child: TextFormField(
                   controller: _breedTextController,
                   decoration: const InputDecoration(
-                    labelText: 'Enter The Breed',
+                    labelText: 'Enter The Breed*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
 
                   ),
-                ),
+
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter Breed';
+      }
+      return null;
+    },
+
+              ),
               ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
+                padding: const EdgeInsets.fromLTRB(5, 0, 5, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedStage,
                   decoration: const InputDecoration(

@@ -235,7 +235,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                   },
     validator: (value) {
       if (value == null || value.isEmpty) {
-        return 'Please Enter Breed';
+        return 'Please Enter Source of Cattle';
       }
       return null;
     }

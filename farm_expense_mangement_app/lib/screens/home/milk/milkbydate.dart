@@ -91,7 +91,7 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
             child: Text(
               'Date: ${widget.dateOfMilk!.day}-${widget.dateOfMilk!.month}-${widget.dateOfMilk!.year}',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -129,8 +129,10 @@ class MilkSearchDelegate extends SearchDelegate<String> {
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
-        fillColor: const Color.fromRGBO(240, 255, 255, 1),
-        // hintStyle: TextStyle(color: Colors.grey),
+
+        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: TextStyle(fontSize: 18),
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(color: Colors.black), // Border color
@@ -219,8 +221,9 @@ class _MilkDataRowState extends State<MilkDataRow> {
     final double totalMilk = widget.data.evening + widget.data.morning;
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+      margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
       color: const Color.fromRGBO(240, 255, 255, 1),
+
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
@@ -242,10 +245,10 @@ class _MilkDataRowState extends State<MilkDataRow> {
                   "Rf id: ${widget.data.rfid}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 5),
+                // const SizedBox(height: 5),
                 ClipOval(
                   child: Image.asset(
                     'asset/cow1.jpg',
@@ -276,7 +279,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
                         "Morning: ${widget.data.morning.toStringAsFixed(2)}L",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ],
@@ -294,19 +297,29 @@ class _MilkDataRowState extends State<MilkDataRow> {
                         "Evening: ${widget.data.evening.toStringAsFixed(2)}L",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Image.asset(
+                        'asset/milk.jpg',
+                        width: 20,
+                        height: 20,
+                      ),
+                  const SizedBox(width: 10,),
                   Text(
                     "Total: ${totalMilk}L",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
+                  ],
+              ),
                 ],
               ),
             ),
