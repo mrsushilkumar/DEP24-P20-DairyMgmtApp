@@ -1,4 +1,3 @@
-
 import 'package:farm_expense_mangement_app/models/milk.dart';
 import 'package:farm_expense_mangement_app/services/database/milkdatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,92 +5,112 @@ import 'package:flutter/material.dart';
 
 import 'milk/milkbydate.dart';
 
-
 class AvgMilkPage extends StatefulWidget {
-  const AvgMilkPage({super.key});
+  const AvgMilkPage({Key? key}) : super(key: key);
 
   @override
   State<AvgMilkPage> createState() => _AvgMilkPageState();
 }
 
-class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
+class _AvgMilkPageState extends State<AvgMilkPage> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final RouteObserver<Route<dynamic>> _routeObserver = RouteObserver<Route<dynamic>>();
 
   late DatabaseForMilkByDate db;
-
   List<MilkByDate> _allMilkByDate = [];
+  late DateTime _selectedDate = DateTime.now(); // Step 1: Define selected date
+  List<MilkByDate> _originalMilkByDate = []; // Step 1: Define original list
+  bool _isLoading = true;
 
   Future<void> _fetchAllMilkByDate() async {
     final snapshot = await db.infoFromServerAllMilk();
     setState(() {
-      _allMilkByDate = [];
-      _allMilkByDate = snapshot.docs.map((doc) =>  MilkByDate.fromFireStore(doc,null)).toList();
+      _originalMilkByDate = snapshot.docs.map((doc) => MilkByDate.fromFireStore(doc, null)).toList(); // Step 1: Store original list
+      _allMilkByDate = _originalMilkByDate;
+      _isLoading=false;// Step 1: Set _allMilkByDate to original list
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     db = DatabaseForMilkByDate(uid);
     _fetchAllMilkByDate();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  // Step 2: Implement method to reset list
+  void _resetList() {
+    setState(() {
+      _allMilkByDate = _originalMilkByDate;
+    });
   }
 
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _routeObserver.unsubscribe(this);
-    super.dispose();
+  // Step 3: Implement date picker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+      // Step 4: Filter milk data based on selected date
+      _filterMilkByDate(_selectedDate);
+    }
   }
 
-  @override
-  void didPopNext() {
-    // TODO: implement didPopNext
-    // super.didPopNext();
-    _fetchAllMilkByDate();
+  // Step 4: Implement method to filter list
+  void _filterMilkByDate(DateTime selectedDate) {
+    setState(() {
+      _allMilkByDate = _originalMilkByDate.where((milk) => milk.dateOfMilk == selectedDate).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  const Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-
         title: const Center(child: Text('Milk Records')),
         actions: [
           IconButton(
-            color:Colors.black,
+            color: Colors.black,
             onPressed: () {
-              // Handle filter action
+              // Step 5: Check if filter applied, if yes, reset list, if no, open date picker
+              if (_allMilkByDate.length != _originalMilkByDate.length) {
+                _resetList(); // Reset list
+              } else {
+                _selectDate(context); // Open date picker
+              }
             },
             icon: const Icon(Icons.filter_list),
           ),
-
         ],
         leading: IconButton(
-          color:Colors.black,
-          icon:const Icon(
+          color: Colors.black,
+          icon: const Icon(
             Icons.arrow_back,
           ),
-          onPressed:() {
-            // HomeAppBar();
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-      body: ListView.builder(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator()) // Show loading indicator while data is loading
+          : _allMilkByDate.isEmpty
+          ? Center(
+        child: Text(
+          'No entries found for selected date.',
+          style: TextStyle(fontSize: 18),
+        ),
+      )
+          : ListView.builder(
         itemCount: _allMilkByDate.length,
         itemBuilder: (context, index) {
           return MilkDataRowByDate(data: _allMilkByDate[index]);
@@ -99,104 +118,13 @@ class _AvgMilkPageState extends State<AvgMilkPage> with RouteAware{
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Handle add action
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
           );
         },
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-
-}
-
-
-class MilkDataRowByDate extends StatefulWidget {
-  final MilkByDate data;
-
-  const MilkDataRowByDate({super.key, required this.data});
-
-  @override
-  State<MilkDataRowByDate> createState() => _MilkDataRowByDateState();
-}
-
-class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
-
-  void viewMilkByDate() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: viewMilkByDate,
-      child: Card(
-        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-        color: const Color.fromRGBO(
-            240, 255, 255, 1), // Increase top margin for more gap between cards
-        elevation: 8, // Increase card elevation for stronger shadow
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-          side: const BorderSide(
-            color: Colors.white, // Fluorescent color boundary
-            width: 3, // Width of the boundary
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                  foregroundDecoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.asset(
-                    'asset/cow1.jpg',
-                    fit: BoxFit.cover,
-                    width: 70, // Adjust width to maximize the size
-                    height: 150, // Adjust height to maximize the size
-                  ),
-                ),
-            ),
-            title: Text(
-                "Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-              // const SizedBox(width: 10.0),
-              // Image.asset('asset/morning.webp',width: 30,height: 35,),
-              // Expanded(flex: 1,child: Text("${data.morning.toStringAsFixed(2)}L"),),
-              //
-              // Image.asset('asset/evening2.jpg',width: 25,height: 35,),
-              // Expanded(flex: 1,child: Text(" ${data.evening.toStringAsFixed(2)}L"),),
-              subtitle: Row(
-                  children: [
-                    const Text(
-                        "Total Milk: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    Text("${widget.data.totalMilk.toStringAsFixed(2)}L")
-                  ]
-              ),
-
-          ),
-        ),
       ),
     );
   }
@@ -204,7 +132,7 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
 
 
 class AddMilkDataPage extends StatefulWidget {
-  const AddMilkDataPage({super.key});
+  const AddMilkDataPage({Key? key}) : super(key: key);
 
   @override
   State<AddMilkDataPage> createState() => _AddMilkDataPageState();
@@ -216,7 +144,6 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   late DatabaseForMilk db;
   late DatabaseForMilkByDate dbByDate;
 
-
   String? rfid;
   double? milkInMorning;
   double? milkInEvening;
@@ -224,50 +151,38 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     db = DatabaseForMilk(uid);
     dbByDate = DatabaseForMilkByDate(uid);
   }
 
-
   void _addMilk(Milk data) async {
     await db.infoToServerMilk(data);
-    final MilkByDate  milkByDate;
+    final MilkByDate milkByDate;
     final snapshot = await dbByDate.infoFromServerMilk(data.dateOfMilk!);
-    if(snapshot.exists)
-      {
-        milkByDate = MilkByDate.fromFireStore(snapshot, null);
-      }
-    else
-      {
-        milkByDate = MilkByDate(dateOfMilk: data.dateOfMilk);
-        await dbByDate.infoToServerMilk(milkByDate);
-      }
-    final double totalMilk = milkByDate.totalMilk + data.morning+data.evening;
-    await dbByDate.infoToServerMilk(MilkByDate(dateOfMilk: data.dateOfMilk,totalMilk: totalMilk));
-
-
+    if (snapshot.exists) {
+      milkByDate = MilkByDate.fromFireStore(snapshot, null);
+    } else {
+      milkByDate = MilkByDate(dateOfMilk: data.dateOfMilk);
+      await dbByDate.infoToServerMilk(milkByDate);
+    }
+    final double totalMilk = milkByDate.totalMilk + data.morning + data.evening;
+    await dbByDate.infoToServerMilk(MilkByDate(dateOfMilk: data.dateOfMilk, totalMilk: totalMilk));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
-
       appBar: AppBar(
         title: const Text('Add Milk Data'),
-        // backgroundColor: Colors.blue[100],
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back
-          ),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
           },
         ),
-
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -344,42 +259,33 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
               ),
               const SizedBox(height: 20.0),
               Center(
-
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-
                   ),
                   onPressed: () {
-                    // Handle add action
                     if (rfid != null &&
                         milkInMorning != null &&
                         milkInEvening != null &&
                         milkingDate != null) {
                       Milk newMilkData = Milk(
-                          rfid: rfid!,
-                          morning: milkInMorning!,
-                          evening: milkInEvening!,
-                          dateOfMilk: milkingDate
-                        // totalMilk: milkInMorning! + milkInEvening!,
+                        rfid: rfid!,
+                        morning: milkInMorning!,
+                        evening: milkInEvening!,
+                        dateOfMilk: milkingDate,
                       );
-                      // Here, you can add the new milk data to your list or database
                       _addMilk(newMilkData);
-
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AvgMilkPage()
-                          )
-                      );// Close the add milk data page
+                        context,
+                        MaterialPageRoute(builder: (context) => const AvgMilkPage()),
+                      );
                     }
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('Add',style: TextStyle(fontSize: 20),),
+                    child: Text('Add', style: TextStyle(fontSize: 20)),
                   ),
                 ),
-
               ),
             ],
           ),
@@ -396,6 +302,82 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
       ),
       padding: const EdgeInsets.fromLTRB(10, 2, 2, 2),
       child: child,
+    );
+  }
+}
+
+class MilkDataRowByDate extends StatefulWidget {
+  final MilkByDate data;
+
+  const MilkDataRowByDate({Key? key, required this.data}) : super(key: key);
+
+  @override
+  State<MilkDataRowByDate> createState() => _MilkDataRowByDateState();
+}
+
+class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
+  void viewMilkByDate() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: viewMilkByDate,
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+        color: const Color.fromRGBO(240, 255, 255, 1),
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(
+            color: Colors.white,
+            width: 3,
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                foregroundDecoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Image.asset(
+                  'asset/milk.jpg',
+                  fit: BoxFit.cover,
+                  width: 70,
+                  height: 200,
+                ),
+              ),
+            ),
+            title: Text(
+              "Date: ${widget.data.dateOfMilk?.day}-${widget.data.dateOfMilk?.month}-${widget.data.dateOfMilk?.year}",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Row(
+              children: [
+                const Text(
+                  "Total Milk: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "${widget.data.totalMilk.toStringAsFixed(2)}L",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

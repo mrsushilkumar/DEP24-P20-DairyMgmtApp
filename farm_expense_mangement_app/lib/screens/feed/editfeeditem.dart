@@ -10,7 +10,7 @@ class EditFeedItemPage extends StatefulWidget {
   const EditFeedItemPage({super.key, required this.feed, required this.uid});
 
   @override
-  _EditFeedItemPageState createState() => _EditFeedItemPageState();
+  State<EditFeedItemPage> createState() => _EditFeedItemPageState();
 }
 
 class _EditFeedItemPageState extends State<EditFeedItemPage> {

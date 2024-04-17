@@ -13,7 +13,7 @@ class Cattle {
 
   Cattle({
     required this.rfid,
-    this.sex = 'female',
+     required this.sex,
     this.age = 0,
     required this.breed,
     this.weight = 0,

@@ -22,7 +22,7 @@ class CattleHistory {
   }
 
   Map<String, Object> toMap() {
-    return {'name': name, 'date': date} as Map<String, Object>;
+    return {'name': name, 'date': date};
   }
 
 }

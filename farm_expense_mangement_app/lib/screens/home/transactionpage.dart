@@ -12,8 +12,10 @@ class Transaction {
 }
 
 class TransactionPage extends StatefulWidget {
+  const TransactionPage({super.key});
+
   @override
-  _TransactionPageState createState() => _TransactionPageState();
+  State<TransactionPage> createState() => _TransactionPageState();
 }
 
 class _TransactionPageState extends State<TransactionPage> {
@@ -49,6 +51,7 @@ class _TransactionPageState extends State<TransactionPage> {
     currentTransactions = filterTransactionsByDate(currentTransactions);
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 152, 186, 1.0),
         title: Text('Transactions'),
@@ -104,7 +107,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       padding: EdgeInsets.all(10),
                       margin: EdgeInsets.only(top: 8),
                       decoration: BoxDecoration(
-                        color: showIncome ? Colors.blue[200] : Colors.blueGrey[100],
+                        color: showIncome ? Color.fromRGBO(240, 255, 255, 0.9) : Colors.blueGrey[100],
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(8),
                           bottomLeft: Radius.circular(8),
@@ -131,7 +134,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       padding: EdgeInsets.all(10),
                       margin: EdgeInsets.only(top: 8),
                       decoration: BoxDecoration(
-                        color: showIncome ? Colors.blueGrey[100] : Colors.blue[200],
+                        color: showIncome ? Colors.blueGrey[100] : Color.fromRGBO(240, 255, 255, 0.9),
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(8),
                           bottomRight: Radius.circular(8),
