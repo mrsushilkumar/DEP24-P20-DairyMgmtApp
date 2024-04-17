@@ -69,7 +69,7 @@ class _AddFeedItemState extends State<AddFeedItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text('Add Feed Item',
@@ -85,9 +85,9 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _itemNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Item Name',
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
                 ),
@@ -97,9 +97,9 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _quantityController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Quantity',
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
 
@@ -111,9 +111,9 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _requiredQuantityController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Required Quantity',
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
 
@@ -125,9 +125,9 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _categoryDateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Category',
-                  border: const OutlineInputBorder(),
+                  border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
 
@@ -143,7 +143,7 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   hintText: "YYYY-MM-DD",
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Color.fromRGBO(240, 255, 255, 1),
+                  fillColor: const Color.fromRGBO(240, 255, 255, 1),
 
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.calendar_today),
@@ -159,7 +159,7 @@ class _AddFeedItemState extends State<AddFeedItem> {
                 _saveFeedItem(context);
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(13, 166,186,1)), // Background color
+                backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166,186,1)), // Background color
                 // Other styles such as padding, shape, textStyle can also be specified here
               ),
               child: const Text('Save',

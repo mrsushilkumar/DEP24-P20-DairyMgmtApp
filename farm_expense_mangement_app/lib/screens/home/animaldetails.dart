@@ -280,7 +280,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                           IconButton(
                             icon: Icon(
                               isDetailVisible ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
-                              color: Color.fromRGBO(13, 166, 186, 1),
+                              color: const Color.fromRGBO(13, 166, 186, 1),
                               size: 40,
                             ),
                             onPressed: () {
@@ -575,19 +575,19 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     'Calved'
   ];
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked.day.toString() != _birthDateController.text) {
-      setState(() {
-        _birthDateController.text = picked.toString().split(' ')[0];
-      });
-    }
-  }
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(1900),
+  //     lastDate: DateTime.now(),
+  //   );
+  //   if (picked != null && picked.day.toString() != _birthDateController.text) {
+  //     setState(() {
+  //       _birthDateController.text = picked.toString().split(' ')[0];
+  //     });
+  //   }
+  // }
 
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;

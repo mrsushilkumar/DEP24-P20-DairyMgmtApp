@@ -1,4 +1,4 @@
-import 'package:farm_expense_mangement_app/screens/home/milkavgpage.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -76,10 +76,7 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
           color: Colors.black,
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const AvgMilkPage()),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -130,8 +127,8 @@ class MilkSearchDelegate extends SearchDelegate<String> {
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
 
-        fillColor: Color.fromRGBO(240, 255, 255, 1),
-        hintStyle: TextStyle(fontSize: 18),
+        fillColor: const Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: const TextStyle(fontSize: 18),
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -213,7 +210,7 @@ class MilkDataRow extends StatefulWidget {
 
 class _MilkDataRowState extends State<MilkDataRow> {
   void editDetail() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditMilkByDate(data: widget.data)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditMilkByDate(data: widget.data)));
   }
 
   @override
@@ -395,10 +392,7 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: widget.data.dateOfMilk)),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -460,12 +454,7 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
                         dateOfMilk: widget.data.dateOfMilk,
                       );
                       _editMilkDetail(newMilkData);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MilkByDatePage(dateOfMilk: widget.data.dateOfMilk),
-                        ),
-                      );
+                      Navigator.pop(context);
                     }
                   },
                   child: const Padding(

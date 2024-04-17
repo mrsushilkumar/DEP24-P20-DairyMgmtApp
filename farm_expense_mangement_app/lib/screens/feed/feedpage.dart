@@ -199,7 +199,7 @@ class _FeedListItemState extends State<FeedListItem> {
               ),
             ],
           ),
-          trailing: Container(
+          trailing: SizedBox(
             width: 40, // Adjust the width of the container to position the icon
             child: IconButton(
               icon: const Icon(Icons.edit, color: Colors.black),
@@ -221,27 +221,27 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
           color: Color.fromRGBO(13, 166, 186, 1)
       ),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
-        fillColor: Color.fromRGBO(240, 255, 255, 1),
-        hintStyle: TextStyle(fontSize: 18),
+        fillColor: const Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: const TextStyle(fontSize: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
@@ -307,7 +307,7 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
     body:ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {

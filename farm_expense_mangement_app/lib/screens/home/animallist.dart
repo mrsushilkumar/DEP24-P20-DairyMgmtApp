@@ -331,8 +331,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
 
-        fillColor: Color.fromRGBO(240, 255, 255, 1),
-        hintStyle: TextStyle(
+        fillColor: const Color.fromRGBO(240, 255, 255, 1),
+        hintStyle: const TextStyle(
           fontSize: 18
         ),
 

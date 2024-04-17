@@ -251,7 +251,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                     }
                     return null;
                   },
-                  dropdownColor: Color.fromRGBO(240, 255, 255, 1)
+                  dropdownColor: const Color.fromRGBO(240, 255, 255, 1)
 
 
 
@@ -330,10 +330,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                         dateOfMilk: milkingDate,
                       );
                       _addMilk(newMilkData);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AvgMilkPage()),
-                      );
+                      Navigator.pop(context);
                     }
                   },
                   child: const Padding(
@@ -374,7 +371,7 @@ class MilkDataRowByDate extends StatefulWidget {
 
 class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
   void viewMilkByDate() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
   }
 
   @override
