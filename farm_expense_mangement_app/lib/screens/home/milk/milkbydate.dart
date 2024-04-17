@@ -8,7 +8,7 @@ import '../../../services/database/milkdatabase.dart';
 class MilkByDatePage extends StatefulWidget {
   final DateTime? dateOfMilk;
 
-  const MilkByDatePage({Key? key, this.dateOfMilk}) : super(key: key);
+  const MilkByDatePage({super.key, this.dateOfMilk});
 
   @override
   State<MilkByDatePage> createState() => _MilkByDatePageState();
@@ -123,27 +123,27 @@ class MilkSearchDelegate extends SearchDelegate<String> {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
           color: Color.fromRGBO(13, 166, 186, 1)
       ),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
-        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        fillColor: const Color.fromRGBO(240, 255, 255, 1),
         // hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
@@ -203,7 +203,7 @@ class MilkSearchDelegate extends SearchDelegate<String> {
 class MilkDataRow extends StatefulWidget {
   final Milk data;
 
-  const MilkDataRow({Key? key, required this.data}) : super(key: key);
+  const MilkDataRow({super.key, required this.data});
 
   @override
   State<MilkDataRow> createState() => _MilkDataRowState();
@@ -327,7 +327,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
 class EditMilkByDate extends StatefulWidget {
   final Milk data;
 
-  const EditMilkByDate({Key? key, required this.data}) : super(key: key);
+  const EditMilkByDate({super.key, required this.data});
 
   @override
   State<EditMilkByDate> createState() => _EditMilkByDateState();
@@ -364,8 +364,8 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
     final double totalMilk = milkByDate.totalMilk +
         milk.morning +
         milk.evening -
-        widget.data.evening! -
-        widget.data.morning!;
+        widget.data.evening -
+        widget.data.morning;
     await dbByDate.infoToServerMilk(MilkByDate(dateOfMilk: milk.dateOfMilk, totalMilk: totalMilk));
   }
 
@@ -482,7 +482,7 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: labelText,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         contentPadding: const EdgeInsets.all(12),
       ),
     );

@@ -42,19 +42,19 @@ class _AddNewCattleState extends State<AddNewCattle> {
     'Calved'
   ];
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked.day.toString() != _birthDateController.text) {
-      setState(() {
-        _birthDateController.text = picked.toString().split(' ')[0];
-      });
-    }
-  }
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(1900),
+  //     lastDate: DateTime.now(),
+  //   );
+  //   if (picked != null && picked.day.toString() != _birthDateController.text) {
+  //     setState(() {
+  //       _birthDateController.text = picked.toString().split(' ')[0];
+  //     });
+  //   }
+  // }
 
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;

@@ -13,20 +13,49 @@ class DatabaseForSale {
     return await db
         .collection('User')
         .doc(uid)
-        .collection('sale')
+        .collection('Sale')
         .orderBy('saleOnMonth',descending: true)
         .get();
   }
 
-  Future<void> infoToServerFeed(Sale sale) async {
+  Future<void> infoToServerSale(Sale sale) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     return await db
         .collection('User')
         .doc(uid)
-        .collection('sale')
-        .doc("M${sale.saleOnMonth.month}Y${sale.saleOnMonth.year}")
+        .collection('Sale')
+        .doc("${sale.name.replaceAll(' ', '')}M${sale.saleOnMonth!.month}Y${sale.saleOnMonth!.year}")
         .set(sale.toFireStore());
+  }
+
+}
+
+
+class DatabaseForExpanse {
+  String uid;
+  DatabaseForExpanse({required this.uid});
+
+  Future<QuerySnapshot<Map<String,dynamic>>> infoFromServerAllTransaction() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Expense')
+        .orderBy('expenseOnMonth',descending: true)
+        .get();
+  }
+
+  Future<void> infoToServerExpanse(Expense expense) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Expense')
+        .doc("${expense.name.replaceAll(' ', '')}M${expense.expenseOnMonth!.month}Y${expense.expenseOnMonth!.year}")
+        .set(expense.toFireStore());
   }
 
 }

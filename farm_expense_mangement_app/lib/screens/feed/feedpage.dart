@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({Key? key});
+  const FeedPage({super.key,});
 
   @override
   State<FeedPage> createState() => _FeedState();
@@ -136,11 +136,11 @@ class FeedListItem extends StatefulWidget {
   final VoidCallback onTap;
   final VoidCallback onEdit;
 
-  const FeedListItem({
+  const FeedListItem({super.key,
     required this.feed,
     required this.onTap,
     required this.onEdit,
-    Key? key,
+
   });
 
   @override

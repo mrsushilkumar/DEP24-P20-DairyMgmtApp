@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'milk/milkbydate.dart';
 
 class AvgMilkPage extends StatefulWidget {
-  const AvgMilkPage({Key? key}) : super(key: key);
+  const AvgMilkPage({super.key});
 
   @override
   State<AvgMilkPage> createState() => _AvgMilkPageState();
@@ -15,7 +15,6 @@ class AvgMilkPage extends StatefulWidget {
 class _AvgMilkPageState extends State<AvgMilkPage> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
-  final RouteObserver<Route<dynamic>> _routeObserver = RouteObserver<Route<dynamic>>();
 
   late DatabaseForMilkByDate db;
   List<MilkByDate> _allMilkByDate = [];
@@ -102,9 +101,9 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
         ),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator while data is loading
+          ? const Center(child: CircularProgressIndicator()) // Show loading indicator while data is loading
           : _allMilkByDate.isEmpty
-          ? Center(
+          ? const Center(
         child: Text(
           'No entries found for selected date.',
           style: TextStyle(fontSize: 18),
@@ -132,7 +131,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
 
 
 class AddMilkDataPage extends StatefulWidget {
-  const AddMilkDataPage({Key? key}) : super(key: key);
+  const AddMilkDataPage({super.key});
 
   @override
   State<AddMilkDataPage> createState() => _AddMilkDataPageState();
@@ -309,7 +308,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 class MilkDataRowByDate extends StatefulWidget {
   final MilkByDate data;
 
-  const MilkDataRowByDate({Key? key, required this.data}) : super(key: key);
+  const MilkDataRowByDate({super.key, required this.data});
 
   @override
   State<MilkDataRowByDate> createState() => _MilkDataRowByDateState();

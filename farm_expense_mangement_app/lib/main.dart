@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -33,7 +34,6 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-      navigatorObservers: [RouteObserver()],
     );
   }
 }

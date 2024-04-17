@@ -209,7 +209,7 @@ class _AnimalListState extends State<AnimalList> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          side: BorderSide(color: Colors.black), // Add border
+                          side: const BorderSide(color: Colors.black), // Add border
                         ),
                         child: const Text('Confirm Filters',
                         style: TextStyle(color:Colors.black,
@@ -226,7 +226,7 @@ class _AnimalListState extends State<AnimalList> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          side: BorderSide(color: Colors.black), // Add border
+                          side: const BorderSide(color: Colors.black), // Add border
                         ),
                         child: const Text('Clear Filters',
                         style: TextStyle(
@@ -324,27 +324,27 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         color: Color.fromRGBO(13, 166, 186, 1)
       ),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
-        fillColor: Color.fromRGBO(240, 255, 255, 1),
+        fillColor: const Color.fromRGBO(240, 255, 255, 1),
         // hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide(color: Colors.black), // Border color
+          borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
