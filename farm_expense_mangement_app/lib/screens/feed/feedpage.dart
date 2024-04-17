@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key});
+  const FeedPage({Key? key});
 
   @override
   State<FeedPage> createState() => _FeedState();
@@ -47,7 +47,7 @@ class _FeedState extends State<FeedPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditFeedItemPage(feed: feed,uid:uid),
+        builder: (context) => EditFeedItemPage(feed: feed, uid: uid),
       ),
     );
   }
@@ -140,7 +140,7 @@ class FeedListItem extends StatefulWidget {
     required this.feed,
     required this.onTap,
     required this.onEdit,
-    super.key,
+    Key? key,
   });
 
   @override
@@ -156,15 +156,22 @@ class _FeedListItemState extends State<FeedListItem> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Card(
-        color: const Color.fromRGBO(240, 255,255, 1),
-        margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-        shadowColor: Colors.white70,
-        elevation: 8,
+        elevation: 8, // Add elevation for shadow
+        color: const Color.fromRGBO(
+            240, 255, 255, 1),
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+      // Add margins
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25), // Add rounded corners
+          side: const BorderSide(
+            color: Colors.white,
+            width: 3,
+          ), // Add boundary color
+        ),
         child: ListTile(
           title: Text(
             widget.feed.itemName,
-            style: const TextStyle(color: Colors.black,
-            fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,12 +183,12 @@ class _FeedListItemState extends State<FeedListItem> {
                     children: [
                       Icon(
                         isExpired ? Icons.warning : Icons.calendar_today,
-                        color: isExpired ? Colors.red : Colors.black,
+                        color: isExpired ? Colors.orange : Colors.green,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'Expiry Date: ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
-                        style: TextStyle(color: isExpired ? Colors.red : Colors.black),
+                        style: TextStyle(color: isExpired ? Colors.orange[700]: Colors.green[700]),
                       ),
                     ],
                   ),
@@ -206,7 +213,6 @@ class _FeedListItemState extends State<FeedListItem> {
     );
   }
 }
-
 
 class FeedSearchDelegate extends SearchDelegate<Feed> {
   final List<Feed> allFeed;
@@ -237,7 +243,7 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         color: Colors.black,
       ),
       onPressed: () {
-        close(context, query.isEmpty ? Feed(itemName: '', category: '',quantity: 10) : Feed(itemName: '', category: '',quantity: 10));
+        close(context, query.isEmpty ? Feed(itemName: '', category: '', quantity: 10) : Feed(itemName: '', category: '', quantity: 10));
       },
     );
   }
