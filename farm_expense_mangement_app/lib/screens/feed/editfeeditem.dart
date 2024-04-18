@@ -68,7 +68,9 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text(
           'Edit Feed Item',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18),
         ),
       ),
       body: Padding(
@@ -182,7 +184,8 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
                 child: const Text(
                   'Save',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black,
+                  fontWeight: FontWeight.bold),
                 ),
               ),
             ],

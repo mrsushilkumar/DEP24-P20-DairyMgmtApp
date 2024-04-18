@@ -125,7 +125,8 @@ class _FeedState extends State<FeedPage> {
         },
         tooltip: 'Add Feed',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,
+        color: Colors.black,),
       ),
     );
   }

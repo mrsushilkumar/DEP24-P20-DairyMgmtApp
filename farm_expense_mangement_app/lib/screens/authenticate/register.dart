@@ -51,25 +51,28 @@ class _RegisterState extends State<Register> {
                 children: [
                   // App bar with transparent background
                   Container(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top), // Adjust top padding to account for system status bar
-                    // height: 90, // Set app bar height
+                    padding: EdgeInsets.only(top: 0), // Adjust top padding to account for system status bar
+                    height: 110, // Set app bar height
                     color: Colors.transparent, // Make app bar background transparent
                     child: AppBar(
                       backgroundColor: Colors.transparent, // Make app bar background transparent
                       elevation: 0, // Remove app bar shadow
-                      // title: Text(
-                      //   'Dairy Management App',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
+                      // centerTitle: true,
+                      title: Text(
+                        ' Mobile Dairy',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 27,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
                       actions: <Widget>[
                         TextButton.icon(
                           icon: const Icon(Icons.person,
-                              color: Colors.white),
+                              color: Colors.black),
                           label: const Text(
                             'Sign In',
-                            style: TextStyle(color: Colors.white,
+                            style: TextStyle(color: Colors.black,
                                 fontWeight:FontWeight.bold),
                           ),
                           onPressed: () => widget.toggleView(),

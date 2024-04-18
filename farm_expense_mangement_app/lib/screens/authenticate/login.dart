@@ -5,7 +5,7 @@ import 'package:farm_expense_mangement_app/shared/constants.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
 
-  const SignIn({super.key, required this.toggleView});
+  const SignIn({Key? key, required this.toggleView}) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -25,20 +25,28 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         body: Stack(
           children: [
             Positioned.fill(
               child: Image.asset(
                 'asset/bgscreen.png',
-                fit: BoxFit.fitHeight
-
-                ,
+                fit: BoxFit.fitHeight,
               ),
             ),
+            Container(
+              color: Colors.black.withOpacity(0.5), // Set opacity level here
+
+              child:
+
             ListView(
               children: [
-                AppBar(
+                Container(
+                  padding:  const EdgeInsets.only(top:0.0),
+                color: Colors.transparent,
+
+                child:AppBar(
+
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   actions: <Widget>[
@@ -50,16 +58,27 @@ class _SignInState extends State<SignIn> {
                       label: const Text(
                         'Register',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black ,
+                          color: Colors.black,
                         ),
                       ),
                       onPressed: () => widget.toggleView(),
                     ),
                   ],
+                  // centerTitle: true,
+                  title: const Text(
+                    ' Mobile Dairy',
+                    style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 0,),
+                ),
+                const SizedBox(height: 30,),
+
                 Padding(
                   padding: const EdgeInsets.all(50.0),
                   child: Container(
@@ -75,10 +94,9 @@ class _SignInState extends State<SignIn> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 20.0),
-
                             TextFormField(
-
-                              decoration: textInputDecoration.copyWith(hintText: 'email',
+                              decoration: textInputDecoration.copyWith(
+                                hintText: 'email',
                               ),
                               onChanged: (val) {
                                 setState(() => email = val);
@@ -120,8 +138,10 @@ class _SignInState extends State<SignIn> {
                               },
                               child: const Text(
                                 'Forgot Password?',
-                                style: TextStyle(color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
@@ -132,6 +152,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ],
             ),
+    ),
           ],
         ),
       ),

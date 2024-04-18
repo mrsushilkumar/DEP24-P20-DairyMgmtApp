@@ -93,7 +93,7 @@ class _AnimalListState extends State<AnimalList> {
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Cattles',
-          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
@@ -152,7 +152,8 @@ class _AnimalListState extends State<AnimalList> {
         },
         tooltip: 'Add Cattle',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,
+        color: Colors.black,),
       ),
     );
   }
