@@ -5,7 +5,7 @@ import 'package:farm_expense_mangement_app/shared/constants.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
 
-  const SignIn({Key? key, required this.toggleView}) : super(key: key);
+  const SignIn({super.key, required this.toggleView});
 
   @override
   State<SignIn> createState() => _SignInState();

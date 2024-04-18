@@ -1,15 +1,14 @@
-import 'package:farm_expense_mangement_app/models/milk.dart';
-import 'package:farm_expense_mangement_app/services/database/milkdatabase.dart';
-import 'package:farm_expense_mangement_app/services/database/cattledatabase.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farm_expense_mangement_app/models/cattle.dart';
 
+import '../../models/cattle.dart';
+import '../../models/milk.dart';
+import '../../services/database/cattledatabase.dart';
+import '../../services/database/milkdatabase.dart';
 import 'milk/milkbydate.dart';
 
 class AvgMilkPage extends StatefulWidget {
-  const AvgMilkPage({super.key});
+  const AvgMilkPage({Key? key}) : super(key: key);
 
   @override
   State<AvgMilkPage> createState() => _AvgMilkPageState();
@@ -21,16 +20,18 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
 
   late DatabaseForMilkByDate db;
   List<MilkByDate> _allMilkByDate = [];
-  late DateTime _selectedDate = DateTime.now(); // Step 1: Define selected date
-  List<MilkByDate> _originalMilkByDate = []; // Step 1: Define original list
+  late DateTime _selectedDate = DateTime.now();
+  List<MilkByDate> _originalMilkByDate = [];
   bool _isLoading = true;
 
   Future<void> _fetchAllMilkByDate() async {
     final snapshot = await db.infoFromServerAllMilk();
     setState(() {
-      _originalMilkByDate = snapshot.docs.map((doc) => MilkByDate.fromFireStore(doc, null)).toList(); // Step 1: Store original list
+      _originalMilkByDate = snapshot.docs
+          .map((doc) => MilkByDate.fromFireStore(doc, null))
+          .toList();
       _allMilkByDate = _originalMilkByDate;
-      _isLoading=false;// Step 1: Set _allMilkByDate to original list
+      _isLoading = false;
     });
   }
 
@@ -41,14 +42,12 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
     _fetchAllMilkByDate();
   }
 
-  // Step 2: Implement method to reset list
   void _resetList() {
     setState(() {
       _allMilkByDate = _originalMilkByDate;
     });
   }
 
-  // Step 3: Implement date picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -60,15 +59,15 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       setState(() {
         _selectedDate = picked;
       });
-      // Step 4: Filter milk data based on selected date
       _filterMilkByDate(_selectedDate);
     }
   }
 
-  // Step 4: Implement method to filter list
   void _filterMilkByDate(DateTime selectedDate) {
     setState(() {
-      _allMilkByDate = _originalMilkByDate.where((milk) => milk.dateOfMilk == selectedDate).toList();
+      _allMilkByDate = _originalMilkByDate
+          .where((milk) => milk.dateOfMilk == selectedDate)
+          .toList();
     });
   }
 
@@ -78,19 +77,20 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Center(child: Text('Milk Records',
-        style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),)),
+        title: const Center(
+          child: Text(
+            'Milk Records',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         actions: [
           IconButton(
             color: Colors.black,
             onPressed: () {
-              // Step 5: Check if filter applied, if yes, reset list, if no, open date picker
               if (_allMilkByDate.length != _originalMilkByDate.length) {
-                _resetList(); // Reset list
+                _resetList();
               } else {
-                _selectDate(context); // Open date picker
+                _selectDate(context);
               }
             },
             icon: const Icon(Icons.filter_list),
@@ -107,7 +107,9 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator()) // Show loading indicator while data is loading
+          ? const Center(
+        child: CircularProgressIndicator(),
+      )
           : _allMilkByDate.isEmpty
           ? const Center(
         child: Text(
@@ -125,7 +127,13 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddMilkDataPage()),
+            MaterialPageRoute(
+              builder: (context) => AddMilkDataPage(
+                onMilkRecordAdded: () {
+                  _fetchAllMilkByDate();
+                },
+              ),
+            ),
           );
         },
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -135,9 +143,10 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
   }
 }
 
-
 class AddMilkDataPage extends StatefulWidget {
-  const AddMilkDataPage({super.key});
+  final VoidCallback? onMilkRecordAdded;
+
+  const AddMilkDataPage({Key? key, this.onMilkRecordAdded}) : super(key: key);
 
   @override
   State<AddMilkDataPage> createState() => _AddMilkDataPageState();
@@ -146,20 +155,19 @@ class AddMilkDataPage extends StatefulWidget {
 class _AddMilkDataPageState extends State<AddMilkDataPage> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+
   late DatabaseForMilk db;
   late DatabaseForMilkByDate dbByDate;
   late DatabaseServicesForCattle cattleDb;
 
-  late List<Cattle> allCattle = [];
-  List<String> allRfids = [];
+  List<Cattle> allCattle = [];
+  List<String> allRfid = [];
 
   Future<void> _fetchCattle() async {
     final snapshot = await cattleDb.infoFromServerAllCattle(uid);
     setState(() {
-      allCattle =
-          snapshot.docs.map((doc) => Cattle.fromFireStore(doc, null)).toList();
-      // Extracting RFIDs and storing them in the allRfids list
-      allRfids = allCattle.map((cattle) => cattle.rfid).toList();
+      allCattle = snapshot.docs.map((doc) => Cattle.fromFireStore(doc, null)).toList();
+      allRfid = allCattle.map((cattle) => cattle.rfid).toList();
     });
   }
 
@@ -174,22 +182,20 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
     db = DatabaseForMilk(uid);
     dbByDate = DatabaseForMilkByDate(uid);
     cattleDb = DatabaseServicesForCattle(uid);
-    // selectedRfid = '';
     _fetchCattle();
   }
 
-  void _addMilk(Milk data) async {
+  Future<void> _addMilk(Milk data) async {
     await db.infoToServerMilk(data);
-    final MilkByDate milkByDate;
     final snapshot = await dbByDate.infoFromServerMilk(data.dateOfMilk!);
+    final MilkByDate milkByDate;
     if (snapshot.exists) {
       milkByDate = MilkByDate.fromFireStore(snapshot, null);
     } else {
       milkByDate = MilkByDate(dateOfMilk: data.dateOfMilk);
       await dbByDate.infoToServerMilk(milkByDate);
     }
-    final double totalMilk =
-        milkByDate.totalMilk + data.morning + data.evening;
+    final double totalMilk = milkByDate.totalMilk + data.morning + data.evening;
     await dbByDate.infoToServerMilk(
         MilkByDate(dateOfMilk: data.dateOfMilk, totalMilk: totalMilk));
   }
@@ -199,10 +205,10 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        title: const Text('Add Milk Data',
-        style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),),
+        title: const Text(
+          'Add Milk Data',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -218,45 +224,33 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // _buildInputBox(
-
-                DropdownButtonFormField<String>(
-                  value: selectedRfid,
-                  decoration: const InputDecoration(
-                    labelText: 'Select RFID',
-                    border: OutlineInputBorder(
-
-                    ),
-
-                    filled: true,
-                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
-                  ),
-                  items: allRfids.map((String rfid) {
-
-                    return DropdownMenuItem<String>(
-                      value: rfid,
-                      child: Text(rfid),
-                    );
-
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRfid = value;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select RFID';
-                    }
-                    return null;
-                  },
-                  dropdownColor: const Color.fromRGBO(240, 255, 255, 1)
-
-
-
+              DropdownButtonFormField<String>(
+                value: selectedRfid,
+                decoration: const InputDecoration(
+                  labelText: 'Select RFID',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+                ),
+                items: allRfid.map((String rfid) {
+                  return DropdownMenuItem<String>(
+                    value: rfid,
+                    child: Text(rfid),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedRfid = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select RFID';
+                  }
+                  return null;
+                },
+                dropdownColor: const Color.fromRGBO(240, 255, 255, 1),
               ),
-
               const SizedBox(height: 20.0),
               _buildInputBox(
                 child: TextFormField(
@@ -321,23 +315,31 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                     backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
                   ),
                   onPressed: () {
-                    if (selectedRfid != null &&
-                        milkingDate != null) {
-                      Milk newMilkData = Milk(
+                    if (selectedRfid != null && milkingDate != null) {
+                      final Milk newMilkData = Milk(
                         rfid: selectedRfid!,
                         morning: milkInMorning!,
                         evening: milkInEvening!,
                         dateOfMilk: milkingDate,
                       );
-                      _addMilk(newMilkData);
+
+                      _addMilk(newMilkData).then((_) {
+                        if (widget.onMilkRecordAdded != null) {
+                          widget.onMilkRecordAdded!();
+                        }
+                        Navigator.pop(context);
+                      });
+                    } else {
                       Navigator.pop(context);
                     }
                   },
                   child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('Add', style: TextStyle(fontSize: 20,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold)),
+                    padding: EdgeInsets.all(4.0),
+                    child: Text('Add',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -363,7 +365,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 class MilkDataRowByDate extends StatefulWidget {
   final MilkByDate data;
 
-  const MilkDataRowByDate({super.key, required this.data});
+  const MilkDataRowByDate({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MilkDataRowByDate> createState() => _MilkDataRowByDateState();
@@ -371,13 +373,20 @@ class MilkDataRowByDate extends StatefulWidget {
 
 class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
   void viewMilkByDate() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk))));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk)),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: viewMilkByDate,
+      onTap: () {
+        viewMilkByDate();
+      },
       child: Card(
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
         color: const Color.fromRGBO(240, 255, 255, 1),
@@ -435,3 +444,4 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
     );
   }
 }
+

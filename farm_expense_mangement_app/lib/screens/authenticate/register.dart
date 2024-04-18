@@ -51,14 +51,14 @@ class _RegisterState extends State<Register> {
                 children: [
                   // App bar with transparent background
                   Container(
-                    padding: EdgeInsets.only(top: 0), // Adjust top padding to account for system status bar
+                    padding: const EdgeInsets.only(top: 0), // Adjust top padding to account for system status bar
                     height: 110, // Set app bar height
                     color: Colors.transparent, // Make app bar background transparent
                     child: AppBar(
                       backgroundColor: Colors.transparent, // Make app bar background transparent
                       elevation: 0, // Remove app bar shadow
                       // centerTitle: true,
-                      title: Text(
+                      title: const Text(
                         ' Mobile Dairy',
                         style: TextStyle(
                           color: Colors.black,
@@ -199,23 +199,33 @@ class _RegisterOtpState extends State<RegisterOtp> {
   Future _sendOTP () async {
 
     if(await emailOTP.sendOTP() == true) {
-      final snackBar = SnackBar(
-          backgroundColor: Colors.red.shade500,
-          content: const Text('OTP send'),
-          action: SnackBarAction(label: 'Undo', onPressed: () {}));
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      successOTP();
     }
     else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register(toggleView: widget.toggleView)));
-      _formKey.currentState!.save();
-      final snackBar = SnackBar(
-          backgroundColor: Colors.red.shade500,
-          content: const Text('Error in sending OTP'),
-          action: SnackBarAction(label: 'Undo', onPressed: () {}));
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      failedOTP();
     }
+  }
+
+  void successOTP () {
+    final snackBar = SnackBar(
+        backgroundColor: Colors.red.shade500,
+        content: const Text('OTP send'),
+        action: SnackBarAction(label: 'Undo', onPressed: () {}));
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+  }
+
+  void failedOTP () {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register(toggleView: widget.toggleView)));
+    _formKey.currentState!.save();
+    final snackBar = SnackBar(
+        backgroundColor: Colors.red.shade500,
+        content: const Text('Error in sending OTP'),
+        action: SnackBarAction(label: 'Undo', onPressed: () {}));
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
   }
 
   @override
@@ -232,6 +242,8 @@ class _RegisterOtpState extends State<RegisterOtp> {
     );
     _sendOTP();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -326,8 +338,8 @@ class _RegisterOtpState extends State<RegisterOtp> {
                                           }
 
                                     } on FirebaseAuthException {
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register(toggleView: widget.toggleView)));
-                                    }
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register(toggleView: widget.toggleView)));
+                                      }
                                     }
                                     else
                                     {

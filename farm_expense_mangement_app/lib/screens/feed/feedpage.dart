@@ -25,6 +25,7 @@ class _FeedState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    // print('Feed Page');
     feedDb = DatabaseServicesForFeed(uid);
     // setState(() {
       _fetchFeed();
@@ -286,7 +287,7 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
         .toList();
     return Scaffold(
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
     body: ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
