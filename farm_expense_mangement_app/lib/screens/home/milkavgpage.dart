@@ -337,7 +337,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                     padding: EdgeInsets.all(4.0),
                     child: Text('Add',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   ),

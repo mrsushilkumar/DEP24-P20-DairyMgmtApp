@@ -464,10 +464,10 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
                     }
                   },
                   child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Text(
                       'Save',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                 ),
