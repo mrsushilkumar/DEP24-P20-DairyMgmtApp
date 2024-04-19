@@ -13,12 +13,13 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
 
     return AppBar(
-      centerTitle: true,
+
+      // centerTitle: true,
       title: const Text(
         'Profile',
         style: TextStyle(color: Colors.white),
       ),
-      backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+      backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
       actions: [
         IconButton(
           onPressed: () {
@@ -34,6 +35,26 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         )
       ],
+      // flexibleSpace: Padding(
+      //   padding: const EdgeInsets.fromLTRB(0,70,0,0),
+      //   child: Column(
+      //
+      //    children: [
+      //      const CircleAvatar(
+      //        radius: 35,
+      //        child: Icon(
+      //          Icons.person,
+      //          size: 60,
+      //        ),
+      //      ),
+      //      const SizedBox(height: 20),
+      //      ProfileInfoRow(
+      //        label: 'Farm Owner: ',
+      //        value: farmUser.ownerName,
+      //      ),
+      //    ]
+      //   ),
+      // ),
     );
   }
 
@@ -79,41 +100,142 @@ class _ProfilePageState extends State<ProfilePage> {
           farmUser = FarmUser.fromFireStore(snapshot.requireData, null);
 
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 50,
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(13, 166, 186, 0.9),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
+                  ),
+                  height: 170,
+                  width: double.infinity,
+
+                  child:Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      const CircleAvatar(
+                        radius: 35,
+                        child: Icon(
+                          Icons.person,
+                          size: 35,
+                        ),
+                      ),
+                      SizedBox(height: 15,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(" Farm Owner : ",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
+                          Text("${farmUser.ownerName.toUpperCase()}",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                ProfileInfoRow(
-                  label: 'Farm Owner: ',
-                  value: farmUser.ownerName,
+                // const CircleAvatar(
+                //   radius: 50,
+                //   child: Icon(
+                //     Icons.person,
+                //     size: 60,
+                //   ),
+                // ),
+                const SizedBox(height: 50),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0,0,12,0),
+                  child: Container(
+                    color: Colors.blueGrey[100],
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0,18,8,18),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.square_rounded,color: Colors.green,),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+                                width: 100,
+                                  child: Text("Farm Name  ",style: TextStyle(fontSize: 18),)),
+                              SizedBox(width: 60,),
+                              Text("${farmUser.farmName}",style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Icon(Icons.email_rounded,color: Colors.green,),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+                                  width: 100,
+                                  child: Text("Email  ",style: TextStyle(fontSize: 18),)),
+                              SizedBox(width: 60,),
+                              Expanded(child: Text("${user!.email ?? ""}",style: TextStyle(fontSize: 18),)),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Icon(Icons.phone,color: Colors.green,),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+                                  width: 100,
+                                  child: Text("Phone No.  ",style: TextStyle(fontSize: 18),)),
+                              SizedBox(width: 60,),
+                              Expanded(child: Text("${farmUser.phoneNo}",style: TextStyle(fontSize: 18),)),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Icon(Icons.location_pin,color: Colors.green,),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+                                  width: 120,
+                                  child: Text("Farm Address ",style: TextStyle(fontSize: 18),)),
+                              SizedBox(width: 40,),
+                              Expanded(child: Text("${farmUser.location}",style: TextStyle(fontSize: 18),)),
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                ProfileInfoRow(
-                  label: 'Farm Name: ',
-                  value: farmUser.farmName,
-                ),
-                ProfileInfoRow(
-                  label: 'Email: ',
-                  value: user!.email ?? "",
-                ),
-                ProfileInfoRow(
-                  label: 'Phone Number: ',
-                  value: '${farmUser.phoneNo}',
-                ),
-                ProfileInfoRow(
-                  label: 'Address: ',
-                  value: farmUser.location,
-                ),
-                const SizedBox(height: 20),
+                // ProfileInfoRow(
+                //   label: 'Farm Owner: ',
+                //   value: farmUser.ownerName,
+                // ),
+                // ProfileInfoRow(
+                //   label: 'Farm Name: ',
+                //   value: farmUser.farmName,
+                // ),
+                // ProfileInfoRow(
+                //   label: 'Email: ',
+                //   value: user!.email ?? "",
+                // ),
+                // ProfileInfoRow(
+                //   label: 'Phone Number: ',
+                //   value: '${farmUser.phoneNo}',
+                // ),
+                // ProfileInfoRow(
+                //   label: 'Address: ',
+                //   value: farmUser.location,
+                // ),
+                const SizedBox(height: 40),
                 ElevatedButton(
+                  style:ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+                    foregroundColor: Colors.white,
+                  ) ,
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -151,12 +273,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+        title: const Text('Edit Profile',),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20.0,40,20,20),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -167,13 +290,47 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  hintText: 'Name',
+                  hintText: 'Owner Name',
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
+              TextFormField(
+                // controller: _controllerName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  hintText: 'Farm Name',
+                ),
+              ),
+              const SizedBox(height: 25),
+              TextFormField(
+                // controller: _controllerName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  hintText: 'Phone No.',
+                ),
+              ),
+              const SizedBox(height: 25),
+              TextFormField(
+                // controller: _controllerName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  hintText: 'Farm Address',
+                ),
+              ),
+              const SizedBox(height: 25),
               ElevatedButton(
+                style:ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+                  foregroundColor: Colors.white,
+                ) ,
                 onPressed: () {},
-                child: const Text('Save Changes'),
+                child: const Text('Save Changes',style: TextStyle(fontSize: 17),),
               ),
             ],
           ),
