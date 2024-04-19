@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color.fromRGBO(13, 166, 186, 0.9),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20.0),
@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   child:Column(
                     children: [
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       const CircleAvatar(
                         radius: 35,
                         child: Icon(
@@ -126,12 +126,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           size: 35,
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      const SizedBox(height: 15,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(" Farm Owner : ",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
-                          Text("${farmUser.ownerName.toUpperCase()}",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
+                          const Text(" Farm Owner : ",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
+                          Text(farmUser.ownerName.toUpperCase(),style: const TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
                         ],
                       ),
                     ],
@@ -155,53 +155,53 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.square_rounded,color: Colors.green,),
-                              SizedBox(width: 16,),
+                              const Icon(Icons.square_rounded,color: Colors.green,),
+                              const SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                              const SizedBox(
                                 width: 100,
                                   child: Text("Farm Name  ",style: TextStyle(fontSize: 18),)),
-                              SizedBox(width: 60,),
-                              Text("${farmUser.farmName}",style: TextStyle(fontSize: 18),),
+                              const SizedBox(width: 60,),
+                              Text(farmUser.farmName,style: const TextStyle(fontSize: 18),),
                             ],
                           ),
-                          SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
                           Row(
                             children: [
-                              Icon(Icons.email_rounded,color: Colors.green,),
-                              SizedBox(width: 16,),
+                              const Icon(Icons.email_rounded,color: Colors.green,),
+                              const SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                              const SizedBox(
                                   width: 100,
                                   child: Text("Email  ",style: TextStyle(fontSize: 18),)),
-                              SizedBox(width: 60,),
-                              Expanded(child: Text("${user!.email ?? ""}",style: TextStyle(fontSize: 18),)),
+                              const SizedBox(width: 60,),
+                              Expanded(child: Text(user!.email ?? "",style: const TextStyle(fontSize: 18),)),
                             ],
                           ),
-                          SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
                           Row(
                             children: [
-                              Icon(Icons.phone,color: Colors.green,),
-                              SizedBox(width: 16,),
+                              const Icon(Icons.phone,color: Colors.green,),
+                              const SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                              const SizedBox(
                                   width: 100,
                                   child: Text("Phone No.  ",style: TextStyle(fontSize: 18),)),
-                              SizedBox(width: 60,),
-                              Expanded(child: Text("${farmUser.phoneNo}",style: TextStyle(fontSize: 18),)),
+                              const SizedBox(width: 60,),
+                              Expanded(child: Text("${farmUser.phoneNo}",style: const TextStyle(fontSize: 18),)),
                             ],
                           ),
-                          SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
                           Row(
                             children: [
-                              Icon(Icons.location_pin,color: Colors.green,),
-                              SizedBox(width: 16,),
+                              const Icon(Icons.location_pin,color: Colors.green,),
+                              const SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                              const SizedBox(
                                   width: 120,
                                   child: Text("Farm Address ",style: TextStyle(fontSize: 18),)),
-                              SizedBox(width: 40,),
-                              Expanded(child: Text("${farmUser.location}",style: TextStyle(fontSize: 18),)),
+                              const SizedBox(width: 40,),
+                              Expanded(child: Text(farmUser.location,style: const TextStyle(fontSize: 18),)),
                             ],
                           ),
 
@@ -233,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   style:ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+                    backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
                     foregroundColor: Colors.white,
                   ) ,
                   onPressed: () {
@@ -275,7 +275,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     return Scaffold(
 
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
         title: const Text('Edit Profile',),
       ),
       body: Padding(
@@ -326,7 +326,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               const SizedBox(height: 25),
               ElevatedButton(
                 style:ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(13, 166, 186, 0.9),
+                  backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
                   foregroundColor: Colors.white,
                 ) ,
                 onPressed: () {},

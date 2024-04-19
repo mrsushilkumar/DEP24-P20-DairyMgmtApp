@@ -46,6 +46,22 @@ class AuthService {
     }
   }
 
+  Future<void> updatePassword(String email) async {
+    // final user = FirebaseAuth.instance.currentUser;
+    // final actionCodeSettings = ActionCodeSettings(
+    //     url: 'https://farm-expense-management-cp.firebaseapp.com/__/auth/action?mode=action&oobCode=code',
+    //     androidPackageName: 'farm-expense-management-cp.firebaseapp.com',
+    //   handleCodeInApp: true
+    // );
+    try {
+      return await _auth.sendPasswordResetEmail(email: email);
+    }
+    catch (error) {
+      print(error.toString());
+      return;
+    }
+  }
+
   // Sign out
   Future<void> signOut() async {
     try {

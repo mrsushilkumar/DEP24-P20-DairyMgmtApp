@@ -8,7 +8,7 @@ import '../../services/database/milkdatabase.dart';
 import 'milk/milkbydate.dart';
 
 class AvgMilkPage extends StatefulWidget {
-  const AvgMilkPage({Key? key}) : super(key: key);
+  const AvgMilkPage({super.key});
 
   @override
   State<AvgMilkPage> createState() => _AvgMilkPageState();
@@ -146,7 +146,7 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
 class AddMilkDataPage extends StatefulWidget {
   final VoidCallback? onMilkRecordAdded;
 
-  const AddMilkDataPage({Key? key, this.onMilkRecordAdded}) : super(key: key);
+  const AddMilkDataPage({super.key, this.onMilkRecordAdded});
 
   @override
   State<AddMilkDataPage> createState() => _AddMilkDataPageState();
@@ -365,7 +365,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
 class MilkDataRowByDate extends StatefulWidget {
   final MilkByDate data;
 
-  const MilkDataRowByDate({Key? key, required this.data}) : super(key: key);
+  const MilkDataRowByDate({super.key, required this.data});
 
   @override
   State<MilkDataRowByDate> createState() => _MilkDataRowByDateState();

@@ -1,3 +1,6 @@
+
+
+import 'package:farm_expense_mangement_app/screens/authenticate/forgotpasswordpage.dart';
 import 'package:flutter/material.dart';
 import 'package:farm_expense_mangement_app/services/auth.dart';
 import 'package:farm_expense_mangement_app/shared/constants.dart';
@@ -20,6 +23,10 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
+
+  void forgotPasswordPage(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +142,7 @@ class _SignInState extends State<SignIn> {
                               onPressed: () {
                                 // Add your 'Forgot Password' action here
                                 // For example, you can navigate to a new screen for password reset
+                                forgotPasswordPage(context);
                               },
                               child: const Text(
                                 'Forgot Password?',
