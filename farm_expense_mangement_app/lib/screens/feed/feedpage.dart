@@ -25,8 +25,11 @@ class _FeedState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    // print('Feed Page');
     feedDb = DatabaseServicesForFeed(uid);
-    _fetchFeed();
+    // setState(() {
+      _fetchFeed();
+
   }
 
   @override
@@ -44,6 +47,7 @@ class _FeedState extends State<FeedPage> {
 
   void editFeedDetail(Feed feed) {
     // Implement your logic to view feed detail
+    // Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -125,7 +129,8 @@ class _FeedState extends State<FeedPage> {
         },
         tooltip: 'Add Feed',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,
+        color: Colors.black,),
       ),
     );
   }
@@ -281,7 +286,9 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         : allFeed
         .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
         .toList();
-    return ListView.builder(
+    return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
+    body: ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
         final feedInfo = searchResults[index];
@@ -296,6 +303,7 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
           },
         );
       },
+    ),
     );
   }
 

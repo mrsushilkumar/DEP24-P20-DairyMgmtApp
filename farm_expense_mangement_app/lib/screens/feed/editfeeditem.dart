@@ -1,3 +1,4 @@
+import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/models/feed.dart';
@@ -44,7 +45,8 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
     super.dispose();
   }
 
-  void _submitForm() async {
+  Future<void> editFeedOnDatabase() async {
+
     if (_formKey.currentState!.validate()) {
       final updatedFeed = Feed(
         itemName: _itemNameController.text,
@@ -55,9 +57,17 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
       );
 
       await _dbService.infoToServerFeed(updatedFeed);
+    }
+  }
+
+
+
+  void _submitForm(BuildContext context) {
+    editFeedOnDatabase();
 
       Navigator.pop(context);
-    }
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FeedPage()));
+
   }
 
   @override
@@ -68,7 +78,9 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text(
           'Edit Feed Item',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18),
         ),
       ),
       body: Padding(
@@ -176,13 +188,16 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _submitForm,
+                onPressed: (){
+                  _submitForm(context);
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
                 ),
                 child: const Text(
                   'Save',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black,
+                  fontWeight: FontWeight.bold),
                 ),
               ),
             ],

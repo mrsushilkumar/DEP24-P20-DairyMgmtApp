@@ -30,6 +30,16 @@ class DatabaseForMilk {
         .doc(milk.rfid)
         .set(milk.toFireStore());
   }
+  Future<void> deleteAllMilkRecords(DateTime dateOfMilk) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Milk')
+        .doc('D${dateOfMilk.day}M${dateOfMilk.month}Y${dateOfMilk.year}')
+        .delete();
+  }
 
 }
 

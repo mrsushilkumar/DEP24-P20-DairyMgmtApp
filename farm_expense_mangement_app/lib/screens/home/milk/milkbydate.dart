@@ -1,4 +1,5 @@
 
+import 'package:farm_expense_mangement_app/screens/home/milkavgpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -77,6 +78,9 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+
           },
         ),
       ),
@@ -455,13 +459,15 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
                       );
                       _editMilkDetail(newMilkData);
                       Navigator.pop(context);
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: widget.data.dateOfMilk)));
                     }
                   },
                   child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Text(
                       'Save',
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                 ),

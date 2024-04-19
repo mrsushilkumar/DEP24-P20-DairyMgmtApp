@@ -74,7 +74,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text('Add Feed Item',
         style: TextStyle(
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+          fontSize: 18
         ),),
       ),
       body: Padding(
