@@ -60,7 +60,16 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
     }
   }
 
+  Future<void> deleteFeedDatabase() async {
+      await _dbService.deleteFeed(_itemNameController.text);
 
+  }
+
+  void _deleteFeed(BuildContext context) {
+    deleteFeedDatabase();
+    Navigator.pop(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FeedPage()));
+  }
 
   void _submitForm(BuildContext context) {
     editFeedOnDatabase();
@@ -93,12 +102,24 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
+                  // border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: TextFormField(
+                  readOnly: true,
+                  enabled: false,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.black
+                  ),
                   controller: _itemNameController,
-                  decoration: const InputDecoration(labelText: 'Item Name'),
+                  decoration: const InputDecoration(
+                      labelText: 'Item Name',
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black
+                      )
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter item name';
@@ -187,18 +208,37 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                   },
                 ),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  _submitForm(context);
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
-                ),
-                child: const Text(
-                  'Save',
-                  style: TextStyle(color: Colors.black,
-                  fontWeight: FontWeight.bold),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: (){
+                      _deleteFeed(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
+                    ),
+                    child: const Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: (){
+                      _submitForm(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
+                    ),
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
