@@ -73,6 +73,12 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   Widget build(BuildContext context) {
+    if(showIncome) {
+      _fetchIncome();
+    }
+    else {
+        _fetchExpanse();
+      }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
