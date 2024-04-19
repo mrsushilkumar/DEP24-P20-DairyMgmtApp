@@ -51,6 +51,4 @@ class DatabaseServicesForFeed {
         .doc(itemName)
         .delete();
   }
-
-
 }

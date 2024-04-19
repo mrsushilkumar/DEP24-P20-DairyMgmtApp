@@ -11,7 +11,7 @@ class CattleHistory {
       SnapshotOptions? options) {
     final data = snapshot.data();
     final name = data?['name'];
-    final date = (data?['date']!=null)? data!['date'].toDate():null;
+    final date = (data?['date'] != null) ? data!['date'].toDate() : null;
     // final date1 = DateTime(date.year, date.month, date.day);
     return CattleHistory(name: name, date: date);
   }
@@ -24,5 +24,4 @@ class CattleHistory {
   Map<String, Object> toMap() {
     return {'name': name, 'date': date};
   }
-
 }

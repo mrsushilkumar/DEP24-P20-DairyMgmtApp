@@ -61,16 +61,18 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
   late final DatabaseServicesForCattle cattleDb;
 
-
   void addNewCattleButton(BuildContext context) {
     final cattle = Cattle(
         rfid: _rfidTextController.text,
-        age: _agetextController.text.isNotEmpty?int.parse(_agetextController.text):0,
+        age: _agetextController.text.isNotEmpty
+            ? int.parse(_agetextController.text)
+            : 0,
         breed: _breedTextController.text,
-        sex: _selectedGender != null? _selectedGender! : '',
-        weight: _weightTextController.text.isNotEmpty?int.parse(_weightTextController.text):0,
-        state: _selectedState != null? _selectedState! : ''
-    );
+        sex: _selectedGender != null ? _selectedGender! : '',
+        weight: _weightTextController.text.isNotEmpty
+            ? int.parse(_weightTextController.text)
+            : 0,
+        state: _selectedState != null ? _selectedState! : '');
 
     cattleDb.infoToServerSingleCattle(cattle);
 
@@ -79,17 +81,13 @@ class _AddNewCattleState extends State<AddNewCattle> {
         context, MaterialPageRoute(builder: (context) => const AnimalList()));
   }
 
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     cattleDb = DatabaseServicesForCattle(uid);
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -106,7 +104,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-
         title: const Text(
           'New Cattle',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -118,7 +115,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
           color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const AnimalList()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const AnimalList()));
           },
         ),
       ),
@@ -157,7 +155,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -190,7 +187,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                 ),
               ),
@@ -206,7 +202,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                 ),
               ),
@@ -214,33 +209,30 @@ class _AddNewCattleState extends State<AddNewCattle> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedSource,
-                  decoration: const InputDecoration(
-                    labelText: 'Source of Cattle*',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
-                  ),
-                  items: sourceOptions.map((String gender) {
-                    return DropdownMenuItem<String>(
-                      value: gender,
-                      child: Text(gender),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedSource = value;
-                    });
-                  },
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please Enter Source of Cattle';
-      }
-      return null;
-    }
-
-                ),
+                    value: _selectedSource,
+                    decoration: const InputDecoration(
+                      labelText: 'Source of Cattle*',
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Color.fromRGBO(240, 255, 255, 0.7),
+                    ),
+                    items: sourceOptions.map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSource = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Source of Cattle';
+                      }
+                      return null;
+                    }),
               ),
               // SizedBox(height: 10),
               Padding(
@@ -252,7 +244,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -261,7 +252,6 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     return null;
                   },
                 ),
-
               ),
 
               Padding(
@@ -272,8 +262,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                     labelText: 'Status',
                     border: OutlineInputBorder(),
                     filled: true,
-                      fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
+                    fillColor: Color.fromRGBO(240, 255, 255, 0.7),
                   ),
                   items: stateOptions.map((String stage) {
                     return DropdownMenuItem<String>(
@@ -305,7 +294,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(13, 166, 186, 1.0)),
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(13, 166, 186, 1.0)),
                     ),
                     child: const Text(
                       'Submit',
@@ -323,7 +313,4 @@ class _AddNewCattleState extends State<AddNewCattle> {
       ),
     );
   }
-
 }
-
-

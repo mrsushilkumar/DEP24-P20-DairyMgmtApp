@@ -51,5 +51,4 @@ class DatabaseServicesForCattle {
         .doc(rfid)
         .delete();
   }
-
 }

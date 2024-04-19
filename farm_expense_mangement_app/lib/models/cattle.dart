@@ -11,28 +11,28 @@ class Cattle {
   final String state;
   // final DateTime dateOfBirth;
 
-  Cattle({
-    required this.rfid,
-     required this.sex,
-    this.age = 0,
-    required this.breed,
-    this.weight = 0,
-    this.state  = 'Dry'
-    /*required this.dateOfBirth*/
-  });
+  Cattle(
+      {required this.rfid,
+      required this.sex,
+      this.age = 0,
+      required this.breed,
+      this.weight = 0,
+      this.state = 'Dry'
+      /*required this.dateOfBirth*/
+      });
 
   factory Cattle.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options) {
     final data = snapshot.data();
     return Cattle(
-      rfid: data?['rfid'],
-      sex: data?['sex'],
-      age: data?['age'],
-      breed: data?['breed'],
-      weight: data?['weight'],
-      state: data?['state']
-      // dateOfBirth: data?['dateOfBirth']
-    );
+        rfid: data?['rfid'],
+        sex: data?['sex'],
+        age: data?['age'],
+        breed: data?['breed'],
+        weight: data?['weight'],
+        state: data?['state']
+        // dateOfBirth: data?['dateOfBirth']
+        );
   }
 
   Map<String, dynamic> toFireStore() {
@@ -42,7 +42,7 @@ class Cattle {
       'age': age,
       'breed': breed,
       'weight': weight,
-      'state':state
+      'state': state
       // 'dateOfBirth':dateOfBirth
     };
   }

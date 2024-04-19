@@ -5,7 +5,9 @@ import 'package:farm_expense_mangement_app/screens/home/profilepage.dart';
 import 'package:flutter/material.dart';
 
 class WrapperHomePage extends StatefulWidget {
-  const WrapperHomePage({super.key,});
+  const WrapperHomePage({
+    super.key,
+  });
 
   @override
   State<WrapperHomePage> createState() => _WrapperHomePageState();
@@ -75,22 +77,24 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
           color: const Color.fromRGBO(13, 166, 186, 1.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [ SizedBox(
-              width: 60,
-              height: 60,
-              child: FloatingActionButton(
-                onPressed: () {
-                  profile(context);
-                },
-                backgroundColor: _selectedIndex == 1 ? Colors.black : const Color.fromRGBO(13, 166, 186, 1.0),
-                elevation: 0,
-                child: const Icon(Icons.person_4, color: Colors.white70,),
-
+            children: [
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    profile(context);
+                  },
+                  backgroundColor: _selectedIndex == 1
+                      ? Colors.black
+                      : const Color.fromRGBO(13, 166, 186, 1.0),
+                  elevation: 0,
+                  child: const Icon(
+                    Icons.person_4,
+                    color: Colors.white70,
+                  ),
+                ),
               ),
-
-            ),
-
-
               SizedBox(
                 width: 60,
                 height: 60,
@@ -98,9 +102,14 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
                   onPressed: () {
                     home(context);
                   },
-                  backgroundColor: _selectedIndex == 0 ? Colors.black : const Color.fromRGBO(13, 166, 186, 1.0),
+                  backgroundColor: _selectedIndex == 0
+                      ? Colors.black
+                      : const Color.fromRGBO(13, 166, 186, 1.0),
                   elevation: 0,
-                  child: const Icon(Icons.home, color: Colors.white70,),
+                  child: const Icon(
+                    Icons.home,
+                    color: Colors.white70,
+                  ),
                 ),
               ),
             ],

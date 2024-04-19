@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'milkavgpage.dart';
 import '../transaction/transactionpage.dart';
 
-
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
@@ -13,7 +12,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  PreferredSize(
+    return PreferredSize(
       preferredSize: const Size.fromHeight(240),
       child: Container(
         color: Colors.grey[300],
@@ -104,7 +103,6 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-
             const SizedBox(height: 17),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -115,9 +113,10 @@ class _HomePageState extends State<HomePage> {
                     'Cattles',
                     'asset/cattles.jpg',
                     totalCowsColor,
-                        () => Navigator.push(
+                    () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AnimalList()),
+                      MaterialPageRoute(
+                          builder: (context) => const AnimalList()),
                     ),
                   ),
                 ),
@@ -128,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                     'Feed',
                     'asset/feed.jpg',
                     milkingCowsColor,
-                        () => Navigator.push(
+                    () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const FeedPage()),
                     ),
@@ -146,9 +145,10 @@ class _HomePageState extends State<HomePage> {
                     'Transactions',
                     'asset/transactions.webp',
                     dryCowsColor,
-                        () => Navigator.push(
+                    () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  const TransactionPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const TransactionPage()),
                     ),
                   ),
                 ),
@@ -159,9 +159,10 @@ class _HomePageState extends State<HomePage> {
                     'Avg Milk/Cow',
                     'asset/avg.jpg',
                     avgMilkPerCowColor,
-                        () => Navigator.push(
+                    () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AvgMilkPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const AvgMilkPage()),
                     ),
                   ),
                 ),
@@ -174,18 +175,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   GestureDetector buildClickableContainer(
-      BuildContext context,
-      String value,
-      String imageUrl,
-      Color containerColor,
-      Function() onTap,
-      ) {
+    BuildContext context,
+    String value,
+    String imageUrl,
+    Color containerColor,
+    Function() onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.23,
         decoration: BoxDecoration(
-          color:const Color.fromRGBO(13, 166, 186, 1.0),
+          color: const Color.fromRGBO(13, 166, 186, 1.0),
           border: Border.all(
             color: Colors.indigo.shade300,
             width: 3,
@@ -234,7 +235,8 @@ class _HomePageState extends State<HomePage> {
               right: 0,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.orange[600],
                   borderRadius: const BorderRadius.only(
@@ -246,7 +248,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Text(
                   value,
-                  style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                   textAlign: TextAlign.end,
                 ),
               ),

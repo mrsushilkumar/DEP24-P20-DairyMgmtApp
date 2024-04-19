@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/user.dart';
 
 class DatabaseServicesForUser {
-
   final String uid;
   DatabaseServicesForUser(this.uid);
 

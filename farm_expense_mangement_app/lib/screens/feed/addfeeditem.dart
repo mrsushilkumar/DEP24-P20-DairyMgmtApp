@@ -72,11 +72,10 @@ class _AddFeedItemState extends State<AddFeedItem> {
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Text('Add Feed Item',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18
-        ),),
+        title: const Text(
+          'Add Feed Item',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 26),
@@ -103,7 +102,6 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
-
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -117,7 +115,6 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
-
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -131,7 +128,6 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
-
                 ),
               ),
             ),
@@ -145,7 +141,6 @@ class _AddFeedItemState extends State<AddFeedItem> {
                   border: const OutlineInputBorder(),
                   filled: true,
                   fillColor: const Color.fromRGBO(240, 255, 255, 1),
-
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
@@ -160,12 +155,15 @@ class _AddFeedItemState extends State<AddFeedItem> {
                 _saveFeedItem(context);
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166,186,1)), // Background color
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color.fromRGBO(13, 166, 186, 1)), // Background color
                 // Other styles such as padding, shape, textStyle can also be specified here
               ),
-              child: const Text('Save',
-              style: TextStyle(color:Colors.black,
-              fontWeight: FontWeight.bold),),
+              child: const Text(
+                'Save',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),

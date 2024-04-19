@@ -108,21 +108,21 @@ class _AvgMilkPageState extends State<AvgMilkPage> {
       ),
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : _allMilkByDate.isEmpty
-          ? const Center(
-        child: Text(
-          'No entries found for selected date.',
-          style: TextStyle(fontSize: 18),
-        ),
-      )
-          : ListView.builder(
-        itemCount: _allMilkByDate.length,
-        itemBuilder: (context, index) {
-          return MilkDataRowByDate(data: _allMilkByDate[index]);
-        },
-      ),
+              ? const Center(
+                  child: Text(
+                    'No entries found for selected date.',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _allMilkByDate.length,
+                  itemBuilder: (context, index) {
+                    return MilkDataRowByDate(data: _allMilkByDate[index]);
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -166,7 +166,8 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
   Future<void> _fetchCattle() async {
     final snapshot = await cattleDb.infoFromServerAllCattle(uid);
     setState(() {
-      allCattle = snapshot.docs.map((doc) => Cattle.fromFireStore(doc, null)).toList();
+      allCattle =
+          snapshot.docs.map((doc) => Cattle.fromFireStore(doc, null)).toList();
       allRfid = allCattle.map((cattle) => cattle.rfid).toList();
     });
   }
@@ -283,7 +284,7 @@ class _AddMilkDataPageState extends State<AddMilkDataPage> {
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
+                      lastDate: DateTime.now(),
                     );
                     if (pickedDate != null) {
                       setState(() {
@@ -376,7 +377,8 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk)),
+        builder: (context) =>
+            MilkByDatePage(dateOfMilk: (widget.data.dateOfMilk)),
       ),
     );
   }
@@ -444,4 +446,3 @@ class _MilkDataRowByDateState extends State<MilkDataRowByDate> {
     );
   }
 }
-

@@ -16,8 +16,6 @@ class _AnimalListState extends State<AnimalList> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-
-
   late DatabaseServicesForCattle cattleDb;
   late List<Cattle> allCattle = [];
   List<String> _selectedStates = [];
@@ -59,7 +57,6 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Cattle> filteredCattle = allCattle;
@@ -85,7 +82,6 @@ class _AnimalListState extends State<AnimalList> {
         return false;
       }).toList();
     }
-
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
@@ -152,8 +148,10 @@ class _AnimalListState extends State<AnimalList> {
         },
         tooltip: 'Add Cattle',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add,
-        color: Colors.black,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -172,14 +170,22 @@ class _AnimalListState extends State<AnimalList> {
                 children: <Widget>[
                   const Text(
                     'Filter Options',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   _buildFilterOption(
                     'State:',
-                    ['Milked', 'Heifer', 'Insemination', 'Abortion', 'Dry', 'Calved'],
+                    [
+                      'Milked',
+                      'Heifer',
+                      'Insemination',
+                      'Abortion',
+                      'Dry',
+                      'Calved'
+                    ],
                     _selectedStates,
-                        (selectedOptions) {
+                    (selectedOptions) {
                       setState(() {
                         _selectedStates = selectedOptions;
                       });
@@ -190,7 +196,7 @@ class _AnimalListState extends State<AnimalList> {
                     'Gender:',
                     ['Male', 'Female'],
                     _selectedGenders,
-                        (selectedOptions) {
+                    (selectedOptions) {
                       setState(() {
                         _selectedGenders = selectedOptions;
                       });
@@ -210,11 +216,14 @@ class _AnimalListState extends State<AnimalList> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          side: const BorderSide(color: Colors.black), // Add border
+                          side: const BorderSide(
+                              color: Colors.black), // Add border
                         ),
-                        child: const Text('Confirm Filters',
-                        style: TextStyle(color:Colors.black,
-                        fontWeight: FontWeight.bold),),
+                        child: const Text(
+                          'Confirm Filters',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -227,15 +236,15 @@ class _AnimalListState extends State<AnimalList> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          side: const BorderSide(color: Colors.black), // Add border
+                          side: const BorderSide(
+                              color: Colors.black), // Add border
                         ),
-                        child: const Text('Clear Filters',
-                        style: TextStyle(
-                          color:Colors.black,
-                          fontWeight: FontWeight.bold
-                        ),),
+                        child: const Text(
+                          'Clear Filters',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
                       ),
-
                     ],
                   ),
                 ],
@@ -247,7 +256,8 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 
-  Widget _buildFilterOption(String title, List<String> options, List<String> selectedOptions, Function(List<String>) onSelect) {
+  Widget _buildFilterOption(String title, List<String> options,
+      List<String> selectedOptions, Function(List<String>) onSelect) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
@@ -277,12 +287,10 @@ class _AnimalListState extends State<AnimalList> {
                   List<String> updatedOptions = List.from(selectedOptions);
                   if (isSelected) {
                     setState(() {
-
                       updatedOptions.add(option);
                     });
                   } else {
                     setState(() {
-
                       updatedOptions.remove(option);
                     });
                   }
@@ -292,7 +300,10 @@ class _AnimalListState extends State<AnimalList> {
                 checkmarkColor: Colors.black,
                 backgroundColor: Colors.grey.withOpacity(0.3),
                 shape: StadiumBorder(
-                  side: BorderSide(color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.5)),
+                  side: BorderSide(
+                      color: isSelected
+                          ? Colors.blue
+                          : Colors.grey.withOpacity(0.5)),
                 ),
               );
             }).toList(),
@@ -302,11 +313,6 @@ class _AnimalListState extends State<AnimalList> {
     );
   }
 }
-
-
-
-
-
 
 class AnimalSearchDelegate extends SearchDelegate<Cattle> {
   final List<Cattle> allCattle;
@@ -321,21 +327,18 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
       ),
     );
   }
+
   @override
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: const AppBarTheme(
-        color: Color.fromRGBO(13, 166, 186, 1)
-      ),
+      appBarTheme: const AppBarTheme(color: Color.fromRGBO(13, 166, 186, 1)),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
 
         fillColor: const Color.fromRGBO(240, 255, 255, 1),
-        hintStyle: const TextStyle(
-          fontSize: 18
-        ),
+        hintStyle: const TextStyle(fontSize: 18),
 
         // hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
@@ -350,7 +353,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
@@ -381,8 +385,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         close(
           context,
           query.isEmpty
-              ? Cattle(rfid: '', breed: '',sex:' ')
-              : Cattle(rfid: '', breed: '', sex:' '),
+              ? Cattle(rfid: '', breed: '', sex: ' ')
+              : Cattle(rfid: '', breed: '', sex: ' '),
         );
       },
     );
@@ -394,9 +398,7 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         ? allCattle
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
     return Scaffold(
-
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
-
       body: ListView.builder(
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
@@ -420,7 +422,8 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
         : allCattle.where((cattle) => cattle.rfid.contains(query)).toList();
 
     return Container(
-      color: const Color.fromRGBO(240, 255, 255, 1), // Set the desired background color here
+      color: const Color.fromRGBO(
+          240, 255, 255, 1), // Set the desired background color here
       child: ListView.builder(
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
@@ -435,7 +438,6 @@ class AnimalSearchDelegate extends SearchDelegate<Cattle> {
       ),
     );
   }
-
 
   @override
   String get searchFieldLabel => 'Search Cattle';
@@ -481,36 +483,36 @@ class _CattleListItemState extends State<CattleListItem> {
               padding: const EdgeInsets.all(5),
               child: widget.cattle.sex == 'Female'
                   ? Container(
-                margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                foregroundDecoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  'asset/cow1.jpg',
-                  fit: BoxFit.cover,
-                  width: 70, // Adjust width to maximize the size
-                  height: 150, // Adjust height to maximize the size
-                ),
-              )
+                      margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                      foregroundDecoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.asset(
+                        'asset/cow1.jpg',
+                        fit: BoxFit.cover,
+                        width: 70, // Adjust width to maximize the size
+                        height: 150, // Adjust height to maximize the size
+                      ),
+                    )
                   : Container(
-                margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
-                foregroundDecoration:
-                const BoxDecoration(shape: BoxShape.circle),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  'asset/Bull1.jpg',
-                  fit: BoxFit.cover,
-                  width: 70, // Adjust width to maximize the size
-                  height: 150, // Adjust height to maximize the size
-                ),
-              ),
+                      margin: const EdgeInsets.fromLTRB(0, 1, 0, 1),
+                      foregroundDecoration:
+                          const BoxDecoration(shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Image.asset(
+                        'asset/Bull1.jpg',
+                        fit: BoxFit.cover,
+                        width: 70, // Adjust width to maximize the size
+                        height: 150, // Adjust height to maximize the size
+                      ),
+                    ),
             ),
             title: Text(
               'RF id : ${widget.cattle.rfid}',

@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,11 +9,9 @@ import '../../services/database/cattledatabase.dart';
 import 'package:farm_expense_mangement_app/models/history.dart';
 import 'package:farm_expense_mangement_app/services/database/cattlehistorydatabase.dart';
 
-
 class AnimalDetails extends StatefulWidget {
   final String rfid;
   const AnimalDetails({super.key, required this.rfid});
-
 
   @override
   State<AnimalDetails> createState() => _AnimalDetailsState();
@@ -30,16 +27,14 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   late DatabaseServiceForCattleHistory cattleHistory;
   late Cattle _cattle;
 
-  late List<CattleHistory> events = [
-  ];
-
+  late List<CattleHistory> events = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     cattleDb = DatabaseServicesForCattle(uid);
-    cattleHistory=DatabaseServiceForCattleHistory(uid:uid);
+    cattleHistory = DatabaseServiceForCattleHistory(uid: uid);
     _fetchCattleHistory();
 
     _streamController = _fetchCattleDetail();
@@ -48,6 +43,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   Stream<DocumentSnapshot<Map<String, dynamic>>> _fetchCattleDetail() {
     return cattleDb.infoFromServer(widget.rfid).asStream();
   }
+
   Future<void> _fetchCattleHistory() async {
     final snapshot = await cattleHistory.historyFromServer(widget.rfid);
     for (var doc in snapshot.docs) {
@@ -55,14 +51,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
       print('Document Data: ${doc.data()}');
     }
     setState(() {
-      events = snapshot.docs.map((doc) => CattleHistory.fromFireStore(doc, null)).toList();
+      events = snapshot.docs
+          .map((doc) => CattleHistory.fromFireStore(doc, null))
+          .toList();
     });
     events.sort((a, b) => b.date.compareTo(a.date));
-
   }
-
-
-
 
   void editCattleDetail() {
     Navigator.push(
@@ -84,10 +78,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const AnimalList()));
   }
+
   bool isDetailVisible = false;
   @override
   Widget build(BuildContext context) {
-
     Widget buildWidget(CattleHistory event) {
       if (event.name == 'Abortion') {
         return Image.asset(
@@ -115,7 +109,6 @@ class _AnimalDetailsState extends State<AnimalDetails> {
         );
       }
     }
-
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1.0),
@@ -171,30 +164,38 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Events",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),),
-                          ElevatedButton(onPressed: (){
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AddEventPopup(uid: uid, cattle: _cattle);
-                              },
-                            );
-                          },style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromRGBO(240, 255, 255, 1.0),
-                            ),
-                            side: MaterialStateProperty.all<BorderSide>(
-                              const BorderSide(color: Colors.black), // Set the border color here
-                            ),
+                          const Text(
+                            "Events",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-
-                              child:const Text("Add Event",
+                          ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AddEventPopup(
+                                        uid: uid, cattle: _cattle);
+                                  },
+                                );
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color.fromRGBO(240, 255, 255, 1.0),
+                                ),
+                                side: MaterialStateProperty.all<BorderSide>(
+                                  const BorderSide(
+                                      color: Colors
+                                          .black), // Set the border color here
+                                ),
+                              ),
+                              child: const Text(
+                                "Add Event",
                                 style: TextStyle(
-                                    color:Colors.black
-                                        ,
-                                  fontWeight: FontWeight.bold
-                                ),)
-                          )
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ))
                         ],
                       ),
                     ),
@@ -206,95 +207,103 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                     child: ListView(
                       children: events
                           .map((event) => Padding(
-                        padding: const EdgeInsets.fromLTRB(10,7,10,7),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.grey, // Set the border color here
-                                width: 1.5, // Set the border width here
-                              ),
-
-                              color: const Color.fromRGBO(240, 255, 255, 1)
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-
-                              Expanded(
-                                flex: 4,
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 7, 10, 7),
                                 child: Container(
-                                    padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
-                                    width: 130,
-                                    height: 60,
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(
+                                  decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
-
-                                    ),
-                                    child: buildWidget(event)
-
-                                ),
-                              ),
-                              Expanded(
-                                flex: 12,
-                                child: Text(
-                                  " ${capitalizeFirstLetterOfEachWord(event.name)}",
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 6,
-                                child: SizedBox(
-                                  // width: 80,
-                                  child: Text(
-                                    DateFormat('yyyy-MM-dd').format(event.date), // Display the raw date string
-                                    softWrap: false,
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(fontSize: 16,
-                                    color:Colors.black,
-                                    fontWeight: FontWeight.bold),
+                                      border: Border.all(
+                                        color: Colors
+                                            .grey, // Set the border color here
+                                        width: 1.5, // Set the border width here
+                                      ),
+                                      color: const Color.fromRGBO(
+                                          240, 255, 255, 1)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        flex: 4,
+                                        child: Container(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 10, 10),
+                                            width: 130,
+                                            height: 60,
+                                            alignment: Alignment.centerLeft,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: buildWidget(event)),
+                                      ),
+                                      Expanded(
+                                        flex: 12,
+                                        child: Text(
+                                          " ${capitalizeFirstLetterOfEachWord(event.name)}",
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 6,
+                                        child: SizedBox(
+                                          // width: 80,
+                                          child: Text(
+                                            DateFormat('yyyy-MM-dd').format(event
+                                                .date), // Display the raw date string
+                                            softWrap: false,
+                                            textAlign: TextAlign.left,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                      ).toList(),
+                              ))
+                          .toList(),
                     ),
                     // ),
-
                   ),
-
-
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0,0,8,0),
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 0),
                     child: Center(
                       child: Column(
                         children: [
                           IconButton(
                             icon: Icon(
-                              isDetailVisible ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                              isDetailVisible
+                                  ? Icons.keyboard_arrow_down
+                                  : Icons.keyboard_arrow_up,
                               color: const Color.fromRGBO(13, 166, 186, 1),
                               size: 40,
                             ),
                             onPressed: () {
                               setState(() {
-                                isDetailVisible = !isDetailVisible; // Toggle visibility
+                                isDetailVisible =
+                                    !isDetailVisible; // Toggle visibility
                               });
                             },
                           ),
                           const Padding(
-                            padding: EdgeInsets.fromLTRB(12.0,8,12,2),
-                            child: Text("Details",style: TextStyle(fontSize: 24,color:
-                                Color.fromRGBO(13, 166, 186, 1.0),fontWeight:FontWeight.bold),),
+                            padding: EdgeInsets.fromLTRB(12.0, 8, 12, 2),
+                            child: Text(
+                              "Details",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Color.fromRGBO(13, 166, 186, 1.0),
+                                  fontWeight: FontWeight.bold),
+                            ),
                           )
-                            ],
+                        ],
                       ),
                     ),
                   ),
@@ -303,23 +312,25 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                     // color: Colors.grey[200],
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    height: isDetailVisible ? 300 : 0, // Set height based on visibility
+                    height: isDetailVisible
+                        ? 300
+                        : 0, // Set height based on visibility
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
+                        padding: const EdgeInsets.fromLTRB(30.0, 0, 30, 0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 20),
-
                             Container(
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
-                                    width:100,
+                                    width: 100,
                                     child: Text(
                                       "Age",
                                       style: TextStyle(
@@ -344,13 +355,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Container(
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
-
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
                                     width: 100,
@@ -378,13 +388,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Container(
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
-
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
                                     width: 100,
@@ -412,13 +421,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Container(
                               height: 50,
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
-
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
                                     width: 100,
@@ -446,13 +454,12 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Container(
                               height: 50,
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
-
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
                                     width: 100,
@@ -480,26 +487,24 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Container(
                               height: 60,
-                              color:  const Color.fromRGBO(13, 166, 186, 1.0),
-
+                              color: const Color.fromRGBO(13, 166, 186, 1.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   const SizedBox(
                                     width: 100,
-                                      child:Text(
-                                          "Source of Cattle",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-
+                                    child: Text(
+                                      "Source of Cattle",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
                                     ),
+                                  ),
                                   SizedBox(
                                     width: 100,
                                     child: Text(
@@ -514,16 +519,11 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),
                     ),
                   ),
-
-
-
-
                 ],
               );
             } else {
@@ -631,12 +631,10 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
       appBar: AppBar(
         title: const Text(
           'Edit Details',
-          style:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
@@ -665,7 +663,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -698,7 +695,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                 ),
               ),
@@ -713,7 +709,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                 ),
               ),
@@ -727,7 +722,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                   items: sourceOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -758,17 +752,14 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
-
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please enter Breed';
-      }
-      return null;
-    },
-
-              ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Breed';
+                    }
+                    return null;
+                  },
+                ),
               ),
 
               Padding(
@@ -780,7 +771,6 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
-
                   ),
                   items: stageOptions.map((String gender) {
                     return DropdownMenuItem<String>(
@@ -813,9 +803,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color.fromRGBO(13, 166, 186, 1.0),
-                          ),
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color.fromRGBO(13, 166, 186, 1.0),
+                      ),
                     ),
                     child: const Text(
                       'Submit',
@@ -852,8 +842,6 @@ String capitalizeFirstLetterOfEachWord(String input) {
   return words.join(' ');
 }
 
-
-
 class AddEventPopup extends StatefulWidget {
   final String uid;
   final Cattle cattle;
@@ -870,7 +858,12 @@ class AddEventPopup extends StatefulWidget {
 
 class _AddEventPopupState extends State<AddEventPopup> {
   String? selectedOption;
-  List<String> eventOptions = ['Abortion', 'Vaccination', 'Heifer', 'Insemination'];
+  List<String> eventOptions = [
+    'Abortion',
+    'Vaccination',
+    'Heifer',
+    'Insemination'
+  ];
   DateTime? selectedDate;
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
@@ -934,8 +927,7 @@ class _AddEventPopupState extends State<AddEventPopup> {
             controller: TextEditingController(
                 text: selectedDate != null
                     ? selectedDate.toString().split(' ')[0]
-                    : ''
-            ),
+                    : ''),
             onTap: () async {
               final DateTime? pickedDate = await showDatePicker(
                 context: context,
@@ -987,14 +979,13 @@ class _AddEventPopupState extends State<AddEventPopup> {
                 const Color.fromRGBO(13, 166, 186, 0.6),
               ),
             ),
-            child: const Text('Submit',
-            style: TextStyle(
-              color:Colors.white
-            ),),
+            child: const Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
   }
 }
-

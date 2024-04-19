@@ -19,14 +19,24 @@ class AuthService {
 
   // Register with email and password
 
-  Future<my_app_user.User?> registerWithEmailAndPassword(String email, String password,String ownerName, String farmName,String location, int phoneNo) async {
+  Future<my_app_user.User?> registerWithEmailAndPassword(
+      String email,
+      String password,
+      String ownerName,
+      String farmName,
+      String location,
+      int phoneNo) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = result.user;
-      final farmUser = my_app_user.FarmUser(ownerName: ownerName, farmName: farmName, location: location, phoneNo: phoneNo);
+      final farmUser = my_app_user.FarmUser(
+          ownerName: ownerName,
+          farmName: farmName,
+          location: location,
+          phoneNo: phoneNo);
       await DatabaseServicesForUser(user!.uid).infoToServer(user.uid, farmUser);
 
       return _userFromFirebaseUser(user);
@@ -35,9 +45,12 @@ class AuthService {
       return null;
     }
   }
-  Future<my_app_user.User?> signInWithEmailAndPassword(String email, String password) async {
+
+  Future<my_app_user.User?> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
       return _userFromFirebaseUser(user);
     } catch (error) {
@@ -55,8 +68,7 @@ class AuthService {
     // );
     try {
       return await _auth.sendPasswordResetEmail(email: email);
-    }
-    catch (error) {
+    } catch (error) {
       print(error.toString());
       return;
     }

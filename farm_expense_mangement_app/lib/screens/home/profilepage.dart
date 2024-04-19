@@ -11,9 +11,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AppBar(
-
       // centerTitle: true,
       title: const Text(
         'Profile',
@@ -115,10 +113,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   height: 170,
                   width: double.infinity,
-
-                  child:Column(
+                  child: Column(
                     children: [
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       const CircleAvatar(
                         radius: 35,
                         child: Icon(
@@ -126,12 +125,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           size: 35,
                         ),
                       ),
-                      const SizedBox(height: 15,),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(" Farm Owner : ",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
-                          Text(farmUser.ownerName.toUpperCase(),style: const TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w800),),
+                          const Text(
+                            " Farm Owner : ",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800),
+                          ),
+                          Text(
+                            farmUser.ownerName.toUpperCase(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800),
+                          ),
                         ],
                       ),
                     ],
@@ -146,65 +159,125 @@ class _ProfilePageState extends State<ProfilePage> {
                 // ),
                 const SizedBox(height: 50),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0,0,12,0),
+                  padding: const EdgeInsets.fromLTRB(12.0, 0, 12, 0),
                   child: Container(
                     color: Colors.blueGrey[100],
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0,18,8,18),
+                      padding: const EdgeInsets.fromLTRB(8.0, 18, 8, 18),
                       child: Column(
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.square_rounded,color: Colors.green,),
-                              const SizedBox(width: 16,),
-                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              const Icon(
+                                Icons.square_rounded,
+                                color: Colors.green,
+                              ),
                               const SizedBox(
-                                width: 100,
-                                  child: Text("Farm Name  ",style: TextStyle(fontSize: 18),)),
-                              const SizedBox(width: 60,),
-                              Text(farmUser.farmName,style: const TextStyle(fontSize: 18),),
-                            ],
-                          ),
-                          const SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              const Icon(Icons.email_rounded,color: Colors.green,),
-                              const SizedBox(width: 16,),
+                                width: 16,
+                              ),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 100,
-                                  child: Text("Email  ",style: TextStyle(fontSize: 18),)),
-                              const SizedBox(width: 60,),
-                              Expanded(child: Text(user!.email ?? "",style: const TextStyle(fontSize: 18),)),
+                                  child: Text(
+                                    "Farm Name  ",
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                              const SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                farmUser.farmName,
+                                style: const TextStyle(fontSize: 18),
+                              ),
                             ],
                           ),
-                          const SizedBox(height: 20,),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             children: [
-                              const Icon(Icons.phone,color: Colors.green,),
-                              const SizedBox(width: 16,),
+                              const Icon(
+                                Icons.email_rounded,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 100,
-                                  child: Text("Phone No.  ",style: TextStyle(fontSize: 18),)),
-                              const SizedBox(width: 60,),
-                              Expanded(child: Text("${farmUser.phoneNo}",style: const TextStyle(fontSize: 18),)),
+                                  child: Text(
+                                    "Email  ",
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                              const SizedBox(
+                                width: 60,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                user!.email ?? "",
+                                style: const TextStyle(fontSize: 18),
+                              )),
                             ],
                           ),
-                          const SizedBox(height: 20,),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             children: [
-                              const Icon(Icons.location_pin,color: Colors.green,),
-                              const SizedBox(width: 16,),
+                              const Icon(
+                                Icons.phone,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              const SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    "Phone No.  ",
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                              const SizedBox(
+                                width: 60,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                "${farmUser.phoneNo}",
+                                style: const TextStyle(fontSize: 18),
+                              )),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_pin,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 120,
-                                  child: Text("Farm Address ",style: TextStyle(fontSize: 18),)),
-                              const SizedBox(width: 40,),
-                              Expanded(child: Text(farmUser.location,style: const TextStyle(fontSize: 18),)),
+                                  child: Text(
+                                    "Farm Address ",
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                              const SizedBox(
+                                width: 40,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                farmUser.location,
+                                style: const TextStyle(fontSize: 18),
+                              )),
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -232,10 +305,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 // ),
                 const SizedBox(height: 40),
                 ElevatedButton(
-                  style:ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
                     foregroundColor: Colors.white,
-                  ) ,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -273,13 +346,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
-        title: const Text('Edit Profile',),
+        title: const Text(
+          'Edit Profile',
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20.0,40,20,20),
+        padding: const EdgeInsets.fromLTRB(20.0, 40, 20, 20),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -325,12 +399,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
               const SizedBox(height: 25),
               ElevatedButton(
-                style:ElevatedButton.styleFrom(
+                style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
                   foregroundColor: Colors.white,
-                ) ,
+                ),
                 onPressed: () {},
-                child: const Text('Save Changes',style: TextStyle(fontSize: 17),),
+                child: const Text(
+                  'Save Changes',
+                  style: TextStyle(fontSize: 17),
+                ),
               ),
             ],
           ),
@@ -344,7 +421,8 @@ class ProfileInfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const ProfileInfoRow({super.key,
+  const ProfileInfoRow({
+    super.key,
     required this.label,
     required this.value,
   });
@@ -372,4 +450,3 @@ class ProfileInfoRow extends StatelessWidget {
     );
   }
 }
-

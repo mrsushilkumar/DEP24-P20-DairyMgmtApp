@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed {
@@ -9,17 +7,12 @@ class Feed {
   DateTime? expiryDate;
   int? requiredQuantity;
 
-
-
   Feed({
-
     required this.itemName,
     required this.quantity,
     this.category,
     this.expiryDate,
     this.requiredQuantity,
-
-
   });
 
   Map<String, dynamic> toFireStore() {
@@ -29,7 +22,6 @@ class Feed {
       'category': category,
       'expiryDate': expiryDate != null ? Timestamp.fromDate(expiryDate!) : null,
       'requiredQuantity': requiredQuantity,
-
     };
   }
 
@@ -40,10 +32,9 @@ class Feed {
       itemName: json?['itemName'],
       quantity: json?['quantity'],
       category: json?['category'],
-      expiryDate: (json?['expiryDate'] != null) ? json!['expiryDate'].toDate() : null,
+      expiryDate:
+          (json?['expiryDate'] != null) ? json!['expiryDate'].toDate() : null,
       requiredQuantity: json?['requiredQuantity'],
-
-
     );
   }
 }

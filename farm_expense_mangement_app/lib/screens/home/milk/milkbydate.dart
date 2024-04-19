@@ -1,4 +1,3 @@
-
 import 'package:farm_expense_mangement_app/screens/home/milkavgpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +29,20 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
     _fetchAllMilk();
   }
 
+  void _deleteAllMilkOnDate() {
+    db.deleteAllMilkRecords(widget.dateOfMilk!);
+
+    Navigator.pop(context);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
+  }
+
   Future<void> _fetchAllMilk() async {
     final DateTime dateTime = widget.dateOfMilk!;
     final snapshot = await db.infoFromServerAllMilk(dateTime);
     setState(() {
-      _allMilkInDate = snapshot.docs.map((doc) => Milk.fromFireStore(doc, null)).toList();
+      _allMilkInDate =
+          snapshot.docs.map((doc) => Milk.fromFireStore(doc, null)).toList();
       _filteredMilk = _allMilkInDate;
     });
   }
@@ -44,7 +52,8 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
       if (query.isEmpty) {
         _filteredMilk = _allMilkInDate;
       } else {
-        _filteredMilk = _allMilkInDate.where((milk) => milk.rfid.contains(query)).toList();
+        _filteredMilk =
+            _allMilkInDate.where((milk) => milk.rfid.contains(query)).toList();
       }
     });
   }
@@ -63,11 +72,18 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
         ),
         actions: [
           IconButton(
+              onPressed: () {
+                _deleteAllMilkOnDate();
+              },
+              color: Colors.black,
+              icon: const Icon(Icons.delete)),
+          IconButton(
             color: Colors.black,
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: MilkSearchDelegate(allMilk: _allMilkInDate, onSearch: _searchMilk),
+                delegate: MilkSearchDelegate(
+                    allMilk: _allMilkInDate, onSearch: _searchMilk),
               );
             },
             icon: const Icon(Icons.search),
@@ -79,8 +95,8 @@ class _MilkByDatePageState extends State<MilkByDatePage> {
           onPressed: () {
             Navigator.pop(context);
             // Navigator.pop(context);
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
-
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const AvgMilkPage()));
           },
         ),
       ),
@@ -124,9 +140,7 @@ class MilkSearchDelegate extends SearchDelegate<String> {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: const AppBarTheme(
-          color: Color.fromRGBO(13, 166, 186, 1)
-      ),
+      appBarTheme: const AppBarTheme(color: Color.fromRGBO(13, 166, 186, 1)),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
@@ -146,16 +160,20 @@ class MilkSearchDelegate extends SearchDelegate<String> {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: const Icon(Icons.clear,
-        color: Colors.black,),
+        icon: const Icon(
+          Icons.clear,
+          color: Colors.black,
+        ),
         onPressed: () {
           query = '';
           onSearch('');
@@ -167,8 +185,10 @@ class MilkSearchDelegate extends SearchDelegate<String> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back,
-      color: Colors.black,),
+      icon: const Icon(
+        Icons.arrow_back,
+        color: Colors.black,
+      ),
       onPressed: () {
         close(context, '');
       },
@@ -191,7 +211,8 @@ class MilkSearchDelegate extends SearchDelegate<String> {
         : allMilk.where((milk) => milk.rfid.contains(query)).toList();
 
     return Container(
-      color: const Color.fromRGBO(240, 255, 255, 1), // Set the background color here
+      color: const Color.fromRGBO(
+          240, 255, 255, 1), // Set the background color here
       child: ListView.builder(
         itemCount: searchResults.length,
         itemBuilder: (context, index) {
@@ -214,7 +235,10 @@ class MilkDataRow extends StatefulWidget {
 
 class _MilkDataRowState extends State<MilkDataRow> {
   void editDetail() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditMilkByDate(data: widget.data)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditMilkByDate(data: widget.data)));
   }
 
   @override
@@ -224,7 +248,6 @@ class _MilkDataRowState extends State<MilkDataRow> {
     return Card(
       margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
       color: const Color.fromRGBO(240, 255, 255, 1),
-
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),
@@ -311,23 +334,25 @@ class _MilkDataRowState extends State<MilkDataRow> {
                         width: 20,
                         height: 20,
                       ),
-                  const SizedBox(width: 10,),
-                  Text(
-                    "Total: ${totalMilk}L",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Total: ${totalMilk}L",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
-                  ],
-              ),
                 ],
               ),
             ),
           ),
           IconButton(
             icon: const Icon(Icons.edit),
-              color: Colors.black,
+            color: Colors.black,
             onPressed: () {
               editDetail();
             },
@@ -380,7 +405,8 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
         milk.evening -
         widget.data.evening -
         widget.data.morning;
-    await dbByDate.infoToServerMilk(MilkByDate(dateOfMilk: milk.dateOfMilk, totalMilk: totalMilk));
+    await dbByDate.infoToServerMilk(
+        MilkByDate(dateOfMilk: milk.dateOfMilk, totalMilk: totalMilk));
   }
 
   @override
@@ -412,7 +438,8 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
                 children: [
                   Text(
                     'Rf id : ${widget.data.rfid}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'Date : ${widget.data.dateOfMilk!.day}-${widget.data.dateOfMilk!.month}-${widget.data.dateOfMilk!.year}',
@@ -460,7 +487,11 @@ class _EditMilkByDateState extends State<EditMilkByDate> {
                       _editMilkDetail(newMilkData);
                       Navigator.pop(context);
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => const AvgMilkPage()));
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MilkByDatePage(dateOfMilk: widget.data.dateOfMilk)));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MilkByDatePage(
+                                  dateOfMilk: widget.data.dateOfMilk)));
                     }
                   },
                   child: const Padding(

@@ -6,7 +6,7 @@ import '../../services/database/transactiondatabase.dart';
 
 class AddIncome extends StatefulWidget {
   final Function onSubmit;
-  const AddIncome({super.key,required this.onSubmit});
+  const AddIncome({super.key, required this.onSubmit});
 
   @override
   State<AddIncome> createState() => _AddIncomeState();
@@ -26,12 +26,7 @@ class _AddIncomeState extends State<AddIncome> {
 
   String? _selectedCategory;
 
-  final List<String> sourceOptions = [
-    'Cattle Sale',
-    'Milk Sale',
-    'Other'
-  ];
-
+  final List<String> sourceOptions = ['Cattle Sale', 'Milk Sale', 'Other'];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -117,13 +112,11 @@ class _AddIncomeState extends State<AddIncome> {
   //   );
   // }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dbSale = DatabaseForSale(uid: uid);
-
   }
 
   void _addIncome(Sale data) {
@@ -132,10 +125,8 @@ class _AddIncomeState extends State<AddIncome> {
     widget.onSubmit;
   }
 
-
   @override
   void dispose() {
-
     _dateController.dispose();
     _amountTextController.dispose();
     _categoryTextController.dispose();
@@ -158,7 +149,6 @@ class _AddIncomeState extends State<AddIncome> {
           color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
-
           },
         ),
       ),
@@ -167,17 +157,17 @@ class _AddIncomeState extends State<AddIncome> {
           padding: const EdgeInsets.fromLTRB(8, 30, 8, 0),
           child: Column(
             children: [
-              const Text("Income",style: TextStyle(fontSize: 25,color: Colors.blueGrey),),
-
-              const SizedBox(height: 25,),
-
+              const Text(
+                "Income",
+                style: TextStyle(fontSize: 25, color: Colors.blueGrey),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
               Form(
                 key: _formKey,
                 child: Expanded(
-                  child: ListView(
-                      children: [
-                  
-                  
+                  child: ListView(children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                       child: TextFormField(
@@ -230,55 +220,55 @@ class _AddIncomeState extends State<AddIncome> {
                             _selectedCategory = value;
                           });
                         },
-                  
                       ),
                     ),
-                    if(_selectedCategory == 'Other') Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                          child: TextFormField(
-                            controller: _categoryTextController,
-                            decoration: InputDecoration(
-                              labelText: 'Enter Category',
-                              border: const OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                            ),
+                    if (_selectedCategory == 'Other')
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                        child: TextFormField(
+                          controller: _categoryTextController,
+                          decoration: InputDecoration(
+                            labelText: 'Enter Category',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.grey[200],
                           ),
                         ),
-                  
-                  
-                  
-                  
+                      ),
+
                     // SizedBox(height: 10),
                     Container(
                       alignment: Alignment.center,
                       child: ElevatedButton(
-                          onPressed: (){
-                            final data = Sale(
-                                name: (_selectedCategory.toString() != 'Other') ? _selectedCategory.toString() : _categoryTextController.text,
-                                value: double.parse(_amountTextController.text),
-                                saleOnMonth: DateTime.tryParse(_dateController.text)
-                            );
-                            _addIncome(data);
-                            Navigator.pop(context);
-                      },
+                        onPressed: () {
+                          final data = Sale(
+                              name: (_selectedCategory.toString() != 'Other')
+                                  ? _selectedCategory.toString()
+                                  : _categoryTextController.text,
+                              value: double.parse(_amountTextController.text),
+                              saleOnMonth:
+                                  DateTime.tryParse(_dateController.text));
+                          _addIncome(data);
+                          Navigator.pop(context);
+                        },
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          textStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                           minimumSize: const Size(120, 50),
-                          backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
+                          backgroundColor:
+                              const Color.fromRGBO(13, 166, 186, 1.0),
                           foregroundColor: Colors.white,
                           elevation: 10, // adjust elevation value as desired
                           side: const BorderSide(color: Colors.grey, width: 2),
                         ),
-                          child: const Text("Submit",),
-
+                        child: const Text(
+                          "Submit",
+                        ),
                       ),
                     )
-                  
-                  
-                  ]
-                  ),
+                  ]),
                 ),
               ),
             ],
@@ -287,5 +277,4 @@ class _AddIncomeState extends State<AddIncome> {
       ),
     );
   }
-
 }

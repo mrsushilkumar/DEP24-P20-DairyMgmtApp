@@ -8,7 +8,9 @@ import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key,});
+  const FeedPage({
+    super.key,
+  });
 
   @override
   State<FeedPage> createState() => _FeedState();
@@ -28,8 +30,7 @@ class _FeedState extends State<FeedPage> {
     // print('Feed Page');
     feedDb = DatabaseServicesForFeed(uid);
     // setState(() {
-      _fetchFeed();
-
+    _fetchFeed();
   }
 
   @override
@@ -41,7 +42,8 @@ class _FeedState extends State<FeedPage> {
   Future<void> _fetchFeed() async {
     final snapshot = await feedDb.infoFromServerAllFeed();
     setState(() {
-      allFeed = snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
+      allFeed =
+          snapshot.docs.map((doc) => Feed.fromFireStore(doc, null)).toList();
     });
   }
 
@@ -68,8 +70,11 @@ class _FeedState extends State<FeedPage> {
     List<Feed> filteredFeed = allFeed;
 
     if (_searchController.text.isNotEmpty) {
-      filteredFeed = filteredFeed.where((feed) =>
-          feed.itemName.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
+      filteredFeed = filteredFeed
+          .where((feed) => feed.itemName
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
+          .toList();
     }
 
     // Check for expiry date and set current stock to 0 if expired
@@ -101,7 +106,8 @@ class _FeedState extends State<FeedPage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: FeedSearchDelegate(allFeed, editFeedDetail), // Pass editFeedDetail function
+                delegate: FeedSearchDelegate(
+                    allFeed, editFeedDetail), // Pass editFeedDetail function
               );
             },
           ),
@@ -129,8 +135,10 @@ class _FeedState extends State<FeedPage> {
         },
         tooltip: 'Add Feed',
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        child: const Icon(Icons.add,
-        color: Colors.black,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -141,11 +149,11 @@ class FeedListItem extends StatefulWidget {
   final VoidCallback onTap;
   final VoidCallback onEdit;
 
-  const FeedListItem({super.key,
+  const FeedListItem({
+    super.key,
     required this.feed,
     required this.onTap,
     required this.onEdit,
-
   });
 
   @override
@@ -178,14 +186,17 @@ class _FeedListItemState extends State<FeedListItem> {
               Flexible(
                 child: Text(
                   widget.feed.itemName,
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
               if (widget.feed.expiryDate != null)
                 Flexible(
                   child: Text(
                     'Expiry Date ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
-                    style: TextStyle(color: isExpired ? Colors.orange[700]: Colors.green[700]),
+                    style: TextStyle(
+                        color:
+                            isExpired ? Colors.orange[700] : Colors.green[700]),
                     textAlign: TextAlign.end,
                   ),
                 ),
@@ -219,16 +230,15 @@ class _FeedListItemState extends State<FeedListItem> {
 
 class FeedSearchDelegate extends SearchDelegate<Feed> {
   final List<Feed> allFeed;
-  final Function(Feed) editFeedDetail; // Callback function to handle edit functionality
+  final Function(Feed)
+      editFeedDetail; // Callback function to handle edit functionality
 
   FeedSearchDelegate(this.allFeed, this.editFeedDetail);
   @override
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-      appBarTheme: const AppBarTheme(
-          color: Color.fromRGBO(13, 166, 186, 1)
-      ),
+      appBarTheme: const AppBarTheme(color: Color.fromRGBO(13, 166, 186, 1)),
       // Customize the search bar's appearance
       inputDecorationTheme: InputDecorationTheme(
         filled: true, // Set to true to add a background color
@@ -246,7 +256,8 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(color: Colors.black), // Border color
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       ),
     );
   }
@@ -274,7 +285,11 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
         color: Colors.black,
       ),
       onPressed: () {
-        close(context, query.isEmpty ? Feed(itemName: '', category: '', quantity: 10) : Feed(itemName: '', category: '', quantity: 10));
+        close(
+            context,
+            query.isEmpty
+                ? Feed(itemName: '', category: '', quantity: 10)
+                : Feed(itemName: '', category: '', quantity: 10));
       },
     );
   }
@@ -284,26 +299,27 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
     final searchResults = query.isEmpty
         ? allFeed
         : allFeed
-        .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+            .where((feed) =>
+                feed.itemName.toLowerCase().contains(query.toLowerCase()))
+            .toList();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
-    body: ListView.builder(
-      itemCount: searchResults.length,
-      itemBuilder: (context, index) {
-        final feedInfo = searchResults[index];
-        return FeedListItem(
-          feed: feedInfo,
-          onTap: () {
-            close(context, feedInfo);
-          },
-          onEdit: () {
-            // Call the callback function to handle edit functionality
-            editFeedDetail(feedInfo);
-          },
-        );
-      },
-    ),
+      body: ListView.builder(
+        itemCount: searchResults.length,
+        itemBuilder: (context, index) {
+          final feedInfo = searchResults[index];
+          return FeedListItem(
+            feed: feedInfo,
+            onTap: () {
+              close(context, feedInfo);
+            },
+            onEdit: () {
+              // Call the callback function to handle edit functionality
+              editFeedDetail(feedInfo);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -312,26 +328,26 @@ class FeedSearchDelegate extends SearchDelegate<Feed> {
     final searchResults = query.isEmpty
         ? allFeed
         : allFeed
-        .where((feed) => feed.itemName.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+            .where((feed) =>
+                feed.itemName.toLowerCase().contains(query.toLowerCase()))
+            .toList();
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
-    body:ListView.builder(
-      itemCount: searchResults.length,
-      itemBuilder: (context, index) {
-        final feedInfo = searchResults[index];
-        return FeedListItem(
-          feed: feedInfo,
-          onTap: () {
-            close(context, feedInfo);
+        backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
+        body: ListView.builder(
+          itemCount: searchResults.length,
+          itemBuilder: (context, index) {
+            final feedInfo = searchResults[index];
+            return FeedListItem(
+              feed: feedInfo,
+              onTap: () {
+                close(context, feedInfo);
+              },
+              onEdit: () {
+                // Call the callback function to handle edit functionality
+                editFeedDetail(feedInfo);
+              },
+            );
           },
-          onEdit: () {
-            // Call the callback function to handle edit functionality
-            editFeedDetail(feedInfo);
-          },
-        );
-      },
-    )
-    );
+        ));
   }
 }

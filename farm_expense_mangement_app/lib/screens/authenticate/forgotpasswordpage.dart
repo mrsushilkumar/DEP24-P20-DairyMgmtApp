@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../../services/auth.dart';
@@ -22,10 +20,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
-  Future<void> requestResetPassword() async{
+  Future<void> requestResetPassword() async {
     await _auth.updatePassword(email);
     success();
   }
@@ -33,17 +30,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void success() {
     Navigator.pop(context);
     final snackBar = SnackBar(
-        backgroundColor: Colors.red.shade500,
-        content: const Text('Email send'),
+      backgroundColor: Colors.red.shade500,
+      content: const Text('Email send'),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: [
@@ -56,16 +51,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           Container(
             color: Colors.black.withOpacity(0.5), // Set opacity level here
 
-            child:
-
-            ListView(
+            child: ListView(
               children: [
                 Container(
-                  padding:  const EdgeInsets.only(top:0.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   color: Colors.transparent,
-
-                  child:AppBar(
-
+                  child: AppBar(
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     centerTitle: true,
@@ -81,15 +72,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30,),
-
+                const SizedBox(
+                  height: 30,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(50.0),
                   child: Container(
                     width: 300,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.black.withOpacity(0.4), // Set container color with opacity
+                      color: Colors.black
+                          .withOpacity(0.4), // Set container color with opacity
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),

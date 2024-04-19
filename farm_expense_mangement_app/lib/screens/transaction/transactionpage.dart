@@ -65,7 +65,6 @@ class _TransactionPageState extends State<TransactionPage> {
     _fetchExpanse();
   }
 
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -205,25 +204,26 @@ class _TransactionPageState extends State<TransactionPage> {
           if (showIncome) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddIncome(
-                onSubmit: () {
-                  print('add income');
-                  _fetchIncome();
-                  _fetchExpanse();
-                },
-              )
-              ),
+              MaterialPageRoute(
+                  builder: (context) => AddIncome(
+                        onSubmit: () {
+                          print('add income');
+                          _fetchIncome();
+                          _fetchExpanse();
+                        },
+                      )),
             );
           } else {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddExpenses(
-                onSubmit: (){
-                  print('add expense');
-                  _fetchExpanse();
-                  _fetchIncome();
-                },
-              )),
+              MaterialPageRoute(
+                  builder: (context) => AddExpenses(
+                        onSubmit: () {
+                          print('add expense');
+                          _fetchExpanse();
+                          _fetchIncome();
+                        },
+                      )),
             );
           }
         },
@@ -249,8 +249,6 @@ class _TransactionPageState extends State<TransactionPage> {
     }
   }
 }
-
-
 
 class ListTileForSale extends StatefulWidget {
   final List<Sale> data;
@@ -301,9 +299,6 @@ class _ListTileForSaleState extends State<ListTileForSale> {
     );
   }
 }
-
-
-
 
 class ListTileForExpense extends StatefulWidget {
   final List<Expense> data;

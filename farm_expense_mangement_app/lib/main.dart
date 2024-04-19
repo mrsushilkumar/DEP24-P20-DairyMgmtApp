@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -27,9 +26,9 @@ class MyApp extends StatelessWidget {
           if (user == null) {
             return const Authenticate();
           } else {
-          // final cattleDb = DatabaseServicesForCattle(user.uid);
+            // final cattleDb = DatabaseServicesForCattle(user.uid);
 
-          // cattleDb.infoToServerSingleCattle(cattle);
+            // cattleDb.infoToServerSingleCattle(cattle);
             return const WrapperHomePage();
           }
         },

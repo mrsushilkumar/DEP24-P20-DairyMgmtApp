@@ -28,9 +28,12 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   void initState() {
     super.initState();
     _itemNameController = TextEditingController(text: widget.feed.itemName);
-    _categoryController = TextEditingController(text: widget.feed.category ?? '');
-    _needController = TextEditingController(text: widget.feed.requiredQuantity?.toString() ?? '');
-    _stockController = TextEditingController(text: widget.feed.quantity.toString());
+    _categoryController =
+        TextEditingController(text: widget.feed.category ?? '');
+    _needController = TextEditingController(
+        text: widget.feed.requiredQuantity?.toString() ?? '');
+    _stockController =
+        TextEditingController(text: widget.feed.quantity.toString());
     _expiryDate = widget.feed.expiryDate ?? DateTime.now();
 
     _dbService = DatabaseServicesForFeed(widget.uid);
@@ -46,7 +49,6 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   }
 
   Future<void> editFeedOnDatabase() async {
-
     if (_formKey.currentState!.validate()) {
       final updatedFeed = Feed(
         itemName: _itemNameController.text,
@@ -61,22 +63,22 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
   }
 
   Future<void> deleteFeedDatabase() async {
-      await _dbService.deleteFeed(_itemNameController.text);
-
+    await _dbService.deleteFeed(_itemNameController.text);
   }
 
   void _deleteFeed(BuildContext context) {
     deleteFeedDatabase();
     Navigator.pop(context);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FeedPage()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => FeedPage()));
   }
 
   void _submitForm(BuildContext context) {
     editFeedOnDatabase();
 
-      Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FeedPage()));
-
+    Navigator.pop(context);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const FeedPage()));
   }
 
   @override
@@ -87,9 +89,8 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
         title: const Text(
           'Edit Feed Item',
-          style: TextStyle(color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 18),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
       body: Padding(
@@ -108,18 +109,11 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 child: TextFormField(
                   readOnly: true,
                   enabled: false,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black
-                  ),
+                  style: const TextStyle(fontSize: 20, color: Colors.black),
                   controller: _itemNameController,
                   decoration: const InputDecoration(
                       labelText: 'Item Name',
-                      labelStyle: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black
-                      )
-                  ),
+                      labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter item name';
@@ -192,11 +186,14 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ListTile(
-                  title: Text('Expiry Date: ${DateFormat('yyyy-MM-dd').format(_expiryDate)}'),
+                  title: Text(
+                      'Expiry Date: ${DateFormat('yyyy-MM-dd').format(_expiryDate)}'),
                   onTap: () async {
                     final selectedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now().isBefore(_expiryDate) ? _expiryDate : DateTime.now(),
+                      initialDate: DateTime.now().isBefore(_expiryDate)
+                          ? _expiryDate
+                          : DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(DateTime.now().year + 10),
                     );
@@ -213,29 +210,31 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       _deleteFeed(context);
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromRGBO(13, 166, 186, 0.9)),
                     ),
                     child: const Text(
                       'Delete',
-                      style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       _submitForm(context);
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(13, 166, 186, 0.9)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromRGBO(13, 166, 186, 0.9)),
                     ),
                     child: const Text(
                       'Save',
-                      style: TextStyle(color: Colors.black,
-                      fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
