@@ -250,6 +250,8 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 }
 
+
+
 class ListTileForSale extends StatefulWidget {
   final List<Sale> data;
   const ListTileForSale({super.key, required this.data});
@@ -287,7 +289,7 @@ class _ListTileForSaleState extends State<ListTileForSale> {
                   ),
                 ),
                 subtitle: Text(
-                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Month: ${widget.data[index].saleOnMonth?.month}-${widget.data[index].saleOnMonth?.year}',
+                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Date: ${widget.data[index].saleOnMonth?.day}-${widget.data[index].saleOnMonth?.month}-${widget.data[index].saleOnMonth?.year}',
                   style: TextStyle(
                     color: Colors.grey[800], // Set text color for subtitle
                   ),
@@ -299,6 +301,9 @@ class _ListTileForSaleState extends State<ListTileForSale> {
     );
   }
 }
+
+
+
 
 class ListTileForExpense extends StatefulWidget {
   final List<Expense> data;
@@ -337,7 +342,7 @@ class _ListTileForExpenseState extends State<ListTileForExpense> {
                   ),
                 ),
                 subtitle: Text(
-                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Month: ${widget.data[index].expenseOnMonth?.month}-${widget.data[index].expenseOnMonth?.year}',
+                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Date: ${widget.data[index].expenseOnMonth?.day}-${widget.data[index].expenseOnMonth?.month}-${widget.data[index].expenseOnMonth?.year}',
                   style: TextStyle(
                     color: Colors.grey[800], // Set text color for subtitle
                   ),

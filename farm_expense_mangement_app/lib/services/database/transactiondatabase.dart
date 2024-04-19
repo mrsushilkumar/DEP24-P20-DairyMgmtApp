@@ -25,7 +25,7 @@ class DatabaseForSale {
         .collection('User')
         .doc(uid)
         .collection('Sale')
-        .doc("${sale.name.replaceAll(' ', '')}M${sale.saleOnMonth!.month}Y${sale.saleOnMonth!.year}")
+        .doc("${sale.name.replaceAll(' ', '')}D${sale.saleOnMonth!.day}M${sale.saleOnMonth!.month}Y${sale.saleOnMonth!.year}")
         .set(sale.toFireStore());
   }
 
@@ -54,7 +54,7 @@ class DatabaseForExpanse {
         .collection('User')
         .doc(uid)
         .collection('Expense')
-        .doc("${expense.name.replaceAll(' ', '')}M${expense.expenseOnMonth!.month}Y${expense.expenseOnMonth!.year}")
+        .doc("${expense.name.replaceAll(' ', '')}D${expense.expenseOnMonth!.day}M${expense.expenseOnMonth!.month}Y${expense.expenseOnMonth!.year}")
         .set(expense.toFireStore());
   }
 
