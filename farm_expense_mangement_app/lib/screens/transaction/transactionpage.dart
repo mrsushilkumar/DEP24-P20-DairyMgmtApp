@@ -93,6 +93,26 @@ class _TransactionPageState extends State<TransactionPage> {
               setState(() {});
             },
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.attach_money,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Navigate to the page displaying total income, total sale, and net profit
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TotalTransactionPage(
+                    selectedStartDate: selectedStartDate,
+                    selectedEndDate: selectedEndDate,
+                    incomeTransactions: incomeTransactions,
+                    expenseTransactions: expenseTransactions,
+                  ),
+                ),
+              );
+            },
+          ),
           Visibility(
             visible: selectedStartDate != null || selectedEndDate != null,
             child: IconButton(
@@ -311,6 +331,138 @@ class _ListTileForExpenseState extends State<ListTileForExpense> {
           ),
         );
       },
+    );
+  }
+}
+
+class TotalTransactionPage extends StatelessWidget {
+  final DateTime? selectedStartDate;
+  final DateTime? selectedEndDate;
+  final List<Sale> incomeTransactions;
+  final List<Expense> expenseTransactions;
+
+  const TotalTransactionPage({
+    Key? key,
+    required this.selectedStartDate,
+    required this.selectedEndDate,
+    required this.incomeTransactions,
+    required this.expenseTransactions,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Calculate total income
+    final totalIncome = incomeTransactions
+        .where((sale) =>
+    (selectedStartDate == null ||
+        sale.saleOnMonth!.isAfter(selectedStartDate!)) &&
+        (selectedEndDate == null ||
+            sale.saleOnMonth!.isBefore(selectedEndDate!)))
+        .map((sale) => sale.value)
+        .fold<double>(0, (prev, amount) => prev + amount);
+
+    // Calculate total expense
+    final totalExpense = expenseTransactions
+        .where((expense) =>
+    (selectedStartDate == null ||
+        expense.expenseOnMonth!.isAfter(selectedStartDate!)) &&
+        (selectedEndDate == null ||
+            expense.expenseOnMonth!.isBefore(selectedEndDate!)))
+        .map((expense) => expense.value)
+        .fold<double>(0, (prev, amount) => prev + amount);
+
+    // Calculate net profit
+    final netProfit = totalIncome - totalExpense;
+
+    // Calculate total income per category
+    final Map<String, double> incomePerCategory = {};
+    for (final transaction in incomeTransactions) {
+      final category = transaction.name;
+      incomePerCategory[category] = (incomePerCategory[category] ?? 0) + transaction.value;
+    }
+
+    // Calculate total expense per category
+    final Map<String, double> expensePerCategory = {};
+    for (final transaction in expenseTransactions) {
+      final category = transaction.name;
+      expensePerCategory[category] = (expensePerCategory[category] ?? 0) + transaction.value;
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(13, 152, 186, 1.0),
+        title: const Text(
+          'Total Transactions',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Container(
+        color: const Color.fromRGBO(240, 255, 255, 1),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Date Range: ${selectedStartDate != null ? "${selectedStartDate!.day}/${selectedStartDate!.month}/${selectedStartDate!.year}" : "Start"} - ${selectedEndDate != null ? "${selectedEndDate!.day}/${selectedEndDate!.month}/${selectedEndDate!.year}" : "End"}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            Text(
+              'Total Income: ₹$totalIncome',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
+            ),
+            const SizedBox(height: 7),
+            Text(
+              'Income per Category:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            ...incomePerCategory.entries.map((entry) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(entry.key, style: TextStyle(fontSize: 14)),
+                  Text('₹${entry.value.toStringAsFixed(2)}', style: TextStyle(fontSize: 14)),
+                ],
+              ),
+            )),
+            const SizedBox(height: 25),
+            Text(
+              'Total Expense: ₹$totalExpense',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+            ),
+            const SizedBox(height: 7),
+            Text(
+              'Expense per Category:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            ...expensePerCategory.entries.map((entry) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(entry.key, style: TextStyle(fontSize: 14)),
+                  Text('₹${entry.value.toStringAsFixed(2)}', style: TextStyle(fontSize: 14)),
+                ],
+              ),
+            )),
+            const SizedBox(height: 30),
+            Text(
+              netProfit>=0?
+              'Net Profit: ₹$netProfit':
+    'Net Loss',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+
+                color: netProfit >= 0 ? Colors.green : Colors.red,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

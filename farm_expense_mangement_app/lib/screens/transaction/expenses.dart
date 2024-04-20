@@ -77,7 +77,7 @@ class _AddExpensesState extends State<AddExpenses> {
       appBar: AppBar(
         title: const Text(
           'New Expense',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -207,9 +207,9 @@ class _AddExpensesState extends State<AddExpenses> {
                         child: const Text(
                           "Submit",
                           style: TextStyle(
-                            color:Colors.white,
+                            color:Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15
+                            fontSize: 14
                           ),
                         ),
                       ),
