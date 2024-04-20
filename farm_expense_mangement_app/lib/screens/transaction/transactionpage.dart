@@ -6,16 +6,9 @@ import 'package:flutter/material.dart';
 import 'expenses.dart';
 import 'income.dart';
 
-// class Transaction {
-//   final String category;
-//   final double amount;
-//   final DateTime date;
-//
-//   Transaction({required this.category, required this.amount, required this.date});
-// }
-
 class TransactionPage extends StatefulWidget {
-  const TransactionPage({super.key});
+  final bool showIncome; // New parameter
+  const TransactionPage({Key? key, required this.showIncome}) : super(key: key);
 
   @override
   State<TransactionPage> createState() => _TransactionPageState();
@@ -30,63 +23,59 @@ class _TransactionPageState extends State<TransactionPage> {
 
   bool showIncome = true;
   List<Sale> incomeTransactions = [];
-  List<Expense> expenseTransactions = [
-    // Add more income transactions as needed
-  ];
+  List<Expense> expenseTransactions = [];
 
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
 
-  // Function to filter transactions based on the selected date range
-
   Future<void> _fetchIncome() async {
     final snapshot = await dbSale.infoFromServerAllTransaction();
     setState(() {
-      incomeTransactions =
-          snapshot.docs.map((doc) => Sale.fromFireStore(doc, null)).toList();
+      incomeTransactions = snapshot.docs
+          .map((doc) => Sale.fromFireStore(doc, null))
+          .where((sale) =>
+      (selectedStartDate == null ||
+          sale.saleOnMonth!.isAfter(selectedStartDate!)) &&
+          (selectedEndDate == null ||
+              sale.saleOnMonth!.isBefore(selectedEndDate!)))
+          .toList();
     });
   }
 
-  Future<void> _fetchExpanse() async {
+  Future<void> _fetchExpense() async {
     final snapshot = await dbExpanse.infoFromServerAllTransaction();
     setState(() {
-      expenseTransactions =
-          snapshot.docs.map((doc) => Expense.fromFireStore(doc, null)).toList();
+      expenseTransactions = snapshot.docs
+          .map((doc) => Expense.fromFireStore(doc, null))
+          .where((expense) =>
+      (selectedStartDate == null ||
+          expense.expenseOnMonth!.isAfter(selectedStartDate!)) &&
+          (selectedEndDate == null ||
+              expense.expenseOnMonth!.isBefore(selectedEndDate!)))
+          .toList();
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     dbSale = DatabaseForSale(uid: uid);
     dbExpanse = DatabaseForExpanse(uid: uid);
+    showIncome = widget.showIncome; // Set showIncome based on the parameter
     _fetchIncome();
-    _fetchExpanse();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+    _fetchExpense();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(showIncome) {
-      _fetchIncome();
-    }
-    else {
-        _fetchExpanse();
-      }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 152, 186, 1.0),
-        title: const Text('Transactions',
-        style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),),
+        title: const Text(
+          'Transactions',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -94,15 +83,10 @@ class _TransactionPageState extends State<TransactionPage> {
           },
         ),
         actions: [
-          // IconButton(
-          //   icon: Icon(Icons.search),
-          //   onPressed: () {
-          //     // Implement search functionality
-          //   },
-          // ),
           IconButton(
-            icon: const Icon(Icons.filter_list_outlined,
-            color: Colors.black,
+            icon: const Icon(
+              Icons.filter_list_outlined,
+              color: Colors.black,
             ),
             onPressed: () async {
               await _showDateRangePicker(context);
@@ -112,11 +96,14 @@ class _TransactionPageState extends State<TransactionPage> {
           Visibility(
             visible: selectedStartDate != null || selectedEndDate != null,
             child: IconButton(
-              icon: const Icon(Icons.clear),
+              icon: const Icon(Icons.clear,
+              color: Colors.black,),
               onPressed: () {
                 setState(() {
                   selectedStartDate = null;
                   selectedEndDate = null;
+                  _fetchIncome();
+                  _fetchExpense();
                 });
               },
             ),
@@ -147,13 +134,8 @@ class _TransactionPageState extends State<TransactionPage> {
                           topLeft: Radius.circular(8),
                           bottomLeft: Radius.circular(8),
                         ),
-
                         boxShadow: showIncome
-                            ? [
-                                BoxShadow(
-                                    color: Colors.grey.withOpacity(1),
-                                    blurRadius: 4)
-                              ]
+                            ? [BoxShadow(color: Colors.grey.withOpacity(1), blurRadius: 4)]
                             : [],
                       ),
                       child: const Center(
@@ -183,13 +165,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           topRight: Radius.circular(8),
                           bottomRight: Radius.circular(8),
                         ),
-                        boxShadow: showIncome
-                            ? []
-                            : [
-                                BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    blurRadius: 4)
-                              ],
+                        boxShadow: showIncome ? [] : [BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 4)],
                       ),
                       child: const Center(
                         child: Text(
@@ -212,42 +188,35 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // _showAddTransactionDialog(context);
-          if (showIncome) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddIncome(
-                        onSubmit: () {
-                          print('add income');
-                          _fetchIncome();
-                          _fetchExpanse();
-                        },
-                      )),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddExpenses(
-                        onSubmit: () {
-                          print('add expense');
-                          _fetchExpanse();
-                          _fetchIncome();
-                        },
-                      )),
-            );
-          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => (showIncome)
+                  ? AddIncome(
+                onSubmit: () {
+                  _fetchIncome();
+                  _fetchExpense();
+                },
+              )
+                  : AddExpenses(
+                onSubmit: () {
+                  _fetchIncome();
+                  _fetchExpense();
+                },
+              ),
+            ),
+          );
         },
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1),
         tooltip: 'Add Transaction',
-        child: const Icon(Icons.add,
-        color: Colors.black,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
       ),
     );
   }
 
-// Function to show date range picker
   Future<void> _showDateRangePicker(BuildContext context) async {
     final picked = await showDateRangePicker(
       context: context,
@@ -260,13 +229,15 @@ class _TransactionPageState extends State<TransactionPage> {
     if (picked != null) {
       selectedStartDate = picked.start;
       selectedEndDate = picked.end;
+      _fetchIncome();
+      _fetchExpense();
     }
   }
 }
 
 class ListTileForSale extends StatefulWidget {
   final List<Sale> data;
-  const ListTileForSale({super.key, required this.data});
+  const ListTileForSale({Key? key, required this.data}) : super(key: key);
 
   @override
   State<ListTileForSale> createState() => _ListTileForSaleState();
@@ -278,36 +249,26 @@ class _ListTileForSaleState extends State<ListTileForSale> {
     return ListView.builder(
       itemCount: widget.data.length,
       itemBuilder: (context, index) {
-        // Define a color based on the transaction type (income or expense)
-        Color tileColor = Colors.green.shade500;
-
+        final sale = widget.data[index];
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 2, 8, 2),
+          padding: const EdgeInsets.fromLTRB(8.0, 5, 8, 2),
           child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 4.0),
-              decoration: BoxDecoration(
-                color: tileColor
-                    .withOpacity(0.2), // Set background color with opacity
-                borderRadius: BorderRadius.circular(
-                    8.0), // Add border radius for rounded corners
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
+            decoration: BoxDecoration(
+              color: Colors.green.shade500.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: ListTile(
+              title: Text(
+                sale.name,
+                style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
               ),
-              child: ListTile(
-                title: Text(
-                  widget.data[index].name,
-                  style: TextStyle(
-                    color: Colors.green
-                        .shade500, // Set text color to match background color
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Date: ${widget.data[index].saleOnMonth?.day}-${widget.data[index].saleOnMonth?.month}-${widget.data[index].saleOnMonth?.year}',
-                  style: TextStyle(
-                    color: Colors.grey[800], // Set text color for subtitle
-                  ),
-                ),
-                // Customize this with your actual transaction data
-              )),
+              subtitle: Text(
+                'Amount:  ${sale.value.toStringAsFixed(2)}| On Date: ${sale.saleOnMonth?.day}-${sale.saleOnMonth?.month}-${sale.saleOnMonth?.year}',
+                style:  TextStyle(color: Colors.grey[800]),
+              ),
+            ),
+          ),
         );
       },
     );
@@ -316,7 +277,7 @@ class _ListTileForSaleState extends State<ListTileForSale> {
 
 class ListTileForExpense extends StatefulWidget {
   final List<Expense> data;
-  const ListTileForExpense({super.key, required this.data});
+  const ListTileForExpense({Key? key, required this.data}) : super(key: key);
 
   @override
   State<ListTileForExpense> createState() => _ListTileForExpenseState();
@@ -328,36 +289,26 @@ class _ListTileForExpenseState extends State<ListTileForExpense> {
     return ListView.builder(
       itemCount: widget.data.length,
       itemBuilder: (context, index) {
-        // Define a color based on the transaction type (income or expense)
-        Color tileColor = Colors.red.shade500;
-
+        final expense = widget.data[index];
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 2, 8, 2),
+          padding: const EdgeInsets.fromLTRB(8.0, 5, 8, 2),
           child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 4.0),
-              decoration: BoxDecoration(
-                color: tileColor
-                    .withOpacity(0.2), // Set background color with opacity
-                borderRadius: BorderRadius.circular(
-                    8.0), // Add border radius for rounded corners
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
+            decoration: BoxDecoration(
+              color: Colors.red.shade500.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: ListTile(
+              title: Text(
+                expense.name,
+                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               ),
-              child: ListTile(
-                title: Text(
-                  widget.data[index].name,
-                  style: TextStyle(
-                    color: Colors.red
-                        .shade300, // Set text color to match background color
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  'Amount:  ${widget.data[index].value.toStringAsFixed(2)}| On Date: ${widget.data[index].expenseOnMonth?.day}-${widget.data[index].expenseOnMonth?.month}-${widget.data[index].expenseOnMonth?.year}',
-                  style: TextStyle(
-                    color: Colors.grey[800], // Set text color for subtitle
-                  ),
-                ),
-                // Customize this with your actual transaction data
-              )),
+              subtitle: Text(
+                'Amount:  ${expense.value.toStringAsFixed(2)}| On Date: ${expense.expenseOnMonth?.day}-${expense.expenseOnMonth?.month}-${expense.expenseOnMonth?.year}',
+                style: TextStyle(color: Colors.grey[800]),
+              ),
+            ),
+          ),
         );
       },
     );

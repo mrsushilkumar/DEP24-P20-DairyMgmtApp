@@ -1,4 +1,5 @@
 
+import 'package:farm_expense_mangement_app/screens/transaction/transactionpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -159,12 +160,9 @@ class _AddIncomeState extends State<AddIncome> {
           padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
           child: Column(
             children: [
-              const Text(
-                "Income",
-                style: TextStyle(fontSize: 25, color: Colors.blueGrey),
-              ),
+
               const SizedBox(
-                height: 25,
+                height: 5,
               ),
 
               const SizedBox(height: 10,),
@@ -239,7 +237,8 @@ class _AddIncomeState extends State<AddIncome> {
                             labelText: 'Enter Category',
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: Colors.grey[200],
+                            fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                           )
                         )
                       ),
@@ -259,6 +258,9 @@ class _AddIncomeState extends State<AddIncome> {
                                   DateTime.tryParse(_dateController.text));
                           _addIncome(data);
                           Navigator.pop(context);
+    Navigator.pushReplacement(
+    context, MaterialPageRoute(builder: (context) => const TransactionPage(showIncome: true,)));
+
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -276,7 +278,7 @@ class _AddIncomeState extends State<AddIncome> {
                           "Submit",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 15,
                           ),
                         ),
     ),

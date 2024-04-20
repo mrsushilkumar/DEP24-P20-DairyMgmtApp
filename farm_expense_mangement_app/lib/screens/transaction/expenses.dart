@@ -1,4 +1,6 @@
 import 'package:farm_expense_mangement_app/models/transaction.dart';
+import 'package:farm_expense_mangement_app/screens/transaction/transactionpage.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -70,9 +72,11 @@ class _AddExpensesState extends State<AddExpenses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         title: const Text(
-          'New Transaction',
+          'New Expense',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -90,26 +94,24 @@ class _AddExpensesState extends State<AddExpenses> {
           padding: const EdgeInsets.fromLTRB(8, 30, 8, 0),
           child: Column(
             children: [
-              const Text(
-                "Expenses",
-                style: TextStyle(fontSize: 25, color: Colors.blueGrey),
-              ),
+
               const SizedBox(
-                height: 25,
+                height: 5,
               ),
               Form(
                 key: _formKey,
                 child: Expanded(
                   child: ListView(children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
                           labelText: ' Date of expense ',
                           border: const OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.calendar_today),
                             onPressed: () => _selectDate(context),
@@ -119,7 +121,7 @@ class _AddExpensesState extends State<AddExpenses> {
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
@@ -127,20 +129,22 @@ class _AddExpensesState extends State<AddExpenses> {
                           labelText: 'How much did you spend (in ₹)?',
                           border: const OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                         ),
                       ),
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
                         decoration: InputDecoration(
                           labelText: 'Select expense type*',
                           border: const OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                         ),
                         items: sourceOptions.map((String source) {
                           return DropdownMenuItem<String>(
@@ -165,7 +169,8 @@ class _AddExpensesState extends State<AddExpenses> {
                             labelText: 'Enter Category',
                             border: const OutlineInputBorder(),
                             filled: true,
-                            fillColor: Colors.grey[200],
+                            fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                           ),
                         ),
                       ),
@@ -184,6 +189,8 @@ class _AddExpensesState extends State<AddExpenses> {
                                   DateTime.parse(_dateController.text));
                           _addExpense(data);
                           Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (context) => const TransactionPage(showIncome: false,)));
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -199,6 +206,11 @@ class _AddExpensesState extends State<AddExpenses> {
                         ),
                         child: const Text(
                           "Submit",
+                          style: TextStyle(
+                            color:Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                          ),
                         ),
                       ),
                     )
