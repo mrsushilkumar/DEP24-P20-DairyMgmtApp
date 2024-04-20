@@ -230,7 +230,7 @@ class _AddIncomeState extends State<AddIncome> {
 
                     if (_selectedCategory == 'Other')
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                        padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
                           decoration: InputDecoration(

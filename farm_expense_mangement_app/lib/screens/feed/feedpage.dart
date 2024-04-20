@@ -196,7 +196,7 @@ class _FeedListItemState extends State<FeedListItem> {
                     'Expiry Date ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
                     style: TextStyle(
                         color:
-                            isExpired ? Colors.orange[700] : Colors.green[700]),
+                            isExpired ? Colors.red[400] : Colors.green[700]),
                     textAlign: TextAlign.end,
                   ),
                 ),

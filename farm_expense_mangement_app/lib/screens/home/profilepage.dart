@@ -172,16 +172,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Row(
                             children: [
-                              const Icon(
-                                Icons.square_rounded,
-                                color: Colors.green,
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
+
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
-                              child:Icon(Icons.square_rounded,color: Color.fromRGBO(13, 166, 186, 1),),),
+                              child:Icon(Icons.home,color: Color.fromRGBO(13, 166, 186, 1),),),
                               SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               Container(
@@ -193,42 +187,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text("${farmUser.farmName}",style: TextStyle(fontSize: 18),),
                             ],
                           ),
-                          SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              Icon(Icons.email_rounded,color:Color.fromRGBO(13, 166, 186, 1),),
-                              SizedBox(width: 16,),
-                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                          // SizedBox(height: 20,),
 
-                                  width: 100,
-                                  child: Text(
-                                    "Farm Name  ",
-                                    style: TextStyle(fontSize: 18),
-                                  )),
-                              const SizedBox(
-                                width: 60,
-                              ),
-                              Text(
-                                farmUser.farmName,
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
                           const SizedBox(
                             height: 20,
                           ),
                           Row(
                             children: [
-                              const Icon(
-                                Icons.email_rounded,
-                                color: Colors.green,
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
 
-                              Icon(Icons.phone,color: Color.fromRGBO(13, 166, 186, 1),),
+                              Icon(Icons.email,color: Color.fromRGBO(13, 166, 186, 1),),
                               SizedBox(width: 16,),
 
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
@@ -255,13 +222,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               const Icon(
                                 Icons.phone,
-                                color: Colors.green,
+                                color: Color.fromRGBO(13, 166, 186, 1),
                               ),
                               const SizedBox(
                                 width: 16,
                               ),
-                              Icon(Icons.location_pin,color: Color.fromRGBO(13, 166, 186, 1),),
-                              SizedBox(width: 16,),
+                              // Icon(Icons.location_pin,color: Color.fromRGBO(13, 166, 186, 1),),
+                              // SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 100,
@@ -280,13 +247,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 25,
                           ),
                           Row(
                             children: [
                               const Icon(
                                 Icons.location_pin,
-                                color: Colors.green,
+                                color: Color.fromRGBO(13, 166, 186, 1),
                               ),
                               const SizedBox(
                                 width: 16,

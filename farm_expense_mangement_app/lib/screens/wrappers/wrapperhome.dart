@@ -90,7 +90,7 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
                       : const Color.fromRGBO(13, 166, 186, 1.0),
                   elevation: 0,
                   child: const Icon(
-                    Icons.person_4,
+                    Icons.person,
                     color: Colors.white70,
                   ),
                 ),

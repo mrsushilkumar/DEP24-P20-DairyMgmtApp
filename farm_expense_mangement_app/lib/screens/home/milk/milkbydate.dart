@@ -287,7 +287,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
           // Right container
           Expanded(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+              padding: const EdgeInsets.fromLTRB(18, 10, 10, 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -326,7 +326,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 18),
                   Row(
                     children: [
                       Image.asset(

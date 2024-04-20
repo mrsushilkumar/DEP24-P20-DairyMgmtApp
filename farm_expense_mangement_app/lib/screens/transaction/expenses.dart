@@ -91,19 +91,19 @@ class _AddExpensesState extends State<AddExpenses> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 30, 8, 0),
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
           child: Column(
             children: [
 
               const SizedBox(
-                height: 5,
+                height: 15,
               ),
               Form(
                 key: _formKey,
                 child: Expanded(
                   child: ListView(children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
@@ -121,7 +121,7 @@ class _AddExpensesState extends State<AddExpenses> {
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
@@ -136,7 +136,7 @@ class _AddExpensesState extends State<AddExpenses> {
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
                         decoration: InputDecoration(
@@ -162,7 +162,7 @@ class _AddExpensesState extends State<AddExpenses> {
 
                     if (_selectedCategory == 'Other')
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                        padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
                           decoration: InputDecoration(
@@ -209,7 +209,7 @@ class _AddExpensesState extends State<AddExpenses> {
                           style: TextStyle(
                             color:Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 14
+                            fontSize: 15
                           ),
                         ),
                       ),
