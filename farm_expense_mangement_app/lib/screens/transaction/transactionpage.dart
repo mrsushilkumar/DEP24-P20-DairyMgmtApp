@@ -83,7 +83,10 @@ class _TransactionPageState extends State<TransactionPage> {
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 152, 186, 1.0),
-        title: const Text('Transactions'),
+        title: const Text('Transactions',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -98,7 +101,9 @@ class _TransactionPageState extends State<TransactionPage> {
           //   },
           // ),
           IconButton(
-            icon: const Icon(Icons.filter_list_outlined),
+            icon: const Icon(Icons.filter_list_outlined,
+            color: Colors.black,
+            ),
             onPressed: () async {
               await _showDateRangePicker(context);
               setState(() {});
@@ -136,16 +141,17 @@ class _TransactionPageState extends State<TransactionPage> {
                       margin: const EdgeInsets.only(top: 8),
                       decoration: BoxDecoration(
                         color: showIncome
-                            ? const Color.fromRGBO(240, 255, 255, 0.9)
-                            : Colors.blueGrey[100],
+                            ? Colors.blueGrey[100]
+                            : const Color.fromRGBO(240, 255, 255, 0.9),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           bottomLeft: Radius.circular(8),
                         ),
+
                         boxShadow: showIncome
                             ? [
                                 BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
+                                    color: Colors.grey.withOpacity(1),
                                     blurRadius: 4)
                               ]
                             : [],
@@ -171,8 +177,8 @@ class _TransactionPageState extends State<TransactionPage> {
                       margin: const EdgeInsets.only(top: 8),
                       decoration: BoxDecoration(
                         color: showIncome
-                            ? Colors.blueGrey[100]
-                            : const Color.fromRGBO(240, 255, 255, 0.9),
+                            ? const Color.fromRGBO(240, 255, 255, 0.9)
+                            : Colors.blueGrey[100],
                         borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(8),
                           bottomRight: Radius.circular(8),
@@ -233,8 +239,10 @@ class _TransactionPageState extends State<TransactionPage> {
             );
           }
         },
+        backgroundColor: const Color.fromRGBO(13, 166, 186, 1),
         tooltip: 'Add Transaction',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,
+        color: Colors.black,),
       ),
     );
   }

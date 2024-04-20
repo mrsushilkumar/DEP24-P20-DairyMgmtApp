@@ -12,10 +12,12 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // centerTitle: true,
+      //
+      centerTitle: true,
       title: const Text(
         'Profile',
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),
       ),
       backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
       actions: [
@@ -105,13 +107,14 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Container(
                   decoration: const BoxDecoration(
+
                     color: Color.fromRGBO(13, 166, 186, 0.9),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20.0),
                       bottomRight: Radius.circular(20.0),
                     ),
                   ),
-                  height: 170,
+                  height: 180,
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -120,6 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const CircleAvatar(
                         radius: 35,
+                        backgroundColor: Colors.white,
                         child: Icon(
                           Icons.person,
                           size: 35,
@@ -177,6 +181,26 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
+                              child:Icon(Icons.square_rounded,color: Color.fromRGBO(13, 166, 186, 1),),),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+                                width: 100,
+                                  child: Text(
+                                "Farm Name  ",style: TextStyle(fontSize: 18),)
+        ),
+                              SizedBox(width: 60,),
+                              Text("${farmUser.farmName}",style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          Row(
+                            children: [
+                              Icon(Icons.email_rounded,color:Color.fromRGBO(13, 166, 186, 1),),
+                              SizedBox(width: 16,),
+                              // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
+                              Container(
+
                                   width: 100,
                                   child: Text(
                                     "Farm Name  ",
@@ -203,6 +227,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               const SizedBox(
                                 width: 16,
                               ),
+
+                              Icon(Icons.phone,color: Color.fromRGBO(13, 166, 186, 1),),
+                              SizedBox(width: 16,),
+
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 100,
@@ -232,6 +260,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               const SizedBox(
                                 width: 16,
                               ),
+                              Icon(Icons.location_pin,color: Color.fromRGBO(13, 166, 186, 1),),
+                              SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
                                   width: 100,
@@ -350,8 +380,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
         title: const Text(
           'Edit Profile',
+          style: TextStyle(
+              fontWeight: FontWeight.bold
+          ),
         ),
       ),
+
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 40, 20, 20),
         child: Form(
@@ -406,14 +440,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 onPressed: () {},
                 child: const Text(
                   'Save Changes',
-                  style: TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 17,
+                      color: Colors.black),)
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+
+      ])
+
+        )
+    ));
+
   }
 }
 

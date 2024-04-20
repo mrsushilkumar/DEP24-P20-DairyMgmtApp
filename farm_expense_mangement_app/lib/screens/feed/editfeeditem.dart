@@ -79,6 +79,31 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
     Navigator.pop(context);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const FeedPage()));
+
+    // Check if the expiry date is in the past
+    if (_expiryDate.isBefore(DateTime.now())) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please select a valid expiry date.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      editFeedOnDatabase();
+      Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const FeedPage()));
+    }
   }
 
   @override

@@ -260,7 +260,7 @@ class _MilkDataRowState extends State<MilkDataRow> {
         children: [
           // Left container
           Container(
-            width: 150,
+            width: 120,
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

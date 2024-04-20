@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -137,10 +138,11 @@ class _AddIncomeState extends State<AddIncome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         title: const Text(
-          'New Transaction',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          'New Income',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
@@ -154,7 +156,7 @@ class _AddIncomeState extends State<AddIncome> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 30, 8, 0),
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
           child: Column(
             children: [
               const Text(
@@ -164,19 +166,22 @@ class _AddIncomeState extends State<AddIncome> {
               const SizedBox(
                 height: 25,
               ),
+
+              const SizedBox(height: 10,),
+
               Form(
                 key: _formKey,
                 child: Expanded(
                   child: ListView(children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
                           labelText: ' Date of Income ',
                           border: const OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: const Color.fromRGBO(240, 255, 255, 1),
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.calendar_today),
                             onPressed: () => _selectDate(context),
@@ -186,28 +191,30 @@ class _AddIncomeState extends State<AddIncome> {
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'How much did you earn (in ₹)?',
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                         ),
                       ),
                     ),
                     // SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Select Income type*',
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           filled: true,
-                          fillColor: Colors.grey[200],
+                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+
                         ),
                         items: sourceOptions.map((String source) {
                           return DropdownMenuItem<String>(
@@ -222,6 +229,7 @@ class _AddIncomeState extends State<AddIncome> {
                         },
                       ),
                     ),
+
                     if (_selectedCategory == 'Other')
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
@@ -232,14 +240,15 @@ class _AddIncomeState extends State<AddIncome> {
                             border: const OutlineInputBorder(),
                             filled: true,
                             fillColor: Colors.grey[200],
-                          ),
-                        ),
+                          )
+                        )
                       ),
 
                     // SizedBox(height: 10),
                     Container(
                       alignment: Alignment.center,
                       child: ElevatedButton(
+
                         onPressed: () {
                           final data = Sale(
                               name: (_selectedCategory.toString() != 'Other')
@@ -265,10 +274,16 @@ class _AddIncomeState extends State<AddIncome> {
                         ),
                         child: const Text(
                           "Submit",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
                         ),
+    ),
                       ),
-                    )
-                  ]),
+
+                  ]
+    ),
                 ),
               ),
             ],
