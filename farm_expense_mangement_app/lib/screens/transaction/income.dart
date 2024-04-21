@@ -177,6 +177,7 @@ class _AddIncomeState extends State<AddIncome> {
                         controller: _dateController,
                         decoration: InputDecoration(
                           labelText: ' Date of Income ',
+                          hintText: 'YYYY-MM-DD',
                           border: const OutlineInputBorder(),
                           filled: true,
                           fillColor: const Color.fromRGBO(240, 255, 255, 1),
@@ -233,9 +234,9 @@ class _AddIncomeState extends State<AddIncome> {
                         padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Enter Category',
-                            border: const OutlineInputBorder(),
+                            border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Color.fromRGBO(240, 255, 255, 1),
 

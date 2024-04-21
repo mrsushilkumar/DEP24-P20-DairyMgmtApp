@@ -18,7 +18,7 @@ class _AddExpensesState extends State<AddExpenses> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
-  late DatabaseForExpanse dbExpanse;
+  late DatabaseForExpense dbExpanse;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,7 +53,7 @@ class _AddExpensesState extends State<AddExpenses> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    dbExpanse = DatabaseForExpanse(uid: uid);
+    dbExpanse = DatabaseForExpense(uid: uid);
   }
 
   void _addExpense(Expense data) {
@@ -73,7 +73,7 @@ class _AddExpensesState extends State<AddExpenses> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      backgroundColor: Color.fromRGBO(240, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         title: const Text(
           'New Expense',
@@ -108,9 +108,10 @@ class _AddExpensesState extends State<AddExpenses> {
                         controller: _dateController,
                         decoration: InputDecoration(
                           labelText: ' Date of expense ',
+                          hintText: 'YYYY-MM-DD',
                           border: const OutlineInputBorder(),
                           filled: true,
-                          fillColor: Color.fromRGBO(240, 255, 255, 1),
+                          fillColor: const Color.fromRGBO(240, 255, 255, 1),
 
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.calendar_today),
@@ -125,9 +126,9 @@ class _AddExpensesState extends State<AddExpenses> {
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'How much did you spend (in ₹)?',
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
 
@@ -139,9 +140,9 @@ class _AddExpensesState extends State<AddExpenses> {
                       padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Select expense type*',
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
 
@@ -165,9 +166,9 @@ class _AddExpensesState extends State<AddExpenses> {
                         padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Enter Category',
-                            border: const OutlineInputBorder(),
+                            border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Color.fromRGBO(240, 255, 255, 1),
 

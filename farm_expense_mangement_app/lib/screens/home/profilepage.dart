@@ -175,16 +175,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(
-                              child:Icon(Icons.home,color: Color.fromRGBO(13, 166, 186, 1),),),
-                              SizedBox(width: 16,),
+                              child:Icon(Icons.home,color: Color.fromRGBO(13, 166, 186, 1),),
+                              ),
+                              const SizedBox(width: 16,),
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
-                              Container(
+                              const SizedBox(
                                 width: 100,
                                   child: Text(
                                 "Farm Name  ",style: TextStyle(fontSize: 18),)
         ),
-                              SizedBox(width: 60,),
-                              Text("${farmUser.farmName}",style: TextStyle(fontSize: 18),),
+                              const SizedBox(width: 60,),
+                              Text(farmUser.farmName,style: const TextStyle(fontSize: 18),),
                             ],
                           ),
                           // SizedBox(height: 20,),
@@ -195,8 +196,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Row(
                             children: [
 
-                              Icon(Icons.email,color: Color.fromRGBO(13, 166, 186, 1),),
-                              SizedBox(width: 16,),
+                              const Icon(Icons.email,color: Color.fromRGBO(13, 166, 186, 1),),
+                              const SizedBox(width: 16,),
 
                               // Image.asset("asset/profile_dairy_logo.jpg",width: 40,height: 40),
                               const SizedBox(

@@ -1,4 +1,5 @@
 import 'package:farm_expense_mangement_app/models/transaction.dart';
+import 'package:farm_expense_mangement_app/screens/transaction/edittransaction.dart';
 import 'package:farm_expense_mangement_app/services/database/transactiondatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'income.dart';
 
 class TransactionPage extends StatefulWidget {
   final bool showIncome; // New parameter
-  const TransactionPage({Key? key, required this.showIncome}) : super(key: key);
+  const TransactionPage({super.key, required this.showIncome});
 
   @override
   State<TransactionPage> createState() => _TransactionPageState();
@@ -19,7 +20,7 @@ class _TransactionPageState extends State<TransactionPage> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   late DatabaseForSale dbSale;
-  late DatabaseForExpanse dbExpanse;
+  late DatabaseForExpense dbExpanse;
 
   bool showIncome = true;
   List<Sale> incomeTransactions = [];
@@ -60,11 +61,13 @@ class _TransactionPageState extends State<TransactionPage> {
   void initState() {
     super.initState();
     dbSale = DatabaseForSale(uid: uid);
-    dbExpanse = DatabaseForExpanse(uid: uid);
+    dbExpanse = DatabaseForExpense(uid: uid);
     showIncome = widget.showIncome; // Set showIncome based on the parameter
     _fetchIncome();
     _fetchExpense();
   }
+
+  Color filterColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +119,10 @@ class _TransactionPageState extends State<TransactionPage> {
           Visibility(
             visible: selectedStartDate != null || selectedEndDate != null,
             child: IconButton(
-              icon: const Icon(Icons.clear,
-              color: Colors.black,),
+              icon: const Icon(
+                Icons.clear,
+              color: Colors.black,
+              ),
               onPressed: () {
                 setState(() {
                   selectedStartDate = null;
@@ -257,7 +262,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
 class ListTileForSale extends StatefulWidget {
   final List<Sale> data;
-  const ListTileForSale({Key? key, required this.data}) : super(key: key);
+  const ListTileForSale({super.key, required this.data});
 
   @override
   State<ListTileForSale> createState() => _ListTileForSaleState();
@@ -287,6 +292,12 @@ class _ListTileForSaleState extends State<ListTileForSale> {
                 'Amount:  ${sale.value.toStringAsFixed(2)}| On Date: ${sale.saleOnMonth?.day}-${sale.saleOnMonth?.month}-${sale.saleOnMonth?.year}',
                 style:  TextStyle(color: Colors.grey[800]),
               ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit, color: Colors.black),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditTransaction(showIncome: true,sale: sale,expense: null,)));
+                },
+              ),
             ),
           ),
         );
@@ -297,7 +308,7 @@ class _ListTileForSaleState extends State<ListTileForSale> {
 
 class ListTileForExpense extends StatefulWidget {
   final List<Expense> data;
-  const ListTileForExpense({Key? key, required this.data}) : super(key: key);
+  const ListTileForExpense({super.key, required this.data});
 
   @override
   State<ListTileForExpense> createState() => _ListTileForExpenseState();
@@ -327,6 +338,12 @@ class _ListTileForExpenseState extends State<ListTileForExpense> {
                 'Amount:  ${expense.value.toStringAsFixed(2)}| On Date: ${expense.expenseOnMonth?.day}-${expense.expenseOnMonth?.month}-${expense.expenseOnMonth?.year}',
                 style: TextStyle(color: Colors.grey[800]),
               ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit, color: Colors.black),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditTransaction(showIncome: false,sale: null,expense: expense,)));
+                },
+              ),
             ),
           ),
         );
@@ -342,12 +359,12 @@ class TotalTransactionPage extends StatelessWidget {
   final List<Expense> expenseTransactions;
 
   const TotalTransactionPage({
-    Key? key,
+    super.key,
     required this.selectedStartDate,
     required this.selectedEndDate,
     required this.incomeTransactions,
     required this.expenseTransactions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -404,16 +421,16 @@ class TotalTransactionPage extends StatelessWidget {
           children: [
             Text(
               'Date Range: ${selectedStartDate != null ? "${selectedStartDate!.day}/${selectedStartDate!.month}/${selectedStartDate!.year}" : "Start"} - ${selectedEndDate != null ? "${selectedEndDate!.day}/${selectedEndDate!.month}/${selectedEndDate!.year}" : "End"}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
             Text(
               'Total Income: ₹$totalIncome',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
             ),
             const SizedBox(height: 7),
-            Text(
+            const Text(
               'Income per Category:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
@@ -422,18 +439,18 @@ class TotalTransactionPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(entry.key, style: TextStyle(fontSize: 14)),
-                  Text('₹${entry.value.toStringAsFixed(2)}', style: TextStyle(fontSize: 14)),
+                  Text(entry.key, style: const TextStyle(fontSize: 14)),
+                  Text('₹${entry.value.toStringAsFixed(2)}', style: const TextStyle(fontSize: 14)),
                 ],
               ),
             )),
             const SizedBox(height: 25),
             Text(
               'Total Expense: ₹$totalExpense',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
             ),
             const SizedBox(height: 7),
-            Text(
+            const Text(
               'Expense per Category:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
@@ -442,8 +459,8 @@ class TotalTransactionPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(entry.key, style: TextStyle(fontSize: 14)),
-                  Text('₹${entry.value.toStringAsFixed(2)}', style: TextStyle(fontSize: 14)),
+                  Text(entry.key, style: const TextStyle(fontSize: 14)),
+                  Text('₹${entry.value.toStringAsFixed(2)}', style: const TextStyle(fontSize: 14)),
                 ],
               ),
             )),

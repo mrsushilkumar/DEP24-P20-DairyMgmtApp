@@ -70,7 +70,7 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
     deleteFeedDatabase();
     Navigator.pop(context);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => FeedPage()));
+        context, MaterialPageRoute(builder: (context) => const FeedPage()));
   }
 
   void _submitForm(BuildContext context) {
@@ -86,14 +86,14 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Please select a valid expiry date.'),
+            title: const Text('Error'),
+            content: const Text('Please select a valid expiry date.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

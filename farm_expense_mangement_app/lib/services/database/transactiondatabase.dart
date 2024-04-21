@@ -27,11 +27,22 @@ class DatabaseForSale {
         .doc("${sale.name.replaceAll(' ', '')}D${sale.saleOnMonth!.day}M${sale.saleOnMonth!.month}Y${sale.saleOnMonth!.year}")
         .set(sale.toFireStore());
   }
+
+  Future<void> deleteFromServer(Sale sale) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Sale')
+        .doc("${sale.name.replaceAll(' ', '')}D${sale.saleOnMonth!.day}M${sale.saleOnMonth!.month}Y${sale.saleOnMonth!.year}")
+        .delete();
+  }
 }
 
-class DatabaseForExpanse {
+class DatabaseForExpense {
   String uid;
-  DatabaseForExpanse({required this.uid});
+  DatabaseForExpense({required this.uid});
 
   Future<QuerySnapshot<Map<String, dynamic>>>
       infoFromServerAllTransaction() async {
@@ -54,5 +65,16 @@ class DatabaseForExpanse {
         .collection('Expense')
         .doc("${expense.name.replaceAll(' ', '')}D${expense.expenseOnMonth!.day}M${expense.expenseOnMonth!.month}Y${expense.expenseOnMonth!.year}")
         .set(expense.toFireStore());
+  }
+
+  Future<void> deleteFromServer(Expense expense) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    return await db
+        .collection('User')
+        .doc(uid)
+        .collection('Expense')
+        .doc("${expense.name.replaceAll(' ', '')}D${expense.expenseOnMonth!.day}M${expense.expenseOnMonth!.month}Y${expense.expenseOnMonth!.year}")
+        .delete();
   }
 }
