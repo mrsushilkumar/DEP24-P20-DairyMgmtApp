@@ -74,42 +74,36 @@ class _WrapperHomePageState extends State<WrapperHomePage> {
           topRight: Radius.circular(36),
         ),
         child: BottomAppBar(
+          shadowColor: Colors.white70,
           color: const Color.fromRGBO(13, 166, 186, 1.0),
+          surfaceTintColor: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    profile(context);
-                  },
-                  backgroundColor: _selectedIndex == 1
-                      ? Colors.black
-                      : const Color.fromRGBO(13, 166, 186, 1.0),
-                  elevation: 0,
-                  child: const Icon(
-                    Icons.person,
-                    color: Colors.white70,
-                  ),
+              FloatingActionButton(
+                onPressed: () {
+                  profile(context);
+                },
+                backgroundColor: _selectedIndex == 1
+                    ? Colors.black
+                    : const Color.fromRGBO(13, 166, 186, 1.0),
+                elevation: 0,
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.white70,
                 ),
               ),
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    home(context);
-                  },
-                  backgroundColor: _selectedIndex == 0
-                      ? Colors.black
-                      : const Color.fromRGBO(13, 166, 186, 1.0),
-                  elevation: 0,
-                  child: const Icon(
-                    Icons.home,
-                    color: Colors.white70,
-                  ),
+              FloatingActionButton(
+                onPressed: () {
+                  home(context);
+                },
+                backgroundColor: _selectedIndex == 0
+                    ? Colors.black
+                    : const Color.fromRGBO(13, 166, 186, 1.0),
+                elevation: 0,
+                child: const Icon(
+                  Icons.home,
+                  color: Colors.white70,
                 ),
               ),
             ],

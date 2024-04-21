@@ -1,6 +1,8 @@
 import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // import '../wrappers/wrapperhome.dart';
 import 'milkavgpage.dart';
 import '../transaction/transactionpage.dart';
@@ -15,7 +17,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: const Size.fromHeight(240),
       child: Container(
-        color: Colors.grey[300],
+        // color: Colors.grey[300],
         child: AppBar(
           centerTitle: true,
           flexibleSpace: ClipRRect(
@@ -95,78 +97,83 @@ class _HomePageState extends State<HomePage> {
     Color dryCowsColor = const Color.fromRGBO(88, 148, 120, 1.0); // Blue color
     Color avgMilkPerCowColor =
         const Color.fromRGBO(202, 217, 173, 1.0); // Yellow color
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
+    return Placeholder(
+      strokeWidth: 0,
+      color: Colors.white70,
       child: Container(
         height: 600,
         color: Colors.grey[300],
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 17),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: buildClickableContainer(
-                    context,
-                    'Cattles',
-                    'asset/cattles.jpg',
-                    totalCowsColor,
-                    () => Navigator.push(
+            // const SizedBox(height: 16),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: buildClickableContainer(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AnimalList()),
+                      'Cattles',
+                      'asset/cattles.jpg',
+                      totalCowsColor,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AnimalList()),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: buildClickableContainer(
-                    context,
-                    'Feed',
-                    'asset/feed.jpg',
-                    milkingCowsColor,
-                    () => Navigator.push(
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: buildClickableContainer(
                       context,
-                      MaterialPageRoute(builder: (context) => const FeedPage()),
+                      'Feed',
+                      'asset/feed.jpg',
+                      milkingCowsColor,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const FeedPage()),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: buildClickableContainer(
-                    context,
-                    'Transactions',
-                    'asset/transactions.webp',
-                    dryCowsColor,
-                    () => Navigator.push(
+            // const SizedBox(height: 16),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: buildClickableContainer(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const TransactionPage(showIncome: true,)),
+                      'Transaction',
+                      'asset/transactions.webp',
+                      dryCowsColor,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TransactionPage(showIncome: true,)),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: buildClickableContainer(
-                    context,
-                    'Avg Milk/Cow',
-                    'asset/avg.jpg',
-                    avgMilkPerCowColor,
-                    () => Navigator.push(
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: buildClickableContainer(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AvgMilkPage()),
+                      'Avg Milk',
+                      'asset/avg.jpg',
+                      avgMilkPerCowColor,
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AvgMilkPage()),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -248,6 +255,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Text(
                   value,
+                  maxLines: 1,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
                   style: const TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.bold,
