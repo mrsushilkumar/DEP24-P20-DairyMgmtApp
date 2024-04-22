@@ -1,9 +1,6 @@
 import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-// import '../wrappers/wrapperhome.dart';
 import 'milkavgpage.dart';
 import '../transaction/transactionpage.dart';
 
@@ -16,57 +13,54 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(240),
-      child: Container(
-        // color: Colors.grey[300],
-        child: AppBar(
-          centerTitle: true,
-          flexibleSpace: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(36),
-              bottomRight: Radius.circular(36),
-            ),
-            child: Stack(
-              children: [
-                Image.asset(
-                  'asset/bgscreen.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.8,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        myColor.withOpacity(0.3),
-                        myColor.withOpacity(0.1),
-                      ],
-                    ),
+      child: AppBar(
+        centerTitle: true,
+        flexibleSpace: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(36),
+            bottomRight: Radius.circular(36),
+          ),
+          child: Stack(
+            children: [
+              Image.asset(
+                'asset/bgscreen.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      myColor.withOpacity(0.3),
+                      myColor.withOpacity(0.1),
+                    ],
                   ),
                 ),
-                Positioned(
-                  top: 40,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 80,
-                  ),
+              ),
+              Positioned(
+                top: 40,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 80,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          title: const Text(
-            '',
-            style: TextStyle(
-              color: Colors.white70,
-              fontWeight: FontWeight.w900,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
         ),
+        title: const Text(
+          '',
+          style: TextStyle(
+            color: Colors.white70,
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
     );
   }
