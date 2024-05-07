@@ -1,6 +1,5 @@
 import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:farm_expense_mangement_app/models/feed.dart';
 import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 
@@ -212,7 +211,7 @@ class _EditFeedItemPageState extends State<EditFeedItemPage> {
                 ),
                 child: ListTile(
                   title: Text(
-                      'Expiry Date: ${DateFormat('yyyy-MM-dd').format(_expiryDate)}'),
+                      'Expiry Date: ${_expiryDate.year}-${_expiryDate.month}-${_expiryDate.day}'),
                   onTap: () async {
                     final selectedDate = await showDatePicker(
                       context: context,

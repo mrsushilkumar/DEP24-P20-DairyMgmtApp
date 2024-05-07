@@ -3,7 +3,6 @@ import 'package:farm_expense_mangement_app/models/feed.dart';
 import 'package:farm_expense_mangement_app/screens/feed/addfeeditem.dart';
 import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
 
@@ -193,7 +192,7 @@ class _FeedListItemState extends State<FeedListItem> {
               if (widget.feed.expiryDate != null)
                 Flexible(
                   child: Text(
-                    'Expiry Date ${DateFormat('yyyy-MM-dd').format(widget.feed.expiryDate!)}',
+                    'Expiry Date ${widget.feed.expiryDate!.year}-${widget.feed.expiryDate!.month}-${widget.feed.expiryDate!.day}',
                     style: TextStyle(
                         color:
                             isExpired ? Colors.red[400] : Colors.green[700]),

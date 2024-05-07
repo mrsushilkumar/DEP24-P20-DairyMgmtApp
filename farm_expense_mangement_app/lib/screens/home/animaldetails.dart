@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
@@ -254,8 +253,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                         child: SizedBox(
                                           // width: 80,
                                           child: Text(
-                                            DateFormat('yyyy-MM-dd').format(event
-                                                .date), // Display the raw date string
+                                            event.date.toString(), // Display the raw date string
                                             softWrap: false,
                                             textAlign: TextAlign.left,
                                             style: const TextStyle(
@@ -865,7 +863,6 @@ class _AddEventPopupState extends State<AddEventPopup> {
     'Insemination'
   ];
   DateTime? selectedDate;
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   // final AnimalDetails detail=AnimalDetails(rfid);
 

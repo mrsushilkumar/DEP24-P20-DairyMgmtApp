@@ -5,7 +5,6 @@ import 'package:farm_expense_mangement_app/screens/transaction/transactionpage.d
 import 'package:farm_expense_mangement_app/services/database/transactiondatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class EditTransaction extends StatefulWidget {
   final bool showIncome;
@@ -169,7 +168,7 @@ class _EditTransactionState extends State<EditTransaction> {
                   readOnly: true,
                   enabled: false,
                   style: const TextStyle(fontSize: 20, color: Colors.black),
-                  initialValue: DateFormat('yyyy-MM-dd').format(_dateOfTransaction),
+                  initialValue: '${_dateOfTransaction.year}-${_dateOfTransaction.month}-${_dateOfTransaction.day}',
                   decoration: const InputDecoration(
                       labelText: 'Transaction Date',
                       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
