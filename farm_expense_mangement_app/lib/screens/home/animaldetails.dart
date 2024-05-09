@@ -194,7 +194,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
-                              ))
+                              )
+                          )
                         ],
                       ),
                     ),
@@ -253,7 +254,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                         child: SizedBox(
                                           // width: 80,
                                           child: Text(
-                                            event.date.toString(), // Display the raw date string
+                                            "${event.date.year}-${(event.date.month >9)? event.date.month : '0${event.date.month}'}-${(event.date.day >9)? event.date.day : '0${event.date.day}'}", // Display the raw date string
                                             softWrap: false,
                                             textAlign: TextAlign.left,
                                             style: const TextStyle(
@@ -506,7 +507,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      _cattle.sex,
+                                      _cattle.source,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -548,7 +549,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
   // final TextEditingController _rfidTextController = TextEditingController();
   final TextEditingController _weightTextController = TextEditingController();
   final TextEditingController _breedTextController = TextEditingController();
-  final TextEditingController _agetextController = TextEditingController();
+  final TextEditingController _ageTextController = TextEditingController();
 
   // final TextEditingController _tagNumberController3 = TextEditingController();
 
@@ -600,6 +601,10 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
     cattleDb = DatabaseServicesForCattle(uid);
     _breedTextController.text = widget.cattle.breed;
     _weightTextController.text = widget.cattle.weight.toString();
+    _selectedSource = widget.cattle.source;
+    _selectedStage = widget.cattle.state;
+    _selectedGender = widget.cattle.sex;
+    _ageTextController.text = widget.cattle.age.toString();
   }
 
   void updateCattleButton(BuildContext context) {
@@ -609,7 +614,9 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
         breed: _breedTextController.text,
         sex: _selectedGender.toString(),
         weight: int.parse(_weightTextController.text),
-        state: _selectedStage.toString());
+        state: _selectedStage.toString(),
+        source: _selectedSource.toString()
+    );
 
     cattleDb.infoToServerSingleCattle(cattle);
 
@@ -687,7 +694,7 @@ class _EditAnimalDetailState extends State<EditAnimalDetail> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   // initialValue: '0',
-                  controller: _agetextController,
+                  controller: _ageTextController,
                   decoration: const InputDecoration(
                     labelText: 'Enter The Age',
                     border: OutlineInputBorder(),

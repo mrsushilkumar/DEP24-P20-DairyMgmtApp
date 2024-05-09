@@ -282,19 +282,3 @@ class ArcClipper extends CustomClipper<Path> {
     return false;
   }
 }
-
-class DryCowsPage extends StatelessWidget {
-  const DryCowsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dry Cows'),
-      ),
-      body: const Center(
-        child: Text('Dry Cows Page'),
-      ),
-    );
-  }
-}
