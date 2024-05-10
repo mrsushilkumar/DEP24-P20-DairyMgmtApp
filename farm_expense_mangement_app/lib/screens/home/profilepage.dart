@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/main.dart';
 import 'package:farm_expense_mangement_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,6 +78,7 @@ class ProfilePage extends StatefulWidget implements PreferredSizeWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  late final Future<DocumentSnapshot<Map<String, dynamic>>>? _futureController;
 
   late FarmUser farmUser;
   late DatabaseServicesForUser userDb;
@@ -85,12 +87,17 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     userDb = DatabaseServicesForUser(uid);
+
+    setState(() {
+
+      _futureController = userDb.infoFromServer(uid);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: userDb.infoFromServer(uid),
+      future: _futureController,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -311,7 +318,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ProfileEditPage(),
+                        builder: (context) => ProfileEditPage(farmUser: farmUser,refresh: () {
+                          setState(() {
+                            final snapshot1 = userDb.infoFromServer(uid) as AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>;
+                            farmUser = FarmUser.fromFireStore(snapshot1.requireData, null);
+                          });
+                        },),
                       ),
                     );
                   },
@@ -331,15 +343,39 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class ProfileEditPage extends StatefulWidget {
-  const ProfileEditPage({super.key});
+  final FarmUser farmUser;
+  final Function refresh;
+  const ProfileEditPage({super.key,required this.farmUser,required this.refresh});
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
+  final user = FirebaseAuth.instance.currentUser;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _controllerName = TextEditingController();
+  final _controllerOwnerName = TextEditingController();
+  final _controllerPhone = TextEditingController();
+  final _controllerAddress = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controllerName.text =  widget.farmUser.farmName;
+    _controllerOwnerName.text =  widget.farmUser.ownerName;
+    _controllerPhone.text =  widget.farmUser.phoneNo.toString();
+    _controllerAddress.text =  widget.farmUser.location;
+
+  }
+
+  Future updateUser(FarmUser user) async{
+    final db = DatabaseServicesForUser(uid);
+    db.infoToServer(uid, user);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +397,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           child: ListView(
             children: [
               TextFormField(
-                controller: _controllerName,
+                controller: _controllerOwnerName,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -371,7 +407,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
               const SizedBox(height: 25),
               TextFormField(
-                // controller: _controllerName,
+                controller: _controllerName,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -381,7 +417,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
               const SizedBox(height: 25),
               TextFormField(
-                // controller: _controllerName,
+                controller: _controllerPhone,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -391,7 +427,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
               const SizedBox(height: 25),
               TextFormField(
-                // controller: _controllerName,
+                controller: _controllerAddress,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -405,7 +441,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   backgroundColor: const Color.fromRGBO(13, 166, 186, 0.9),
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final FarmUser farmUser = FarmUser(
+                      ownerName: _controllerOwnerName.text,
+                      farmName: _controllerName.text,
+                      location: _controllerAddress.text,
+                      phoneNo: int.parse(_controllerPhone.text)
+                  );
+                  updateUser(farmUser);
+                  Navigator.pop(context);
+                },
                 child: const Text(
                   'Save Changes',
                   style: TextStyle(fontSize: 17,
