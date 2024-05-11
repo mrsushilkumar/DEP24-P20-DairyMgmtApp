@@ -3,8 +3,13 @@ import 'package:farm_expense_mangement_app/screens/transaction/transactionpage.d
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/database/transactiondatabase.dart';
+import '../../main.dart';
+import '../home/localisations_en.dart';
+import '../home/localisations_hindi.dart';
+import '../home/localisations_punjabi.dart';
 
 class AddExpenses extends StatefulWidget {
   final Function onSubmit;
@@ -15,6 +20,9 @@ class AddExpenses extends StatefulWidget {
 }
 
 class _AddExpensesState extends State<AddExpenses> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -71,12 +79,21 @@ class _AddExpensesState extends State<AddExpenses> {
 
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     return Scaffold(
 
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        title: const Text(
-          'New Expense',
+        title: Text(
+          '${currentLocalization['new_expense']}',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -107,7 +124,7 @@ class _AddExpensesState extends State<AddExpenses> {
                       child: TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
-                          labelText: ' Date of expense ',
+                          labelText: '${currentLocalization['date_of_expense']}',
                           hintText: 'YYYY-MM-DD',
                           border: const OutlineInputBorder(),
                           filled: true,
@@ -126,8 +143,8 @@ class _AddExpensesState extends State<AddExpenses> {
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
-                        decoration: const InputDecoration(
-                          labelText: 'How much did you spend (in ₹)?',
+                        decoration: InputDecoration(
+                          labelText: '${currentLocalization['how_much_did_you_spend']}',
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -140,8 +157,8 @@ class _AddExpensesState extends State<AddExpenses> {
                       padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
-                        decoration: const InputDecoration(
-                          labelText: 'Select expense type*',
+                        decoration: InputDecoration(
+                          labelText: '${currentLocalization['select_expense_type']}*',
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -150,7 +167,7 @@ class _AddExpensesState extends State<AddExpenses> {
                         items: sourceOptions.map((String source) {
                           return DropdownMenuItem<String>(
                             value: source,
-                            child: Text(source),
+                            child: Text('${currentLocalization[source]}'),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -166,8 +183,8 @@ class _AddExpensesState extends State<AddExpenses> {
                         padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
-                          decoration: const InputDecoration(
-                            labelText: 'Enter Category',
+                          decoration: InputDecoration(
+                            labelText: '${currentLocalization['enter_category']}',
                             border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -205,8 +222,8 @@ class _AddExpensesState extends State<AddExpenses> {
                           elevation: 10, // adjust elevation value as desired
                           side: const BorderSide(color: Colors.grey, width: 2),
                         ),
-                        child: const Text(
-                          "Submit",
+                        child: Text(
+                          '${currentLocalization['submit']}',
                           style: TextStyle(
                             color:Colors.black,
                             fontWeight: FontWeight.bold,

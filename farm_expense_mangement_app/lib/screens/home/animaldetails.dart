@@ -2,11 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/cattle.dart';
 import '../../services/database/cattledatabase.dart';
 import 'package:farm_expense_mangement_app/models/history.dart';
 import 'package:farm_expense_mangement_app/services/database/cattlehistorydatabase.dart';
+import '../../main.dart';
+import 'localisations_en.dart';
+import 'localisations_hindi.dart';
+import 'localisations_punjabi.dart';
 
 class AnimalDetails extends StatefulWidget {
   final String rfid;
@@ -17,6 +22,9 @@ class AnimalDetails extends StatefulWidget {
 }
 
 class _AnimalDetailsState extends State<AnimalDetails> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _streamController;
@@ -81,20 +89,29 @@ class _AnimalDetailsState extends State<AnimalDetails> {
   bool isDetailVisible = false;
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     Widget buildWidget(CattleHistory event) {
-      if (event.name == 'Abortion') {
+      if (event.name == currentLocalization['abortion']) {
         return Image.asset(
           'asset/Cross_img.png',
           width: 30,
           height: 35,
         );
-      } else if (event.name == 'Vaccination') {
+      } else if (event.name == currentLocalization['Vaccination']) {
         return Image.asset(
           'asset/Vaccination.png',
           width: 30,
           height: 35,
         );
-      } else if (event.name == 'Heifer') {
+      } else if (event.name == currentLocalization['Heifer']) {
         return Image.asset(
           'asset/heifer.png',
           width: 30,
@@ -148,8 +165,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
           stream: _streamController,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: Text('Please Wait ..'),
+              return  Center(
+                child: Text(currentLocalization['please_wait']??""),
               );
             } else if (snapshot.hasData) {
               _cattle = Cattle.fromFireStore(snapshot.requireData, null);
@@ -163,8 +180,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Events",
+                           Text(
+                            currentLocalization['events']??"",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
@@ -189,8 +206,8 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                           .black), // Set the border color here
                                 ),
                               ),
-                              child: const Text(
-                                "Add Event",
+                              child:  Text(
+                                currentLocalization['add_event']??"",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
@@ -239,7 +256,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                       Expanded(
                                         flex: 12,
                                         child: Text(
-                                          " ${capitalizeFirstLetterOfEachWord(event.name)}",
+                                          " ${capitalizeFirstLetterOfEachWord(currentLocalization[event.name.toLowerCase()]??"")}",
                                           textAlign: TextAlign.left,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -291,10 +308,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                               });
                             },
                           ),
-                          const Padding(
+                           Padding(
                             padding: EdgeInsets.fromLTRB(12.0, 8, 12, 2),
                             child: Text(
-                              "Details",
+                              currentLocalization["details"]??"",
                               style: TextStyle(
                                   fontSize: 24,
                                   color: Color.fromRGBO(13, 166, 186, 1.0),
@@ -327,10 +344,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "Age",
+                                      currentLocalization["age"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -360,10 +377,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "Sex",
+                                      currentLocalization["sex"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -374,7 +391,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      _cattle.sex,
+                                      currentLocalization[_cattle.sex.toLowerCase()]??"",
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -393,10 +410,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "Weight",
+                                      currentLocalization["weight"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -426,10 +443,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "Breed",
+                                      currentLocalization["breed"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -459,10 +476,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "State",
+                                      currentLocalization["state"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -473,7 +490,7 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      _cattle.state,
+                                      currentLocalization[_cattle.state.toLowerCase()]??"",
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
@@ -492,10 +509,10 @@ class _AnimalDetailsState extends State<AnimalDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 100,
                                     child: Text(
-                                      "Source of Cattle",
+                                      currentLocalization["source_of_cattle"]??"",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,

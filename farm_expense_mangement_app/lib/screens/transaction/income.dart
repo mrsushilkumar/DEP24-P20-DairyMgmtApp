@@ -2,9 +2,14 @@
 import 'package:farm_expense_mangement_app/screens/transaction/transactionpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/transaction.dart';
 import '../../services/database/transactiondatabase.dart';
+import '../../main.dart';
+import '../home/localisations_en.dart';
+import '../home/localisations_hindi.dart';
+import '../home/localisations_punjabi.dart';
 
 class AddIncome extends StatefulWidget {
   final Function onSubmit;
@@ -15,6 +20,9 @@ class AddIncome extends StatefulWidget {
 }
 
 class _AddIncomeState extends State<AddIncome> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -138,11 +146,20 @@ class _AddIncomeState extends State<AddIncome> {
 
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        title: const Text(
-          'New Income',
+        title: Text(
+          '${currentLocalization['new_income']}',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -176,7 +193,7 @@ class _AddIncomeState extends State<AddIncome> {
                       child: TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
-                          labelText: ' Date of Income ',
+                          labelText: '${currentLocalization['date_of_income']}',
                           hintText: 'YYYY-MM-DD',
                           border: const OutlineInputBorder(),
                           filled: true,
@@ -194,8 +211,8 @@ class _AddIncomeState extends State<AddIncome> {
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _amountTextController,
-                        decoration: const InputDecoration(
-                          labelText: 'How much did you earn (in ₹)?',
+                        decoration:  InputDecoration(
+                          labelText: '${currentLocalization['how_much_did_you_earn']}',
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -208,8 +225,8 @@ class _AddIncomeState extends State<AddIncome> {
                       padding: const EdgeInsets.fromLTRB(1, 0, 1, 20),
                       child: DropdownButtonFormField<String>(
                         value: _selectedCategory,
-                        decoration: const InputDecoration(
-                          labelText: 'Select Income type*',
+                        decoration:  InputDecoration(
+                          labelText: '${currentLocalization['select_income_type']}',
                           border: OutlineInputBorder(),
                           filled: true,
                           fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -218,7 +235,7 @@ class _AddIncomeState extends State<AddIncome> {
                         items: sourceOptions.map((String source) {
                           return DropdownMenuItem<String>(
                             value: source,
-                            child: Text(source),
+                            child: Text('${currentLocalization[source]}'),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -234,8 +251,8 @@ class _AddIncomeState extends State<AddIncome> {
                         padding: const EdgeInsets.fromLTRB(1, 0, 1, 30),
                         child: TextFormField(
                           controller: _categoryTextController,
-                          decoration: const InputDecoration(
-                            labelText: 'Enter Category',
+                          decoration:  InputDecoration(
+                            labelText: '${currentLocalization['enter_category']}',
                             border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -275,8 +292,8 @@ class _AddIncomeState extends State<AddIncome> {
                           elevation: 10, // adjust elevation value as desired
                           side: const BorderSide(color: Colors.grey, width: 2),
                         ),
-                        child: const Text(
-                          "Submit",
+                        child:  Text(
+                          '${currentLocalization['submit']}',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 15,

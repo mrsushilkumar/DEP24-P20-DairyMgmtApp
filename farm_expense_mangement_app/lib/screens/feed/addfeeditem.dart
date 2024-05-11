@@ -2,8 +2,13 @@ import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:flutter/material.dart';
 import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/feed.dart';
+import '../../main.dart';
+import '../home/localisations_en.dart';
+import '../home/localisations_hindi.dart';
+import '../home/localisations_punjabi.dart';
 
 class AddFeedItem extends StatefulWidget {
   const AddFeedItem({super.key});
@@ -15,6 +20,9 @@ class AddFeedItem extends StatefulWidget {
 }
 
 class _AddFeedItemState extends State<AddFeedItem> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _requiredQuantityController =
@@ -68,12 +76,21 @@ class _AddFeedItemState extends State<AddFeedItem> {
 
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(13, 166, 186, 1.0),
-        title: const Text(
-          'Add Feed Item',
+        title: Text(
+            currentLocalization['add_feed_item']??"",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
@@ -85,8 +102,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _itemNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Item Name',
+                decoration: InputDecoration(
+                  labelText: currentLocalization['item_name']??"",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -97,8 +114,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _quantityController,
-                decoration: const InputDecoration(
-                  labelText: 'Quantity',
+                decoration: InputDecoration(
+                  labelText: currentLocalization['quantity']??"",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -110,8 +127,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _requiredQuantityController,
-                decoration: const InputDecoration(
-                  labelText: 'Required Quantity',
+                decoration: InputDecoration(
+                  labelText: currentLocalization['required_quantity']??"",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -123,8 +140,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
               padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
               child: TextField(
                 controller: _categoryDateController,
-                decoration: const InputDecoration(
-                  labelText: 'Category',
+                decoration: InputDecoration(
+                  labelText: currentLocalization['category']??"",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Color.fromRGBO(240, 255, 255, 1),
@@ -136,7 +153,7 @@ class _AddFeedItemState extends State<AddFeedItem> {
               child: TextFormField(
                 controller: _expiryDateController,
                 decoration: InputDecoration(
-                  labelText: 'Expiry Date',
+                  labelText: currentLocalization['expiry_date']??"",
                   hintText: "YYYY-MM-DD",
                   border: const OutlineInputBorder(),
                   filled: true,
@@ -159,8 +176,8 @@ class _AddFeedItemState extends State<AddFeedItem> {
                     const Color.fromRGBO(13, 166, 186, 1)), // Background color
                 // Other styles such as padding, shape, textStyle can also be specified here
               ),
-              child: const Text(
-                'Save',
+              child:  Text(
+                currentLocalization['save']??"",
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),

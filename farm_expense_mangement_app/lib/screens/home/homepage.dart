@@ -1,8 +1,13 @@
 import 'package:farm_expense_mangement_app/screens/feed/feedpage.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../main.dart';
 import 'milkavgpage.dart';
 import '../transaction/transactionpage.dart';
+import 'localisations_en.dart';
+import 'localisations_hindi.dart';
+import 'localisations_punjabi.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -82,8 +87,49 @@ class HomePage extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
+  // void changeLanguage() {
+  //   // Update the current localization based on the selected language code
+  //   // Notify the app to rebuild with the new localization
+  //
+  //   setState(() {
+  //     languageCode = Provider.of<AppData>(context).persistentVariable;
+  //     print(languageCode);
+  //     if (languageCode == 'en') {
+  //       currentLocalization = LocalizationEn.translations;
+  //     } else if (languageCode == 'hi') {
+  //       currentLocalization = LocalizationHi.translations;
+  //     } else if (languageCode == 'pa') {
+  //       currentLocalization = LocalizationPun.translations;
+  //     }
+  //   });
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setState(() {
+      // currentLocalization = LocalizationHi.translations;
+      currentLocalization = LocalizationEn.translations;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // currentLocalization = LocalizationHi.translations;
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+    print(languageCode);
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     Color totalCowsColor =
         const Color.fromRGBO(224, 191, 184, 1.0); // Green color
     Color milkingCowsColor =
@@ -108,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: buildClickableContainer(
                       context,
-                      'Cattles',
+                      'cattles',
                       'asset/cattles.jpg',
                       totalCowsColor,
                       () => Navigator.push(
@@ -122,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: buildClickableContainer(
                       context,
-                      'Feed',
+                      'feed',
                       'asset/feed.jpg',
                       milkingCowsColor,
                       () => Navigator.push(
@@ -142,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: buildClickableContainer(
                       context,
-                      'Transaction',
+                      'transaction',
                       'asset/transactions.webp',
                       dryCowsColor,
                       () => Navigator.push(
@@ -156,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: buildClickableContainer(
                       context,
-                      'Avg Milk',
+                      'avg_milk',
                       'asset/avg.jpg',
                       avgMilkPerCowColor,
                       () => Navigator.push(
@@ -248,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: Text(
-                  value,
+                  currentLocalization[value] ?? value,
                   maxLines: 1,
                   softWrap: true,
                   overflow: TextOverflow.visible,

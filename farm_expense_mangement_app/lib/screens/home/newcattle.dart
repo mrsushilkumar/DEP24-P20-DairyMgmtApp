@@ -2,8 +2,13 @@ import 'package:farm_expense_mangement_app/models/cattle.dart';
 import 'package:farm_expense_mangement_app/screens/home/animallist.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/database/cattledatabase.dart';
+import '../../main.dart';
+import 'localisations_en.dart';
+import 'localisations_hindi.dart';
+import 'localisations_punjabi.dart';
 
 class AddNewCattle extends StatefulWidget {
   const AddNewCattle({super.key});
@@ -13,6 +18,9 @@ class AddNewCattle extends StatefulWidget {
 }
 
 class _AddNewCattleState extends State<AddNewCattle> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _rfidTextController = TextEditingController();
   final TextEditingController _weightTextController = TextEditingController();
@@ -101,11 +109,20 @@ class _AddNewCattleState extends State<AddNewCattle> {
 
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
-        title: const Text(
-          'New Cattle',
+        title: Text(
+          currentLocalization['new_cattle']??"",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -130,8 +147,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 26),
                 child: TextFormField(
                   controller: _rfidTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter The RFID*',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['enter_the_rfid'] ?? ""}*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -150,8 +167,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedGender,
-                  decoration: const InputDecoration(
-                    labelText: 'Gender*',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['gender']??""}*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -159,7 +176,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                   items: genderOptions.map((String gender) {
                     return DropdownMenuItem<String>(
                       value: gender,
-                      child: Text(gender),
+                      child: Text('${currentLocalization[gender.toLowerCase()]??""}*'),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -182,8 +199,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                   keyboardType: TextInputType.number,
                   // initialValue: '0',
                   controller: _agetextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter The Age',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['enter_the_age']??""}',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -197,8 +214,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                   keyboardType: TextInputType.number,
                   // initialValue: '0',
                   controller: _weightTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter The Weight',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['enter_the_weight']??""}*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -210,16 +227,16 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                     value: _selectedSource,
-                    decoration: const InputDecoration(
-                      labelText: 'Source of Cattle*',
+                    decoration: InputDecoration(
+                      labelText: '${currentLocalization['source_of_cattle']??""}*',
                       border: OutlineInputBorder(),
                       filled: true,
                       fillColor: Color.fromRGBO(240, 255, 255, 0.7),
                     ),
-                    items: sourceOptions.map((String gender) {
+                    items: sourceOptions.map((String source) {
                       return DropdownMenuItem<String>(
-                        value: gender,
-                        child: Text(gender),
+                        value: source,
+                        child: Text(currentLocalization[source]??""),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -239,8 +256,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: TextFormField(
                   controller: _breedTextController,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter The Breed*',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['enter_the_breed']??""}*',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -258,8 +275,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26),
                 child: DropdownButtonFormField<String>(
                   value: _selectedState,
-                  decoration: const InputDecoration(
-                    labelText: 'Status',
+                  decoration: InputDecoration(
+                    labelText: '${currentLocalization['status']??""}',
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: Color.fromRGBO(240, 255, 255, 0.7),
@@ -267,7 +284,7 @@ class _AddNewCattleState extends State<AddNewCattle> {
                   items: stateOptions.map((String stage) {
                     return DropdownMenuItem<String>(
                       value: stage,
-                      child: Text(stage),
+                      child: Text(currentLocalization[stage.toLowerCase()]??""),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -288,8 +305,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                         addNewCattleButton(context);
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('New Cattle Added Successfully!!')),
+                           SnackBar(
+                              content: Text(currentLocalization['new_cattle_added_successfully']??"")),
                         );
                       }
                     },
@@ -297,8 +314,8 @@ class _AddNewCattleState extends State<AddNewCattle> {
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(13, 166, 186, 1.0)),
                     ),
-                    child: const Text(
-                      'Submit',
+                    child: Text(
+                      '${currentLocalization['submit']??""}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

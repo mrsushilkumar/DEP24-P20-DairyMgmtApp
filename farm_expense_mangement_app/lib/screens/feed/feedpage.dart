@@ -5,6 +5,11 @@ import 'package:farm_expense_mangement_app/services/database/feeddatabase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:farm_expense_mangement_app/screens/feed/editfeeditem.dart';
+import 'package:provider/provider.dart';
+import '../../main.dart';
+import '../home/localisations_en.dart';
+import '../home/localisations_hindi.dart';
+import '../home/localisations_punjabi.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({
@@ -16,6 +21,9 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedState extends State<FeedPage> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+
   final user = FirebaseAuth.instance.currentUser;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -66,6 +74,15 @@ class _FeedState extends State<FeedPage> {
 
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     List<Feed> filteredFeed = allFeed;
 
     if (_searchController.text.isNotEmpty) {
@@ -88,8 +105,8 @@ class _FeedState extends State<FeedPage> {
       backgroundColor: const Color.fromRGBO(240, 255, 255, 1),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Feeds',
+        title:  Text(
+          currentLocalization['feed']??"",
           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
           textAlign: TextAlign.center,
         ),
@@ -147,8 +164,9 @@ class FeedListItem extends StatefulWidget {
   final Feed feed;
   final VoidCallback onTap;
   final VoidCallback onEdit;
-
-  const FeedListItem({
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
+   FeedListItem({
     super.key,
     required this.feed,
     required this.onTap,
@@ -160,8 +178,19 @@ class FeedListItem extends StatefulWidget {
 }
 
 class _FeedListItemState extends State<FeedListItem> {
+  late Map<String, String> currentLocalization= {};
+  late String languageCode = 'en';
   @override
   Widget build(BuildContext context) {
+    languageCode = Provider.of<AppData>(context).persistentVariable;
+
+    if (languageCode == 'en') {
+      currentLocalization = LocalizationEn.translations;
+    } else if (languageCode == 'hi') {
+      currentLocalization = LocalizationHi.translations;
+    } else if (languageCode == 'pa') {
+      currentLocalization = LocalizationPun.translations;
+    }
     final bool isExpired = widget.feed.expiryDate != null &&
         DateTime.now().isAfter(widget.feed.expiryDate!);
 
@@ -192,7 +221,7 @@ class _FeedListItemState extends State<FeedListItem> {
               if (widget.feed.expiryDate != null)
                 Flexible(
                   child: Text(
-                    'Expiry Date ${widget.feed.expiryDate!.year}-${widget.feed.expiryDate!.month}-${widget.feed.expiryDate!.day}',
+                    '${ currentLocalization['expiry_date']??""} ${widget.feed.expiryDate!.year}-${widget.feed.expiryDate!.month}-${widget.feed.expiryDate!.day}',
                     style: TextStyle(
                         color:
                             isExpired ? Colors.red[400] : Colors.green[700]),
@@ -205,11 +234,11 @@ class _FeedListItemState extends State<FeedListItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Current Stock: ${widget.feed.quantity}',
+                '${ currentLocalization['current_stock']??""}: ${widget.feed.quantity}',
                 style: const TextStyle(color: Colors.black),
               ),
               Text(
-                'Current Need: ${widget.feed.requiredQuantity}',
+                '${ currentLocalization['current_need']??""}: ${widget.feed.requiredQuantity}',
                 style: const TextStyle(color: Colors.black),
               ),
             ],
